@@ -18,7 +18,7 @@ public class KMod extends Mod{
             //show dialog upon startup
             Time.runTask(10f, () -> {
                 BaseDialog dialog = new BaseDialog("frog");
-                dialog.cont.add("Welcome to K's ModV1").row();
+                dialog.cont.add("Welcome to K's ModV2").row();
                 dialog.cont.button("I konw", dialog::hide).size(100f, 50f);
                 dialog.show();
             });
