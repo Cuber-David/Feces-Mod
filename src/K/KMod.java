@@ -1,13 +1,11 @@
 package K;
 
+import K.content.*;
 import arc.*;
 import arc.util.*;
 import mindustry.game.EventType.*;
 import mindustry.mod.Mod;
 import mindustry.ui.dialogs.*;
-
-import K.content.blocks;
-import K.content.items;
 
 public class KMod extends Mod{
 
@@ -19,6 +17,7 @@ public class KMod extends Mod{
             Time.runTask(10f, () -> {
                 BaseDialog dialog = new BaseDialog("frog");
                 dialog.cont.add("Welcome to K's ModV2").row();
+                dialog.cont.image(Core.atlas.find("kmod-frog")).pad(20f).row();
                 dialog.cont.button("I konw", dialog::hide).size(100f, 50f);
                 dialog.show();
             });
@@ -29,6 +28,10 @@ public class KMod extends Mod{
     public void loadContent() {
         items.load();
         blocks.load();
+        KPlanetGenerator.load();
+        planets.load();
+        sector.load();
+        techtree.load();
     }
 
 }

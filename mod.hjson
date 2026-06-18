@@ -1,5 +1,5 @@
 #the mod name as displayed in-game
-displayName: "K's Mod"
+displayName: "K神的Mod"
 
 #the internal name of your mod
 name: "kmod"
@@ -11,7 +11,7 @@ author: "Mr.K"
 main: "K.KMod"
 
 #the mod description as seen in the mod dialog
-description: "K's Mindustry mod."
+description: "K爷爷的高级模组."
 
 #the mod version
 version: 1.0

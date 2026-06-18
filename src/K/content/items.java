@@ -6,7 +6,9 @@ import mindustry.type.Item;
 public class items {
     public static Item
             //牢底
-            Rody_proton,Rody_neutron,Rody_electron,Feces;
+            Rody_proton,Rody_neutron,Rody_electron,
+            //大便
+            Feces,Constipated_feces;
 
     public static void load(){
         Rody_proton = new Item("Rody_proton", Color.white){{
@@ -27,8 +29,12 @@ public class items {
             alwaysUnlocked = true;
         }};
         Feces = new Item("Feces", Color.brown){{
-            flammability = 50;
-            alwaysUnlocked = true;
+            flammability = 0.1f;
+            alwaysUnlocked = false;
+        }};
+        Constipated_feces = new Item("Constipated_feces", Color.brown){{
+            flammability = 5.0f;
+            alwaysUnlocked = false;
         }};
     }
 }
