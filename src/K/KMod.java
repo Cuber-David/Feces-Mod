@@ -1,6 +1,7 @@
 package K;
 
 import K.content.*;
+import K.content.unit.KUnitTypes;
 import arc.*;
 import arc.util.*;
 import mindustry.game.EventType.*;
@@ -8,6 +9,8 @@ import mindustry.mod.Mod;
 import mindustry.ui.dialogs.*;
 
 public class KMod extends Mod{
+
+    public static final String MOD_NAME = "kmod";
 
     public KMod(){
 
@@ -24,9 +27,19 @@ public class KMod extends Mod{
         });
     }
 
+    public static String name(String name) {
+        return MOD_NAME + "-" + name;
+    }
+
     @Override
     public void loadContent() {
+        sounds.load();
+        bullets.load();
+        fx.load();
+        effect.load();
         items.load();
+        liquids.load();
+        KUnitTypes.load();
         blocks.load();
         KPlanetGenerator.load();
         planets.load();
