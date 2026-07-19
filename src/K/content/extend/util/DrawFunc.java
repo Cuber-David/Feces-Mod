@@ -1,4 +1,4 @@
-package K.util;
+package K.content.extend.util;
 
 import arc.Core;
 import arc.func.Cons;

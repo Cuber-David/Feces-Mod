@@ -1,4 +1,4 @@
-package K.util;
+package K.content.extend.util;
 
 import arc.func.Boolf;
 import arc.func.Cons;
@@ -13,7 +13,6 @@ import arc.struct.*;
 import arc.util.Log;
 import arc.util.Time;
 import arc.util.Tmp;
-import arc.util.pooling.Pools;
 import mindustry.core.World;
 import mindustry.entities.Effect;
 import mindustry.entities.Fires;
@@ -24,7 +23,6 @@ import mindustry.gen.*;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.type.Item;
-import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
 import mindustry.world.Tile;
 import mindustry.world.blocks.defense.turrets.ItemTurret;

@@ -14,10 +14,12 @@ import java.lang.reflect.Field;
         public static ObjectMap<String, Sound> sounds = new ObjectMap<>();
 
         public static Sound
-                alarm,watching,dabian,dogshit,boom,hugeBlast
+                alarm,charge,watching,dabian,dogshit,boom,hugeBlast,thunder
                 ;
 
         public static void load() {
+            charge = new Sound();
+            alarm = new Sound();
             try {
                 for (Field field : sounds.class.getFields()) {
                     if (field.getType().equals(Sound.class)) {

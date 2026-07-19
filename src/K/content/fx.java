@@ -1,7 +1,6 @@
 package K.content;
 
-import K.util.DrawFunc;
-import arc.Settings;
+import K.content.extend.util.DrawFunc;
 import arc.graphics.Blending;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
@@ -16,17 +15,17 @@ import mindustry.entities.Effect;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
-import mindustry.ui.dialogs.SettingsMenuDialog;
 
 import static arc.graphics.Color.alpha;
 import static arc.graphics.g2d.Draw.color;
 import static arc.graphics.g2d.Lines.*;
 import static arc.math.Angles.*;
+import static mindustry.Vars.renderer;
 
 public class fx {
     public static final Rand rand = new Rand();
     public static Effect Bigcasing,shootBig,hitBulletBigger,hitLaserBigger,PulseCharge,PulseChargeBegin,PulseShoot,
-            BigExplosion,collapserExplode,ReactorExplosion;
+            BigExplosion,collapserExplode,ReactorExplosion,Thunder;
 
     public static void load(){
         Bigcasing = new Effect(30f, e -> {
@@ -249,6 +248,30 @@ public class fx {
                     Drawf.light(e.x + x, e.y + y, (out * 4 * (3f + intensity)) * 3.5f, Draw.getColor(), 0.8f);
                 });
             });
+        });
+        Thunder = new Effect(10, e -> {
+            e.lifetime = 1f;
+            float l = 256;
+            float r0 = rand.random(70f, 110f);
+            float r10 = rand.random(0, 20f) - 10;
+            if(r10 < 0){ r10 = r10 - 20;}
+            else {r10 = r10 + 20;}
+            float r11 = r10 + r0;
+            float r = r0 * Mathf.degRad;
+            float r1 = r11 * Mathf.degRad;
+            float x1 = (float) (e.x + Math.cos(r) * l);
+            float y1 = (float) (e.y + Math.sin(r) * l);
+            float x2 = (float) (x1 + Math.cos(r1) * l);
+            float y2 = (float) (y1 + Math.sin(r1) * l);
+            for(int i = 0;i < 3000;i++) {
+                stroke(10, Color.white);
+                line(x1, y1, e.x, e.y);
+                renderer.lights.line(x1, y1, e.x, e.y, 30, Color.white, 3f);
+                stroke(10, Color.white);
+                line(x1, y1, x2, y2);
+                renderer.lights.line(x1, y1, x2, y2, 30, Color.white, 3f);
+            }
+            e.lifetime = 0;
         });
     }
 }

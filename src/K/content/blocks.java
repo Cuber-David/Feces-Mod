@@ -1,19 +1,28 @@
 package K.content;
 
 import K.content.extend.*;
+import K.content.extend.Bullets.AccelBulletType;
+import K.content.extend.blocks.AdaptWall;
+import K.content.extend.blocks.PowerPole;
+import K.content.extend.blocks.SortLiquidRouter;
+import K.content.extend.blocks.TF;
 import K.content.unit.KUnitTypes;
-import K.util.EffectWrapper;
+import K.content.extend.util.EffectWrapper;
 import arc.graphics.Color;
 import arc.graphics.g2d.Fill;
 import arc.math.Mathf;
 import arc.struct.Seq;
-import arc.util.Tmp;
 import mindustry.content.*;
 import mindustry.entities.Effect;
 import mindustry.entities.bullet.BasicBulletType;
+import mindustry.entities.bullet.BulletType;
 import mindustry.entities.bullet.LaserBulletType;
 import mindustry.entities.effect.MultiEffect;
+import mindustry.entities.part.DrawPart;
+import mindustry.entities.part.HaloPart;
 import mindustry.entities.part.RegionPart;
+import mindustry.entities.part.ShapePart;
+import mindustry.game.Team;
 import mindustry.gen.Sounds;
 import mindustry.graphics.CacheLayer;
 import mindustry.graphics.Layer;
@@ -26,10 +35,10 @@ import mindustry.world.blocks.defense.MendProjector;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
 import mindustry.world.blocks.defense.turrets.PowerTurret;
-import mindustry.world.blocks.defense.turrets.Turret;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.OreBlock;
+import mindustry.world.blocks.environment.StaticWall;
 import mindustry.world.blocks.liquid.Conduit;
 import mindustry.world.blocks.liquid.LiquidBridge;
 import mindustry.world.blocks.liquid.LiquidJunction;
@@ -53,6 +62,7 @@ import static arc.graphics.g2d.Draw.alpha;
 import static arc.graphics.g2d.Draw.color;
 import static arc.math.Angles.randLenVectors;
 import static mindustry.type.ItemStack.with;
+import static mindustry.world.meta.StatValues.ammo;
 
 public class blocks {
     public static  Block
@@ -63,7 +73,7 @@ public class blocks {
                     Atomic_aggregation_device,Particle_diverter_device,hugefecespress,
                     Ionic_liquid_factory_big,
             //地表
-            groundfeces,groundurine,groundfecalwater,
+            groundfeces,groundurine,groundfecalwater,glowmetalfloor,
             //钻头
             fecesdrill,ionicdrill,
             //墙
@@ -71,16 +81,19 @@ public class blocks {
             //运输
             fecesconveyor,fecesrouter,fecesjunction,fecesbridgeconveyor,
                     fecessorter,fecesinvertedSorter,fecesoverflowGate,fecesunderflowGate,
-                    fecesunloader,neutronconveyor,
+                    fecesunloader,neutronconveyor,neutronrouter,neutronjunction,
+                    neutronbridgeconveyor,
             //液体
             fecespump,fecesconduit,fecesconduitrouter,fecesconduitjunction,fecesconduitbridge,
                     fecesconduitsorter,fecestank,
             //电
             Simple_fecal_incinerator,fecespole,fecesbattery,Rody_reactor,Reactor,
             //功能
-            fecescore,fecesmend,fecesvault,
+            fecescore,fecesmend,fecesvault,booth,Rodycore,
             //单位
-            biggroundFactory,HelpFactory;
+            biggroundFactory,HelpFactory,testfactory,
+            //环境墙
+            fecesstonewall;
     public static void load() {
 
         //建筑
@@ -566,28 +579,11 @@ public class blocks {
         //运输
         fecesjunction = new Junction("fecesjunction"){{
             requirements(Category.distribution, with(items.Feces, 2));
+            health = 150;
             buildCostMultiplier = 2f;
             capacity = 1;
             speed = 1;
             researchCost = with(items.Feces, 20);
-        }};
-        fecesconveyor = new Conveyor("fecesconveyor"){{
-            requirements(Category.distribution, with(items.Feces, 1));
-            health = 40;
-            speed = 0.05f;
-            displayedSpeed = 7f;
-            buildCostMultiplier = 2f;
-            junctionReplacement = blocks.fecesjunction;
-            researchCost = with(items.Feces, 20);
-        }};
-        neutronconveyor = new Conveyor("neutronconveyor"){{
-            requirements(Category.distribution, with(items.Rody_neutron, 3, Items.silicon, 1));
-            health = 400;
-            speed = 0.5f;
-            displayedSpeed = 67f;
-            buildCostMultiplier = 2f;
-            junctionReplacement = blocks.fecesjunction;
-            researchCost = with(items.Rody_neutron, 60, Items.silicon, 20);
         }};
         fecesrouter = new Router("fecesrouter"){{
             requirements(Category.distribution, with(items.Feces, 3));
@@ -606,6 +602,53 @@ public class blocks {
             researchCost = with(items.Feces, 50, Items.lead, 20);
             alwaysUnlocked = false;
             crushFragile = true;
+        }};
+        fecesconveyor = new Conveyor("fecesconveyor"){{
+            requirements(Category.distribution, with(items.Feces, 1));
+            health = 40;
+            speed = 0.05f;
+            displayedSpeed = 7f;
+            buildCostMultiplier = 2f;
+            junctionReplacement = blocks.fecesjunction;
+            bridgeReplacement = blocks.fecesbridgeconveyor;
+            researchCost = with(items.Feces, 20);
+        }};
+        neutronjunction = new Junction("neutronjunction"){{
+            requirements(Category.distribution, with(items.Rody_neutron, 2));
+            buildCostMultiplier = 2f;
+            health = 300;
+            capacity = 1;
+            speed = 10;
+            researchCost = with(items.Rody_neutron, 20);
+        }};
+        neutronrouter = new Router("neutronrouter"){{
+            requirements(Category.distribution, with(items.Rody_neutron, 3));
+            health = 400;
+            buildCostMultiplier = 2f;
+            researchCost = with(items.Rody_neutron, 30);
+            alwaysUnlocked = false;
+            speed = 20f;
+        }};
+        neutronbridgeconveyor = new BufferedItemBridge("neutronbridge-conveyor"){{
+            requirements(Category.distribution, with(Items.silicon, 2, items.Rody_neutron, 4));
+            fadeIn = moveArrows = false;
+            range = 10;
+            speed = 900f;
+            arrowSpacing = 16f;
+            bufferCapacity = 20;
+            researchCost = with(items.Rody_neutron, 50, Items.silicon, 20);
+            alwaysUnlocked = false;
+            crushFragile = true;
+        }};
+        neutronconveyor = new Conveyor("neutronconveyor"){{
+            requirements(Category.distribution, with(items.Rody_neutron, 3, Items.silicon, 1));
+            health = 400;
+            speed = 0.5f;
+            displayedSpeed = 67f;
+            buildCostMultiplier = 2f;
+            junctionReplacement = blocks.neutronjunction;
+            bridgeReplacement = blocks.neutronbridgeconveyor;
+            researchCost = with(items.Rody_neutron, 60, Items.silicon, 20);
         }};
         fecessorter = new Sorter("fecessorter"){{
             requirements(Category.distribution, with(Items.lead, 2, items.Feces, 2));
@@ -801,14 +844,137 @@ public class blocks {
             health = 550;
             researchCostMultiplier = 0.1f;
         }};
+        booth = new Booth("booth"){{
+            requirements(Category.effect, with());
+            itemCapacity = 1;
+        }};
+        Rodycore = new PowerTurret("Rodycore"){{
+            requirements(Category.effect, with());
+
+            var circleProgress = DrawPart.PartProgress.warmup.delay(9.9f);
+            float circleRad = 180f, circleRotSpeed = 1.5f, circleStroke = 8f;
+            Color circleColor = Color.red;
+
+            hasShadow = false;
+            warmupMaintainTime = 180f;
+            health = -1;
+            recoil = 0f;
+            reload = 1f;
+            shootEffect = Fx.none;
+            smokeEffect = Fx.none;
+            shake = 0;
+            size = 2;
+            breakable = false;
+            solid = true;
+            targetAir = false;
+            moveWhileCharging = true;
+            accurateDelay = true;
+            shootSound = Sounds.none;
+            range = 0;
+            autoResetEnabled = false;
+            drawLiquidLight = emitLight = obstructsLight = true;
+            lightRadius = 1000f;
+            shootCone = 360;
+
+            shootType = new BulletType(){{
+                lifetime = 2f;
+                speed = 0f;
+                shootEffect = Fx.none;
+                hitEffect = Fx.none;
+                smokeEffect = Fx.none;
+                lightRadius = 1000f;
+                lightOpacity = 1;
+                lightColor = Color.red;
+                hasShadow = false;
+                lightClipSize = 800f;
+                despawnEffect = Fx.none;
+            }};
+
+            drawer = new DrawTurret(""){{
+                parts.add(new RegionPart("-ring1"){{
+                    heatColor = Color.red;
+                    moveRot = 22.5f;
+                    rotateSpeed = 1f;
+                    heatProgress = PartProgress.warmup;
+                    hasShadow = false;
+                }});
+                parts.add(new RegionPart("-ring2"){{
+                    heatColor = Color.red;
+                    moveRot = -2*22.5f;
+                    rotateSpeed = 5f;
+                    heatProgress = PartProgress.warmup;
+                    hasShadow = false;
+                }});
+                parts.add(new RegionPart("-ring3"){{
+                    heatColor = Color.red;
+                    moveRot = 3*22.5f;
+                    rotateSpeed = 5f;
+                    heatProgress = PartProgress.warmup;
+                    hasShadow = false;
+                }});
+                parts.addAll(
+                new ShapePart(){{
+                    progress = PartProgress.warmup;
+                    color = circleColor;
+                    circle = true;
+                    hollow = true;
+                    stroke = 0f;
+                    strokeTo = circleStroke;
+                    radius = circleRad;
+                    layer = Layer.effect;
+                }},
+                new ShapePart(){{
+                    progress = PartProgress.warmup;
+                    rotateSpeed = -circleRotSpeed;
+                    color = circleColor;
+                    sides = 4;
+                    hollow = true;
+                    stroke = 0f;
+                    strokeTo = circleStroke;
+                    radius = circleRad - 1f;
+                    layer = Layer.effect;
+                }},
+                new ShapePart(){{
+                    progress = PartProgress.warmup;
+                    rotateSpeed = -circleRotSpeed;
+                    color = circleColor;
+                    sides = 4;
+                    hollow = true;
+                    stroke = 0f;
+                    strokeTo = circleStroke;
+                    radius = circleRad / 1.414f;
+                    layer = Layer.effect;
+                    rotation = 45;
+                }},
+                new HaloPart(){{
+                    progress = PartProgress.warmup;
+                    color = circleColor;
+                    tri = true;
+                    shapes = 3;
+                    triLength = 0f;
+                    triLengthTo = 50f;
+                    radius = 40f;
+                    haloRadius = circleRad;
+                    haloRotateSpeed = circleRotSpeed / -2f;
+                    shapeRotation = 180f;
+                    haloRotation = 180f;
+                    layer = Layer.effect;
+                        }}
+                );
+
+
+            }};
+
+        }};
         //单位
         HelpFactory = new UnitFactory("HelpFactory"){{
             requirements(Category.units, with(Items.copper, 60, Items.lead, 70, Items.silicon, 60));
             plans = Seq.with(
-                    new UnitPlan(UnitTypes.poly, 60f * 15, with(Items.silicon, 15))
+                    new UnitPlan(KUnitTypes.Plasmadrill, 60f * 30, with(items.Constipated_feces, 25,Items.lead, 30)),
+                    new UnitPlan(KUnitTypes.Helperdrone, 60f * 30, with(items.Constipated_feces, 40,Items.lead, 50,Items.silicon, 60))
             );
             size = 3;
-            consumePower(1.2f);
+            consumePower(12f);
             researchCostMultiplier = 0.5f;
         }};
         biggroundFactory = new UnitFactory("bigground-factory"){{
@@ -819,8 +985,20 @@ public class blocks {
                     new UnitPlan(KUnitTypes.Bignova, 60f * 40, with(Items.silicon, 3000, Items.lead, 2000, Items.titanium, 2000))
             );
             size = 15;
-            consumePower(120f);
+            consumePower(200f);
             researchCostMultiplier = 0.5f;
+        }};
+        testfactory = new TF("testfactory"){{
+            requirements(Category.units, with(items.Feces, 325, Items.lead, 420, Items.silicon, 250));
+            plans = Seq.with(
+                    new UnitFactory.UnitPlan(KUnitTypes.Testspider, 60f * 40, with(Items.silicon, 180,items.Constipated_feces, 130, Items.lead, 240)),
+                    new UnitFactory.UnitPlan(KUnitTypes.Flyingfortress, 60f * 90, with(Items.silicon, 280,items.Constipated_feces, 130, Items.lead, 340))
+                    );
+            size = 6;
+            consumePower(20f);
+            consumeLiquid(liquids.ionic_liquid,0.4f);
+            researchCostMultiplier = 0.2f;
+            health = 2000;
         }};
         //地板
         groundfeces = new OreBlock(items.Feces){{
@@ -854,6 +1032,18 @@ public class blocks {
             albedo = 0.9f;
             supportsOverlay = true;
         }};
+        glowmetalfloor = new Floor("glowmetalfloor"){{
+            speedMultiplier = 0.2f;
+            variants = 0;
+            albedo = 0.9f;
+            supportsOverlay = true;
+            emitLight = true;
+            lightRadius = 30f;
+            lightColor = Team.crux.color.cpy().a(0.3f);
+        }};
+
+        //环境墙
+        fecesstonewall = new StaticWall("feces-stone-wall");
     }
 
     }

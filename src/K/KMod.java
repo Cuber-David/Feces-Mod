@@ -37,6 +37,7 @@ public class KMod extends Mod{
         bullets.load();
         fx.load();
         effect.load();
+        weathers.load();
         items.load();
         liquids.load();
         KUnitTypes.load();

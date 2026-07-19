@@ -7,10 +7,12 @@ import arc.graphics.Color;
 import mindustry.ai.types.GroundAI;
 import mindustry.ai.types.SuicideAI;
 import mindustry.content.Fx;
+import mindustry.content.StatusEffects;
 import mindustry.content.UnitTypes;
 import mindustry.entities.abilities.SpawnDeathAbility;
 import mindustry.entities.bullet.BulletType;
 import mindustry.gen.Sounds;
+import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 

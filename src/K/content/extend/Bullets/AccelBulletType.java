@@ -1,4 +1,4 @@
-package K.content.extend;
+package K.content.extend.Bullets;
 
 import arc.math.Interp;
 import arc.math.Mathf;

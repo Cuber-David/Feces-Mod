@@ -45,7 +45,7 @@ public class FecaldroneUnitType extends UnitType {
             bullet = new SapBulletType(){{
                 sapStrength = 0.2f;
                 length = 180f;
-                damage = 13;
+                damage = 6;
                 shootEffect = Fx.shootSmall;
                 hitColor = color = Color.valueOf("673931");
                 despawnEffect = Fx.none;

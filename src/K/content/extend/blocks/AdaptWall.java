@@ -1,6 +1,7 @@
-package K.content.extend;
+package K.content.extend.blocks;
 
-import K.util.SpriteUtil;
+import K.content.extend.Kstats;
+import K.content.extend.util.SpriteUtil;
 import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;

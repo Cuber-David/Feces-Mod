@@ -1,5 +1,7 @@
 package K.content;
 
+import K.content.unit.HelperdroneUnitType;
+import K.content.unit.PlasmadrillUnitType;
 import arc.struct.Seq;
 import mindustry.content.Items;
 import mindustry.content.SerpuloTechTree;
@@ -67,7 +69,16 @@ public class techtree {
                     );
                         }
                 );
-                        node(neutronconveyor, Seq.with(new Objectives.Research(items.Rody_neutron)), () -> {}
+                        node(neutronconveyor, Seq.with(new Objectives.Research(items.Rody_neutron)), () -> {
+                            node(neutronjunction, () -> {
+                                node(neutronrouter, () -> {
+                                    node(neutronbridgeconveyor, () -> {}
+                                    );
+                                        }
+                                );
+                                    }
+                            );
+                                }
                         );
 
             }
@@ -81,6 +92,21 @@ public class techtree {
                     }
             );
             node(Fecaldrone, () -> {}
+            );
+            node(HelpFactory, Seq.with(new Objectives.OnSector(zonetwo)), () -> {
+                node(Plasmadrill, () -> {}
+                );
+                node(Helperdrone, () -> {}
+                );
+                node(testfactory, Seq.with(new Objectives.OnSector(zonethree),
+                                           new Objectives.Research(Items.silicon)), () -> {
+                    node(Testspider, () -> {}
+                    );
+                    node(Flyingfortress, () -> {}
+                    );
+                        }
+                );
+            }
             );
             node(feceswall, Seq.with(new Objectives.Research(items.Feces)), () -> {
                 node(feceswallbig, () -> {
@@ -160,6 +186,8 @@ public class techtree {
                         }
                 );
                     }
+            );
+            node(Thunder, Seq.with(new Objectives.SectorComplete(zonethree)), () -> {}
             );
         });
     }

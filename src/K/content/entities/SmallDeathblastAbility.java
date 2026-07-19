@@ -2,6 +2,7 @@ package K.content.entities;
 
 import K.content.sounds;
 import arc.Core;
+import arc.graphics.Color;
 import mindustry.content.StatusEffects;
 import mindustry.entities.abilities.Ability;
 import mindustry.entities.bullet.BulletType;
@@ -9,23 +10,23 @@ import mindustry.gen.*;
 import mindustry.graphics.Pal;
 import mindustry.type.*;
 
-public class DeathblastAbility extends Ability {
+public class SmallDeathblastAbility extends Ability {
 
-    public DeathblastAbility(){
+    public SmallDeathblastAbility(){
     }
 
     public BulletType b = new BulletType() {{
-        damage = 8 * 5000;
+        damage = 8 * 2000;
         lifetime = 0.01f;
-        splashDamage = 5000;
-        splashDamageRadius = 560;
-        lightningColor = Pal.sap;
+        splashDamage = 2000;
+        splashDamageRadius = 160;
+        lightningColor = Color.white;
     }};
 
     @Override
     public void death(Unit unit) {
-        sounds.hugeBlast.at(unit);
-        unit.apply(StatusEffects.sapped, 120f);
+        Sounds.explosionReactor2.at(unit);
+        unit.apply(StatusEffects.none, 120f);
         b.create(unit, unit.x, unit.y, unit.rotation);
     }
 
