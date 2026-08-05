@@ -15,7 +15,7 @@ public class ThunderUnitType extends UnitType {
     public ThunderUnitType(String name) {
         super(name);
         constructor = TimedKillUnit::create;
-        lifetime = 1f;
+        lifetime = 6f;
         range = 10000;
         useUnitCap  = false;
         drawCell = false;
@@ -26,12 +26,14 @@ public class ThunderUnitType extends UnitType {
             shootCone = 360f;
             ejectEffect = fx.Thunder;
             shootSound = sounds.thunder;
-            shootSoundVolume = 0.4f;
+            shootSoundVolume = 6f;
             x = shootY = 0f;
             mirror = false;
             bullet = new BulletType(){{
                 collidesTiles = false;
                 collides = false;
+                despawnEffect = fx.Thunder;
+                despawnSound = sounds.thunder;
 
                 rangeOverride = 25f;
                 hitEffect = Fx.none;

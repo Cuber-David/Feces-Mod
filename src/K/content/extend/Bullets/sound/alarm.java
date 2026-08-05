@@ -16,5 +16,8 @@ public class alarm extends BulletType {
         despawnEffect = Fx.none;
         lightOpacity = 0;
         lightRadius = 0;
+        collideFloor = false;
+        collidesAir = false;
+        collidesGround = false;
     }
 }

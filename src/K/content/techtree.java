@@ -1,15 +1,12 @@
 package K.content;
 
-import K.content.unit.HelperdroneUnitType;
-import K.content.unit.PlasmadrillUnitType;
 import arc.struct.Seq;
 import mindustry.content.Items;
-import mindustry.content.SerpuloTechTree;
 import mindustry.game.Objectives;
 
 import static K.content.blocks.*;
 import static K.content.sector.*;
-import static K.content.unit.KUnitTypes.*;
+import static K.content.KUnitTypes.*;
 import static mindustry.content.TechTree.*;
 
 public class techtree {
@@ -91,7 +88,10 @@ public class techtree {
                 );
                     }
             );
-            node(Fecaldrone, () -> {}
+            node(Fecaldrone, () -> {
+                node(Fecalwarcraft, () -> {}
+                );
+                    }
             );
             node(HelpFactory, Seq.with(new Objectives.OnSector(zonetwo)), () -> {
                 node(Plasmadrill, () -> {}
@@ -103,6 +103,14 @@ public class techtree {
                     node(Testspider, () -> {}
                     );
                     node(Flyingfortress, () -> {}
+                    );
+                    node(Conceptualhovertank, () -> {}
+                    );
+                    node(Testtank, () -> {}
+                    );
+                    node(Firebeedrone, () -> {}
+                    );
+                    node(Combatengineer, () -> {}
                     );
                         }
                 );
@@ -144,6 +152,9 @@ public class techtree {
                     );
                         }
                 );
+                node(fecalwatermixer, Seq.with(new Objectives.Research(liquids.urine),
+                                               new Objectives.OnSector(zonethree)), () -> {}
+                );
                     }
             );
             node(Simple_fecal_incinerator, Seq.with(new Objectives.Research(items.Feces),
@@ -154,9 +165,14 @@ public class techtree {
 
                         });
                     });
+                    node(fecessolarpenal, Seq.with(new Objectives.Research(Items.silicon)), () -> {
+
+                    });
                 });
             });
             node(fecescore, Seq.with(new Objectives.SectorComplete(zoneone)), () -> {
+                node(fecesbasion, Seq.with(new Objectives.Research(Items.silicon)), () -> {
+                        });
                 node(fecesmend, Seq.with(new Objectives.OnSector(zonethree),
                                          new Objectives.Research(items.Feces)), () -> {}
                 );

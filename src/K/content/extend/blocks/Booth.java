@@ -1,4 +1,4 @@
-package K.content.extend;
+package K.content.extend.blocks;
 
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;

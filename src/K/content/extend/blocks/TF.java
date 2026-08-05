@@ -14,6 +14,7 @@ import arc.util.*;
 import arc.util.io.*;
 import mindustry.*;
 import mindustry.ai.*;
+import mindustry.content.Blocks;
 import mindustry.ctype.*;
 import mindustry.entities.*;
 import mindustry.entities.units.*;
@@ -29,6 +30,7 @@ import mindustry.world.blocks.payloads.*;
 import mindustry.world.blocks.units.UnitBlock;
 import mindustry.world.blocks.units.UnitFactory;
 import mindustry.world.consumers.*;
+import mindustry.world.draw.DrawDefault;
 import mindustry.world.meta.*;
 
 import static mindustry.Vars.*;

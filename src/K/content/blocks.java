@@ -2,11 +2,7 @@ package K.content;
 
 import K.content.extend.*;
 import K.content.extend.Bullets.AccelBulletType;
-import K.content.extend.blocks.AdaptWall;
-import K.content.extend.blocks.PowerPole;
-import K.content.extend.blocks.SortLiquidRouter;
-import K.content.extend.blocks.TF;
-import K.content.unit.KUnitTypes;
+import K.content.extend.blocks.*;
 import K.content.extend.util.EffectWrapper;
 import arc.graphics.Color;
 import arc.graphics.g2d.Fill;
@@ -46,6 +42,7 @@ import mindustry.world.blocks.liquid.LiquidRouter;
 import mindustry.world.blocks.power.Battery;
 import mindustry.world.blocks.power.ConsumeGenerator;
 import mindustry.world.blocks.power.NuclearReactor;
+import mindustry.world.blocks.power.SolarGenerator;
 import mindustry.world.blocks.production.*;
 import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.blocks.storage.StorageBlock;
@@ -71,7 +68,7 @@ public class blocks {
             //牢底工厂
             Rody_neutron_centrifuge,fecespress,Ionic_liquid_factory,fecespulverizer,fecessiliconfactory,
                     Atomic_aggregation_device,Particle_diverter_device,hugefecespress,
-                    Ionic_liquid_factory_big,
+                    Ionic_liquid_factory_big,fecalwatermixer,
             //地表
             groundfeces,groundurine,groundfecalwater,glowmetalfloor,
             //钻头
@@ -87,9 +84,9 @@ public class blocks {
             fecespump,fecesconduit,fecesconduitrouter,fecesconduitjunction,fecesconduitbridge,
                     fecesconduitsorter,fecestank,
             //电
-            Simple_fecal_incinerator,fecespole,fecesbattery,Rody_reactor,Reactor,
+            Simple_fecal_incinerator,fecespole,fecesbattery,Rody_reactor,fecessolarpenal,
             //功能
-            fecescore,fecesmend,fecesvault,booth,Rodycore,
+            fecescore,fecesmend,fecesvault,booth,bigbooth,Rodycore,Rodycristal,fecesbasion,
             //单位
             biggroundFactory,HelpFactory,testfactory,
             //环境墙
@@ -374,7 +371,7 @@ public class blocks {
         }};
         Ionic_liquid_factory = new GenericCrafter("Ionic_liquid_factory"){{
             requirements(Category.crafting, with(items.Feces, 50, Items.lead, 25, items.Constipated_feces, 10));
-            researchCost = with(items.Feces, 15, Items.lead, 15, items.Constipated_feces, 15);
+            researchCost = with(items.Feces, 150, Items.lead, 150, items.Constipated_feces, 150);
             craftTime = 120f;
             size = 3;
             hasItems = true;
@@ -543,6 +540,26 @@ public class blocks {
 
             consumeItems(with(items.Rody_neutron, 101, items.Rody_proton, 67, items.Rody_electron, 67));
             consumePower(100 / 6f);
+        }};
+        fecalwatermixer = new GenericCrafter("fecalwatermixer"){{
+            requirements(Category.crafting, with(items.Feces, 60, Items.lead, 50, items.Constipated_feces, 10));
+            researchCost = with(items.Feces, 150, Items.lead, 150, items.Constipated_feces, 150);
+            craftTime = 60;
+            size = 3;
+            hasItems = true;
+            itemCapacity = 10;
+            outputLiquid = new LiquidStack(liquids.fecalwater, 24f / 60f);
+            hasPower = true;
+            hasLiquids = true;
+            outputsLiquid = true;
+            rotate = false;
+            liquidCapacity = 60f;
+            drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(liquids.urine), new DrawLiquidTile(liquids.ionic_liquid){{drawLiquidLight = true;}}, new DrawDefault());
+            lightLiquid = liquids.fecalwater;
+
+            consumePower(2f);
+            consumeItem(items.Constipated_feces, 1);
+            consumeLiquid(liquids.urine, 24f / 60f);
         }};
         //钻头
         fecesdrill = new Drill("fecesdrill"){{
@@ -771,7 +788,7 @@ public class blocks {
             drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawPlasma(), new DrawDefault());
             explosionShake = 100f;
             explosionShakeDuration = 120f;
-            explosionDamage = 90000 * 5;
+            explosionDamage = 9000 * 5;
             explosionRadius = 40;
             explosionMinWarmup = 0.3f;
             explodeEffect = fx.ReactorExplosion;
@@ -780,6 +797,13 @@ public class blocks {
 
             consumeItem(items.Rody_atom);
             consumeLiquid(liquids.ionic_liquid, 0.4f).update(false);
+        }};
+        fecessolarpenal = new SolarGenerator("fecessolarpenal"){{
+            requirements(Category.power, with(Items.lead, 100, Items.silicon, 80, items.Feces, 40));
+            health = 500;
+            size = 3;
+            powerProduction = 10;
+            researchCostMultiplier = 0.1f;
         }};
         //墙
         feceswall = new Wall("feceswall"){{
@@ -824,6 +848,19 @@ public class blocks {
 
             unitCapModifier = 10;
         }};
+        fecesbasion = new CoreBlock("fecesbasion"){{
+            requirements(Category.effect, BuildVisibility.coreZoneOnly, with(items.Feces, 3000, items.Constipated_feces, 500, Items.lead, 2000, Items.silicon, 1000));
+            alwaysUnlocked = false;
+            researchCostMultiplier = 0.02f;
+
+            health = 4500;
+            itemCapacity = 12000;
+            size = 4;
+            buildCostMultiplier = 1f;
+            unitType = KUnitTypes.Fecalwarcraft;
+
+            unitCapModifier = 25;
+        }};
         fecesmend = new MendProjector("fecesmend"){{
             requirements(Category.effect, with(Items.lead, 200, items.Constipated_feces, 80, Items.silicon, 40, items.Feces, 250));
             consumePower(50 / 6f);
@@ -848,16 +885,22 @@ public class blocks {
             requirements(Category.effect, with());
             itemCapacity = 1;
         }};
+        bigbooth = new Booth("bigbooth"){{
+            requirements(Category.effect, with());
+            itemCapacity = 1;
+            size = 2;
+        }};
         Rodycore = new PowerTurret("Rodycore"){{
             requirements(Category.effect, with());
+            health = 2111114514;
+            armor = 2111451419;
 
-            var circleProgress = DrawPart.PartProgress.warmup.delay(9.9f);
+            var heatProgress = DrawPart.PartProgress.warmup.delay(9.9f);
             float circleRad = 180f, circleRotSpeed = 1.5f, circleStroke = 8f;
             Color circleColor = Color.red;
 
             hasShadow = false;
             warmupMaintainTime = 180f;
-            health = -1;
             recoil = 0f;
             reload = 1f;
             shootEffect = Fx.none;
@@ -877,8 +920,11 @@ public class blocks {
             shootCone = 360;
 
             shootType = new BulletType(){{
+                shootY = -8;
                 lifetime = 2f;
                 speed = 0f;
+                collidesAir = false;
+                collidesGround = false;
                 shootEffect = Fx.none;
                 hitEffect = Fx.none;
                 smokeEffect = Fx.none;
@@ -894,21 +940,22 @@ public class blocks {
                 parts.add(new RegionPart("-ring1"){{
                     heatColor = Color.red;
                     moveRot = 22.5f;
-                    rotateSpeed = 1f;
+                    rotateSpeed = 0.1f;
                     heatProgress = PartProgress.warmup;
                     hasShadow = false;
                 }});
                 parts.add(new RegionPart("-ring2"){{
                     heatColor = Color.red;
                     moveRot = -2*22.5f;
-                    rotateSpeed = 5f;
+                    rotateSpeed = 0.2f;
                     heatProgress = PartProgress.warmup;
                     hasShadow = false;
                 }});
                 parts.add(new RegionPart("-ring3"){{
                     heatColor = Color.red;
                     moveRot = 3*22.5f;
-                    rotateSpeed = 5f;
+                    colorTo = Color.white;
+                    rotateSpeed = 0.5f;
                     heatProgress = PartProgress.warmup;
                     hasShadow = false;
                 }});
@@ -966,6 +1013,72 @@ public class blocks {
             }};
 
         }};
+        Rodycristal = new PowerTurret1("Rodycristal"){{
+            requirements(Category.effect, with());
+            health = 100;
+            size = 2;
+            shootSound = Sounds.none;
+            range = 0;
+            drawLiquidLight = emitLight = true;
+            lightRadius = 100f;
+            lightColor = Color.red;
+            hasShadow = false;
+            shootType = new BulletType(){{
+                shootY = -8;
+                lifetime = 2f;
+                speed = 0f;
+                shootEffect = Fx.none;
+                hitEffect = Fx.none;
+                smokeEffect = Fx.none;
+                lightColor = Color.red;
+                hasShadow = false;
+                lightClipSize = 160f;
+                despawnEffect = Fx.none;
+            }};
+            float circleRad = 18f, circleRotSpeed = 5f, circleStroke = 3f;
+            Color circleColor = Color.red;
+            drawer = new DrawTurret(""){{
+                parts.addAll(
+                        new ShapePart(){{
+                            progress = PartProgress.warmup;
+                            rotateSpeed = -circleRotSpeed;
+                            color = circleColor;
+                            sides = 4;
+                            hollow = true;
+                            stroke = circleStroke;
+                            radius = circleRad - 1f;
+                            layer = Layer.effect;
+                        }},
+                        new ShapePart(){{
+                            progress = PartProgress.warmup;
+                            rotateSpeed = -circleRotSpeed;
+                            color = circleColor;
+                            sides = 4;
+                            hollow = true;
+                            stroke = circleStroke;
+                            radius = circleRad / 1.414f;
+                            layer = Layer.effect;
+                            rotation = 45;
+                        }},
+                        new HaloPart(){{
+                            progress = PartProgress.warmup;
+                            color = circleColor;
+                            tri = true;
+                            shapes = 3;
+                            triLength = 0f;
+                            triLengthTo = 5f;
+                            radius = 10f;
+                            haloRadius = circleRad / 2;
+                            haloRotateSpeed = circleRotSpeed / -2f;
+                            shapeRotation = 180f;
+                            haloRotation = 180f;
+                            layer = Layer.effect;
+                        }}
+                );
+
+
+            }};
+        }};
         //单位
         HelpFactory = new UnitFactory("HelpFactory"){{
             requirements(Category.units, with(Items.copper, 60, Items.lead, 70, Items.silicon, 60));
@@ -991,13 +1104,17 @@ public class blocks {
         testfactory = new TF("testfactory"){{
             requirements(Category.units, with(items.Feces, 325, Items.lead, 420, Items.silicon, 250));
             plans = Seq.with(
-                    new UnitFactory.UnitPlan(KUnitTypes.Testspider, 60f * 40, with(Items.silicon, 180,items.Constipated_feces, 130, Items.lead, 240)),
-                    new UnitFactory.UnitPlan(KUnitTypes.Flyingfortress, 60f * 90, with(Items.silicon, 280,items.Constipated_feces, 130, Items.lead, 340))
+                    new UnitFactory.UnitPlan(KUnitTypes.Combatengineer, 60f * 120, with(Items.silicon, 30,items.Feces, 10, Items.lead, 40)),
+                    new UnitFactory.UnitPlan(KUnitTypes.Firebeedrone, 60f * 120, with(Items.silicon, 80,items.Constipated_feces, 30, Items.lead, 30)),
+                    new UnitFactory.UnitPlan(KUnitTypes.Testspider, 60f * 120, with(Items.silicon, 380,items.Constipated_feces, 150, Items.lead, 340)),
+                    new UnitFactory.UnitPlan(KUnitTypes.Conceptualhovertank, 60f * 40, with(Items.silicon, 180,items.Feces, 130, Items.lead, 240)),
+                    new UnitFactory.UnitPlan(KUnitTypes.Testtank, 60f * 40, with(Items.silicon, 180,items.Constipated_feces, 16, Items.lead, 340)),
+                    new UnitFactory.UnitPlan(KUnitTypes.Flyingfortress, 60f * 90, with(Items.silicon, 280,items.Feces, 130, Items.lead, 340))
                     );
             size = 6;
             consumePower(20f);
             consumeLiquid(liquids.ionic_liquid,0.4f);
-            researchCostMultiplier = 0.2f;
+            researchCostMultiplier = 0.02f;
             health = 2000;
         }};
         //地板

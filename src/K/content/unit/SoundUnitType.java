@@ -1,8 +1,11 @@
 package K.content.unit;
 
+import K.content.extend.Bullets.Explosion;
+import K.content.extend.Bullets.MyLaserBulletType;
 import K.content.extend.Bullets.NoBullet;
 import K.content.extend.Bullets.sound.alarm;
 import K.content.extend.Bullets.sound.charge;
+import K.content.fx;
 import K.content.sounds;
 import mindustry.content.Fx;
 import mindustry.gen.Sounds;
@@ -22,6 +25,7 @@ public class SoundUnitType extends UnitType {
         deathShake = 100;
         weapons.add(
                 new Weapon("1"){{
+                    mirror = false;
                     reload = 60f;
                     shootSound = Sounds.none;
                     bullet = new alarm();
@@ -29,9 +33,47 @@ public class SoundUnitType extends UnitType {
         );
         weapons.add(
                 new Weapon("2"){{
+                    mirror = false;
                     reload = 60f;
                     shootSound = Sounds.none;
                     bullet = new charge();
+                }}
+        );
+        weapons.add(
+                new Weapon("2"){{
+                    mirror = false;
+                    reload = 60f;
+                    shootSound = Sounds.none;
+                    bullet = new MyLaserBulletType();
+                }}
+        );
+        weapons.add(
+                new Weapon("2"){{
+                    mirror = false;
+                    reload = 60f;
+                    shootSound = Sounds.none;
+                    bullet = new Explosion();
+                }}
+        );
+        weapons.add(
+                new Weapon("2"){{
+                    mirror = false;
+                    reload = 60f;
+                    shootSound = Sounds.none;
+                    bullet = new charge(){{
+                        despawnSound = sounds.watching;
+                    }};
+                }}
+        );
+        weapons.add(
+                new Weapon("2"){{
+                    mirror = false;
+                    reload = 60f;
+                    shootSound = Sounds.none;
+                    bullet = new charge(){{
+                        despawnEffect = fx.Hugebeam;
+                        despawnSound = sounds.beamlarge;
+                    }};
                 }}
         );
     }

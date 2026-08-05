@@ -1,6 +1,7 @@
 package K.content;
 
 import K.content.extend.util.DrawFunc;
+import arc.Core;
 import arc.graphics.Blending;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
@@ -10,6 +11,7 @@ import arc.math.Angles;
 import arc.math.Interp;
 import arc.math.Mathf;
 import arc.math.Rand;
+import arc.math.geom.Position;
 import arc.util.Tmp;
 import mindustry.entities.Effect;
 import mindustry.graphics.Drawf;
@@ -25,7 +27,8 @@ import static mindustry.Vars.renderer;
 public class fx {
     public static final Rand rand = new Rand();
     public static Effect Bigcasing,shootBig,hitBulletBigger,hitLaserBigger,PulseCharge,PulseChargeBegin,PulseShoot,
-            BigExplosion,collapserExplode,ReactorExplosion,Thunder;
+            BigExplosion,collapserExplode,ReactorExplosion,Thunder,Hugebeam,Feceswave,
+            endHitRedSmall;
 
     public static void load(){
         Bigcasing = new Effect(30f, e -> {
@@ -249,11 +252,11 @@ public class fx {
                 });
             });
         });
-        Thunder = new Effect(10, e -> {
-            e.lifetime = 1f;
-            float l = 256;
-            float r0 = rand.random(70f, 110f);
-            float r10 = rand.random(0, 20f) - 10;
+        Thunder = new Effect(30,e -> {
+            float l = 1024;
+            float r0,r10;
+            r0 = rand.random(70f, 110f);
+            r10 = rand.random(0, 20f) - 10;
             if(r10 < 0){ r10 = r10 - 20;}
             else {r10 = r10 + 20;}
             float r11 = r10 + r0;
@@ -263,15 +266,83 @@ public class fx {
             float y1 = (float) (e.y + Math.sin(r) * l);
             float x2 = (float) (x1 + Math.cos(r1) * l);
             float y2 = (float) (y1 + Math.sin(r1) * l);
-            for(int i = 0;i < 3000;i++) {
-                stroke(10, Color.white);
-                line(x1, y1, e.x, e.y);
-                renderer.lights.line(x1, y1, e.x, e.y, 30, Color.white, 3f);
-                stroke(10, Color.white);
-                line(x1, y1, x2, y2);
-                renderer.lights.line(x1, y1, x2, y2, 30, Color.white, 3f);
-            }
+            stroke(10, Color.white);
+            line(x1, y1, e.x, e.y);renderer.lights.line(x1, y1, e.x, e.y, 30, Color.white, 3f);stroke(10, Color.white);
+            line(x1, y1, x2, y2);renderer.lights.line(x1, y1, x2, y2, 30, Color.white, 3f);
             e.lifetime = 0;
+        });
+        Hugebeam = new Effect(360,e -> {
+            if(e.time > 324&&e.fin()!=1){
+                float e1=(360-e.time)/36;
+                if(e1>1){e1=1;}
+                stroke(180*e1*10,Color.white.a(e1));
+                line(e.x,e.y+80*e1,e.x,e.y+1920);
+                renderer.lights.line(e.x,e.y+600,e.x,e.y+1920,600*e1,Color.white, 3f);stroke(10, Color.white);
+                Fill.circle(e.x,e.y,90*e1);
+                stroke(10*e1,Color.white.a(0.2f*e1));
+                Fill.circle(e.x,e.y,260*e1);
+                Drawf.light(e.x,e.y,600*e1,Color.red,1);
+            } else if (e.time<=324&e.time>=322) {
+                sounds.expr.at(new Position() {
+                    @Override
+                    public float getX() {
+                        return e.x;
+                    }
+
+                    @Override
+                    public float getY() {
+                        return e.y;
+                    }
+                },1,10);
+            } else if (e.time>144&&e.time<322){
+                stroke(180,Color.white);
+                line(e.x,e.y+80,e.x,e.y+1920);
+                renderer.lights.line(e.x,e.y+600,e.x,e.y+1920,600,Color.white,3f);stroke(10, Color.white);
+                Drawf.tri(e.x+90,e.y+2000,240f,2000f,e.rotation + 270);
+                Drawf.tri(e.x-90,e.y+2000,240f,2000f,e.rotation + 270);
+                Fill.circle(e.x,e.y,90);
+                stroke(10,Color.white.a(0.2f));
+                Fill.circle(e.x,e.y,260);
+                Drawf.light(e.x,e.y,600,Color.red,1);
+            } else if (e.time<=144 && e.time!=0){
+                float e2 = e.time/144;
+                stroke(180*e2,Color.white.a(e2));
+                line(e.x,e.y+80*e2,e.x,e.y + 1920);
+                renderer.lights.line(e.x, e.y + 600, e.x, e.y + 1920, 600*e2, Color.white, 3f);stroke(10, Color.white);
+                Fill.circle(e.x,e.y,90*e2);
+                stroke(10 * e2, Color.white.a(0.2f*e2));
+                Fill.circle(e.x,e.y,260*e2);
+                Drawf.light(e.x,e.y,600*e2,Color.red,1);
+            }
+        });
+        Feceswave = new Effect(60,e -> {
+            if(e.fin()<0.8) {
+                Lines.stroke(25,Color.valueOf("673931"));
+                Fill.circle(e.x, e.y, 32 * (e.fin()));
+                Lines.stroke(25,Color.black.a(1));
+                Fill.circle(e.x, e.y, 24 * (e.fin()));
+            }
+            if(e.fin()>=0.8){
+                Lines.stroke(25,Color.valueOf("673931"));
+                Fill.circle(e.x, e.y, 32 * 5*(1-e.fin()));
+                Lines.stroke(25,Color.black.a(1));
+                Fill.circle(e.x, e.y, 24 * 5*(1-e.fin()));
+            }
+        });
+        endHitRedSmall = new Effect(15f, e -> {
+            e.scaled(e.lifetime / 2f, s -> {
+                color(Color.valueOf("f53036"), Color.valueOf("ff786e"), s.fin());
+                Lines.stroke(2f * s.fout());
+                Lines.circle(e.x, e.y, 10f * s.fin());
+            });
+
+            color(Color.valueOf("ff786e"),Color.valueOf("f53036"), e.fin());
+
+            Angles.randLenVectors(e.id, 7, e.fin(Interp.pow3Out) * 20f, (x, y) -> {
+                float ang = Mathf.angle(x, y);
+                Lines.stroke(e.fout());
+                Lines.lineAngle(e.x + x, e.y + y, ang, e.fout(Interp.pow5In) * 12f);
+            });
         });
     }
 }

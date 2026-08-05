@@ -12,6 +12,7 @@ import mindustry.entities.abilities.RepairFieldAbility;
 import mindustry.entities.abilities.ShieldRegenFieldAbility;
 import mindustry.entities.bullet.ArtilleryBulletType;
 import mindustry.entities.bullet.BulletType;
+import mindustry.entities.bullet.LaserBoltBulletType;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
@@ -28,8 +29,9 @@ public class TestspiderUnitType extends UnitType {
         drag = 0.3f;
         speed = 0.32f;
         hitSize = 40f;
-        health = 2000;
+        health = 4200;
         armor = 6f;
+        canDrown = false;
 
         rotateSpeed = 1.7f;
 
@@ -62,8 +64,9 @@ public class TestspiderUnitType extends UnitType {
 
         weapons.add(
         new Weapon("kmod-weapon3"){{
-            y = -1f;
-            x = 9f;
+            y = 10f;
+            x = 0f;
+            mirror = false;
             shootY = 7f;
             reload = 45;
             shake = 3f;
@@ -100,8 +103,8 @@ public class TestspiderUnitType extends UnitType {
         }});
 
         weapons.add(new PointDefenseWeapon("kmod-fecesdefense-mount"){{
-                x = 0f;
-                y = -3;
+                x = -8f;
+                y = -20;
                 reload = 8f;
                 targetInterval = 8f;
                 targetSwitchInterval = 8f;
@@ -114,6 +117,28 @@ public class TestspiderUnitType extends UnitType {
                     damage = 30f;
                 }};
         }});
+        weapons.add(
+                new Weapon("kmod-weapon4"){{
+                    shootSound = Sounds.shootLaser;
+                    shootY = 14;
+                    reload = 24f;
+                    ejectEffect = Fx.none;
+                    x = 10f;
+                    y = 16f;
+                    rotate = true;
+                    bullet = new LaserBoltBulletType(5.2f, 30){{
+                        shootEffect = Fx.none;
+                        despawnEffect = Fx.none;
+                        hitEffect = Fx.freezing;
+                        lifetime = 55f;
+                        healPercent = 9.5f;
+                        collidesTeam = true;
+                        backColor = Color.valueOf("51caca");
+                        frontColor = Color.white;
+                        layer = 60;
+                    }};
+                }}
+        );
 
     }
 }

@@ -18,7 +18,7 @@ public class FlyingfortressUnitType extends UnitType {
         health = 3000;
         armor = 4;
         hitSize = 50;
-        speed = 2;
+        speed = 1.2f;
         flying = true;
         payloadCapacity = 1600;
         buildRange = 120f;

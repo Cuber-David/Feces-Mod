@@ -19,13 +19,13 @@ public class HelperdroneUnitType extends UnitType {
         defaultCommand = UnitCommand.rebuildCommand;
 
         health = 400;
-        hitSize = 2;
+        hitSize = 8;
         flying = true;
         drag = 0.06f;
         accel = 0.12f;
         speed = 3.5f;
         engineSize = 0f;
-        range = 50f;
+        range = 100f;
         isEnemy = false;
         controlSelectGlobal = false;
         wreckSoundVolume = deathSoundVolume = 0.7f;
@@ -34,6 +34,8 @@ public class HelperdroneUnitType extends UnitType {
         buildSpeed = 3f;
         mineSpeed = 4;
         mineRange = 40;
+        mineTier = 3;
+        mineFloor = true;
 
         setEnginesMirror(
                 new UnitEngine(3f, -5.5f, 1.5f, -90f),
