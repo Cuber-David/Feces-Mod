@@ -51,7 +51,7 @@ public class KMod extends Mod{
         Events.on(ClientLoadEvent.class, e -> {
             Time.runTask(10f, () -> {
                 BaseDialog dialog = new BaseDialog("frog");
-                dialog.cont.add("Welcome to K's Mod FIRST TEST").row();
+                dialog.cont.add("Welcome to Feces Mod's First Version").row();
                 dialog.cont.image(Core.atlas.find("kmod-frog")).pad(20f).row();
                 dialog.cont.button("I konw", dialog::hide).size(100f, 50f);
                 dialog.show();
