@@ -113,7 +113,7 @@ public class techtree {
                 );
                 node(Helperdrone, () -> {}
                 );
-                node(TaticalFactory, Seq.with(new Objectives.Research(Items.silicon),
+                node(TacticalFactory, Seq.with(new Objectives.Research(Items.silicon),
                                               new Objectives.OnSector(zonefour)), () -> {
                     node(Tacticalassaultmecha, () -> {}
                     );

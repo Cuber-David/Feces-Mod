@@ -92,7 +92,7 @@ public class blocks {
             fecescore,fecesmend,fecesvault,booth,bigbooth,Rodycore,Rodycristal,fecesbasion,
                     protectshield,
             //单位
-            biggroundFactory,HelpFactory,testfactory,TaticalFactory,
+            biggroundFactory,HelpFactory,testfactory,TacticalFactory,
             //环境墙
             fecesstonewall;
     public static void load() {
@@ -1217,7 +1217,7 @@ public class blocks {
             researchCostMultiplier = 0.02f;
             health = 2000;
         }};
-        TaticalFactory = new UnitFactory("TaticalFactory"){{
+        TacticalFactory = new UnitFactory("TacticalFactory"){{
             requirements(Category.units, with(items.Constipated_feces, 120, Items.lead, 120, Items.silicon, 80));
             plans = Seq.with(
                     new UnitPlan(KUnitTypes.Tacticalassaultmecha, 60f * 60, with(items.Constipated_feces, 45,Items.lead, 80,Items.silicon,80)),

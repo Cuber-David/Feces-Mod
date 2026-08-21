@@ -1,23 +1,23 @@
 #the mod name as displayed in-game
-displayName: "K神的Mod"
+displayName: "FecesMod"
 
 #the internal name of your mod
 name: "kmod"
 
 #your name
-author: "Mr.K"
+author: "Cuber"
 
 #the fully qualified main class of the mod
 main: "K.KMod"
 
 #the mod description as seen in the mod dialog
-description: "K爷爷的高级模组."
+description: "Make a beautiful world with feces."
 
 #the mod version
 version: 1.0
 
 #the minimum game build required to run this mod
-minGameVersion: 158
+minGameVersion: 158.1
 
 #this is a java mod
 java: true
