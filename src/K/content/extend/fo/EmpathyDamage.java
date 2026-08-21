@@ -173,71 +173,71 @@ public class EmpathyDamage{
             });
         }
 
-        if((scanTimer -= Time.delta) <= 0f){
-            scanTimer = 15f;
-            addedSet.clear();
-            for(EmpathyHolder u : units){
-                u.added = false;
-            }
-
-            excludeReAdd.addAll(excludeSeq);
-
-            for(Entityc e : Groups.all){
-                for(EmpathyHolder u : units){
-                    if(u.unit == e) u.added = true;
-                }
-                excludeReAdd.remove(u -> u == e);
-                if(damageMap.containsKey(e.id())){
-                    AbsoluteDamage<?> ad = damageMap.get(e.id());
-                    if(ad.dead){
-                        ad.addCount++;
-                        ad.maximizeAdditions();
-                        ad.dead = false;
-                        if(ad.addCount >= 4) ad.purgatory = true;
-                    }
-                }
-                addedSet.add(e.id());
-            }
-            excludeReAdd.removeAll(queueExcludeRemoval);
-
-            if(!excludeReAdd.isEmpty()){
-                for(Unit u : excludeReAdd){
-                    if(u.isAdded()){
-                        Groups.all.add(u);
-                        Groups.unit.add(u);
-                        Groups.draw.add(u);
-                    }else{
-                        u.add();
-                    }
-                }
-            }
-            excludeReAdd.clear();
-
-            for(EmpathyHolder u : units){
-                if(!u.added){
-                    u.removeCount++;
-                    switch(u.removeCount){
-                        case 1, 2 -> u.unit.add();
-                        case 3, 4 -> {
-                            activeAdd = false;
-                            EmpathyUnit en = u.unit.duplicate();
-                            empathyMap.remove(u.unit.id);
-                            empathyMap.put(en.id, u);
-                            u.unit = en;
-                            activeAdd = true;
-                        }
-                    }
-                }
-            }
-            int dsize = Groups.draw.size();
-            for(int i = (staggerIdx % 3); i < dsize; i += 3){
-                Drawc d = Groups.draw.index(i);
-                if(!addedSet.contains(d.id())){
-                    Groups.all.add(d);
-                }
-            }
-            staggerIdx++;
-        }
+//        if((scanTimer -= Time.delta) <= 0f){
+//            scanTimer = 15f;
+//            addedSet.clear();
+//            for(EmpathyHolder u : units){
+//                u.added = false;
+//            }
+//
+//            excludeReAdd.addAll(excludeSeq);
+//
+//            for(Entityc e : Groups.all){
+//                for(EmpathyHolder u : units){
+//                    if(u.unit == e) u.added = true;
+//                }
+//                excludeReAdd.remove(u -> u == e);
+//                if(damageMap.containsKey(e.id())){
+//                    AbsoluteDamage<?> ad = damageMap.get(e.id());
+//                    if(ad.dead){
+//                        ad.addCount++;
+//                        ad.maximizeAdditions();
+//                        ad.dead = false;
+//                        if(ad.addCount >= 4) ad.purgatory = true;
+//                    }
+//                }
+//                addedSet.add(e.id());
+//            }
+//            excludeReAdd.removeAll(queueExcludeRemoval);
+//
+//            if(!excludeReAdd.isEmpty()){
+//                for(Unit u : excludeReAdd){
+//                    if(u.isAdded()){
+//                        Groups.all.add(u);
+//                        Groups.unit.add(u);
+//                        Groups.draw.add(u);
+//                    }else{
+//                        u.add();
+//                    }
+//                }
+//            }
+//            excludeReAdd.clear();
+//
+//            for(EmpathyHolder u : units){
+//                if(!u.added){
+//                    u.removeCount++;
+//                    switch(u.removeCount){
+//                        case 1, 2 -> u.unit.add();
+//                        case 3, 4 -> {
+//                            activeAdd = false;
+//                            EmpathyUnit en = u.unit.duplicate();
+//                            empathyMap.remove(u.unit.id);
+//                            empathyMap.put(en.id, u);
+//                            u.unit = en;
+//                            activeAdd = true;
+//                        }
+//                    }
+//                }
+//            }
+//            int dsize = Groups.draw.size();
+//            for(int i = (staggerIdx % 3); i < dsize; i += 3){
+//                Drawc d = Groups.draw.index(i);
+//                if(!addedSet.contains(d.id())){
+//                    Groups.all.add(d);
+//                }
+//            }
+//            staggerIdx++;
+//        }
 
         if(units.size > 0){
             for(EmpathyHolder u : units){
@@ -428,7 +428,7 @@ public class EmpathyDamage{
     }
 
     static void annihilate(Entityc entity, boolean setNaN){
-        Groups.all.remove(entity);
+        entity.remove();
         if(entity instanceof Drawc d) Groups.draw.remove(d);
         if(entity instanceof Syncc s) Groups.sync.remove(s);
 

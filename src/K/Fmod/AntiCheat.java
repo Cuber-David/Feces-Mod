@@ -52,7 +52,7 @@ public class AntiCheat{
     }
 
     public static void annihilateEntity(Entityc entity, boolean override, boolean setNaN){
-        Groups.all.remove(entity);
+        entity.remove();
 
         if(entity instanceof Drawc draw) Groups.draw.remove(draw);
         if(entity instanceof Syncc sync) Groups.sync.remove(sync);

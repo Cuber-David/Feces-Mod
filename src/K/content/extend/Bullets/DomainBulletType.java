@@ -1,8 +1,6 @@
 package K.content.extend.Bullets;
 
-import K.content.Fx.FragmentExplosionEffect;
 import K.content.Fx.fx;
-import K.content.KUnitTypes;
 import K.content.statuseffect;
 import K.graphics.MainRenderer;
 import arc.Core;
@@ -12,13 +10,11 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
-import mindustry.Vars;
 import mindustry.entities.Units;
 import mindustry.entities.bullet.BulletType;
 import mindustry.game.Team;
 import mindustry.gen.Bullet;
 import mindustry.gen.Unit;
-import mindustry.gen.UnitEntity;
 
 import static arc.graphics.g2d.Draw.reset;
 import static mindustry.Vars.renderer;
@@ -41,7 +37,7 @@ public class DomainBulletType extends BulletType {
         // ★ 预生成所有裂纹数据 ★
         float[][] data = generateCrackData(48, 700f);
         b.data = data;
-        u = KUnitTypes.Domain.spawn(b.team,b.x,b.y);
+//        u = KUnitTypes.Domain.spawn(b.team,b.x,b.y);
     }
     private float[][] generateCrackData(int count, float radius) {
         // 每条裂纹存储：[主角度, 长度, 分支角度偏移, 分支长度比例, 分支起点比例]
