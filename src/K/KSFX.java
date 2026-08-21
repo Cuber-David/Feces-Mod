@@ -1,11 +1,11 @@
 package K;
 
-import K.content.Utils;
-import K.content.effects.ImpactBatch;
+import K.content.extend.util.Utils;
 import K.content.effects.Severation;
 import K.content.extend.fo.EmpathyDamage;
 import K.content.extend.fo.SpecialMain;
 import K.graphics.FlameShaders;
+import K.graphics.ImpactBatch;
 import arc.*;
 import arc.func.*;
 import arc.graphics.*;

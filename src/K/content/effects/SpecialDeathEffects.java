@@ -1,9 +1,9 @@
 package K.content.effects;
 
-import K.FlamePal;
+import K.graphics.FlamePal;
 import K.KMod;
-import K.content.FlameFX;
-import K.content.Utils;
+import K.content.Fx.FlameFX;
+import K.content.extend.util.Utils;
 import K.content.extend.fo.EmpathyDamage;
 import K.graphics.FragmentationBatch;
 import K.graphics.GraphicUtils;

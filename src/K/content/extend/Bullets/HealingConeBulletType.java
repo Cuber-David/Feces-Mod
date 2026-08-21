@@ -1,6 +1,6 @@
 package K.content.extend.Bullets;
 
-import K.content.extend.util.Utils;
+import K.content.extend.util.FUtils;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -61,7 +61,7 @@ public class HealingConeBulletType extends BulletType{
     public void update(Bullet b){
         if(!(b.data instanceof float[] data)) return;
         idx = 0;
-        Utils.shotgunRange(scanAccuracy, cone, b.rotation(), ang -> {
+        FUtils.shotgunRange(scanAccuracy, cone, b.rotation(), ang -> {
             Tmp.v1.trns(ang, length).add(b);
             Vars.world.raycastEachWorld(b.x, b.y, Tmp.v1.x, Tmp.v1.y, (cx, cy) -> {
                 Tile tile = Vars.world.tile(cx, cy);
@@ -78,14 +78,14 @@ public class HealingConeBulletType extends BulletType{
         });
         if(b.timer(1, 30f)){
             Tmp.r1.setCentered(b.x, b.y, 1f);
-            Utils.shotgunRange(3, cone, b.rotation(), ang -> {
+            FUtils.shotgunRange(3, cone, b.rotation(), ang -> {
                 Tmp.v1.trns(ang, length).add(b);
                 Tmp.r1.merge(Tmp.v1);
             });
 
             Groups.unit.intersect(Tmp.r1.x, Tmp.r1.y, Tmp.r1.width, Tmp.r1.height, unit -> {
                 if(b.within(unit, length + (unit.hitSize / 2f)) && Angles.within(b.rotation(), b.angleTo(unit), cone)){
-                    int index = Mathf.clamp(Mathf.round(((Utils.angleDistSigned(b.angleTo(unit), b.rotation()) + cone) / (cone * 2f)) * (data.length - 1)), 0, data.length - 1);
+                    int index = Mathf.clamp(Mathf.round(((FUtils.angleDistSigned(b.angleTo(unit), b.rotation()) + cone) / (cone * 2f)) * (data.length - 1)), 0, data.length - 1);
                     if((b.dst2(unit) + (unit.hitSize / 2f)) < data[index]){
                         if(unit.team != b.team){
                             unit.damage(b.damage);
@@ -98,7 +98,7 @@ public class HealingConeBulletType extends BulletType{
                 }
             });
 
-            Utils.castConeTile(b.x, b.y, length, b.rotation(), cone, (building, tile) -> {
+            FUtils.castConeTile(b.x, b.y, length, b.rotation(), cone, (building, tile) -> {
                 if(building != null){
                     if(building.team == b.team){
                         if(building.damaged()){

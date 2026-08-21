@@ -1,10 +1,10 @@
 package K.content.extend.Bullets;
 
-import K.FlamePal;
+import K.graphics.FlamePal;
 import K.KMod;
 import K.KSFX;
-import K.content.FlameFX;
-import K.content.Utils;
+import K.content.Fx.FlameFX;
+import K.content.extend.util.Utils;
 import K.content.effects.SpecialDeathEffects;
 import K.content.extend.fo.EmpathyDamage;
 import K.content.sounds;
@@ -121,7 +121,7 @@ public class EndNukeBulletType extends BasicBulletType{
         Utils.scanEnemies(b.team, b.x, b.y, 480f, true, true, t -> {
             if(t instanceof Unit u){
                 //float damageScl = 1f;
-                //if(u.isGrounded()) damageScl = Utils.inRayCastCircle(bx, by, arr, u);
+                //if(u.isGrounded()) damageScl = FUtils.inRayCastCircle(bx, by, arr, u);
                 float damageScl = Utils.inRayCastCircle(bx, by, arr, u);
 
                 if(damageScl > 0){
@@ -243,5 +243,14 @@ public class EndNukeBulletType extends BasicBulletType{
                 Fill.tri(bx, by, bx + x1, by + y1, bx + x2, by + y2);
             }
         });
+    }
+
+    public void despawned(Bullet b){
+            hit(b, b.x, b.y);
+
+        despawnEffect.at(b.x, b.y, b.rotation(), hitColor);
+        despawnSound.at(b, 1f + Mathf.range(hitSoundPitchRange));
+
+        Effect.shake(despawnShake, despawnShake, b);
     }
 }

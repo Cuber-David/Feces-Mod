@@ -1,6 +1,6 @@
 package K.content.extend.fo;
 
-import K.content.Utils;
+import K.content.extend.util.Utils;
 import arc.math.geom.*;
 import arc.util.*;
 import mindustry.ai.types.*;

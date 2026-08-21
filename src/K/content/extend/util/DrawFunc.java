@@ -76,6 +76,16 @@ public class DrawFunc {
         basicLaser(x, y, x2, y2, stroke, 0.95f);
     }
 
+    public static void drawSnow(float x, float y, float rad, float rot, Color color){
+        Draw.color(color);
+        for(int i = 0; i < 6; i++){
+            float angle = 60 * i + rot;
+            Drawf.tri(x + Angles.trnsx(angle, rad), y + Angles.trnsy(angle, rad), rad/3, rad, angle - 180);
+            Drawf.tri(x + Angles.trnsx(angle, rad), y + Angles.trnsy(angle, rad), rad/3, rad/4, angle);
+        }
+        Draw.reset();
+    }
+
     public static void lineAngleLerp(float x, float y, float angle, float length, boolean cap, Color begin, Color end) {
         float stroke = Lines.getStroke();
 

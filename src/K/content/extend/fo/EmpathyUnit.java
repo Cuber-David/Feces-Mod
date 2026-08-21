@@ -1,9 +1,9 @@
 package K.content.extend.fo;
 
-import K.FlamePal;
+import K.graphics.FlamePal;
 import K.KSFX;
-import K.content.FlameFX;
-import K.content.Utils;
+import K.content.Fx.FlameFX;
+import K.content.extend.util.Utils;
 import K.graphics.GraphicUtils;
 import arc.graphics.*;
 import arc.graphics.g2d.*;

@@ -1,6 +1,5 @@
 package K.graphics;
 
-import K.FlamePal;
 import K.content.effects.Fragmentation;
 import arc.*;
 import arc.audio.*;

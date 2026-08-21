@@ -1,6 +1,6 @@
 package K.content.effects;
 
-import K.content.Utils;
+import K.content.extend.util.Utils;
 import K.entities.DrawEntity;
 import arc.*;
 import arc.func.*;

@@ -1,8 +1,8 @@
 package K.content.effects;
 
 import K.KMod;
-import K.content.FlameFX;
-import K.content.Utils;
+import K.content.Fx.FlameFX;
+import K.content.extend.util.Utils;
 import K.entities.DrawEntity;
 import arc.*;
 import arc.graphics.g2d.*;

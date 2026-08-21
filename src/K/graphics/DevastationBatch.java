@@ -1,6 +1,5 @@
 package K.graphics;
 
-import K.FlamePal;
 import K.content.effects.Devastation;
 import arc.*;
 import arc.func.*;

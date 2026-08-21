@@ -1,10 +1,11 @@
 package K.content;
 
-import K.content.unit.*;
-import mindustry.content.Items;
-import mindustry.type.ItemStack;
-
-import static mindustry.type.ItemStack.with;
+import K.content.unit.Rody.RodyUnitType;
+import K.content.unit.air.*;
+import K.content.unit.ground.*;
+import K.content.unit.others.DomainUnitType;
+import K.content.unit.others.SoundUnitType;
+import K.content.unit.others.ThunderUnitType;
 
 public class KUnitTypes {
     public static FecaldroneUnitType Fecaldrone;
@@ -23,37 +24,28 @@ public class KUnitTypes {
     public static CombatengineerUnitType Combatengineer;
     public static RodyUnitType Rody;
     public static Fecalwarcraft Fecalwarcraft;
+    public static TacticalassaultmechaUnitType Tacticalassaultmecha;
+    public static TacticalsuppressiontankUnitType Tacticalsuppressiontank;
+    public static DomainUnitType Domain;
     public static void load(){
         Thunder = new ThunderUnitType("Thunder");
         Sound = new SoundUnitType("Sound");
-        Fecaldrone = new FecaldroneUnitType("Fecaldrone"){{
-            alwaysUnlocked = false;
-        }};
+        Fecaldrone = new FecaldroneUnitType("Fecaldrone");
         Fecalwarcraft = new Fecalwarcraft("Fecalwarcraft");
-        Bigdagger = new BigdaggerUnitType("Bigdagger"){{
-            isHidden();
-        }};
-        Bignova = new BignovaUnitType("Bignova"){{
-            isHidden();
-        }};
-        Bigcrawler = new BigcrawlerUnitType("Bigcrawler"){{
-            isHidden();
-        }};
-        Plasmadrill = new PlasmadrillUnitType("Plasmadrill"){{
-            researchCostMultiplier = 10f;
-        }};
-        Testspider = new TestspiderUnitType("Testspider"){{
-        }};
-        Helperdrone = new HelperdroneUnitType("Helperdrone"){{
-            researchCostMultiplier = 10f;
-        }};
-        Flyingfortress = new FlyingfortressUnitType("Flyingfortress"){{
-            researchCostMultiplier = 0.1f;
-        }};
+        Bigdagger = new BigdaggerUnitType("Bigdagger");
+        Bignova = new BignovaUnitType("Bignova");
+        Bigcrawler = new BigcrawlerUnitType("Bigcrawler");
+        Plasmadrill = new PlasmadrillUnitType("Plasmadrill");
+        Testspider = new TestspiderUnitType("Testspider");
+        Helperdrone = new HelperdroneUnitType("Helperdrone");
+        Flyingfortress = new FlyingfortressUnitType("Flyingfortress");
         Conceptualhovertank = new ConceptualhovertankUnitType("Conceptualhovertank");
         Testtank = new TesttankUnitType("Testtank");
         Firebeedrone = new FirebeedroneUnitType("Firebeedrone");
         Combatengineer = new CombatengineerUnitType("Combatengineer");
         Rody = new RodyUnitType("Rody");
+        Tacticalassaultmecha = new TacticalassaultmechaUnitType("Tacticalassaultmecha");
+        Tacticalsuppressiontank = new TacticalsuppressiontankUnitType("Tacticalsuppressiontank");
+        Domain = new DomainUnitType("Domain");
     }
 }

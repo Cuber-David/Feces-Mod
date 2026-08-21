@@ -1,7 +1,7 @@
 package K.content.effects;
 
-import K.content.FlameFX;
-import K.content.Utils;
+import K.content.Fx.FlameFX;
+import K.content.extend.util.Utils;
 import K.entities.DrawEntity;
 import arc.audio.*;
 import arc.func.*;

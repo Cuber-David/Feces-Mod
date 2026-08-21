@@ -434,7 +434,7 @@ public class EmpathyDamage{
 
         if(entity instanceof Unit unit){
             try{
-                ReflectUtils.findField(unit.getClass(), "added").setBoolean(unit, false);
+                ReflectUtils.findField(unit.getClass(), "added", true).setBoolean(unit, false);
             }catch(Exception e){
                 Log.err(e);
             }
@@ -478,9 +478,9 @@ public class EmpathyDamage{
 
             //if(building.sound != null) building.sound.stop();
             try{
-                ReflectUtils.findField(building.getClass(), "added").setBoolean(building, false);
+                ReflectUtils.findField(building.getClass(), "added", true).setBoolean(building, false);
 
-                SoundLoop sl = (SoundLoop)ReflectUtils.findField(building.getClass(), "sound").get(building);
+                SoundLoop sl = (SoundLoop)ReflectUtils.findField(building.getClass(), "sound", true).get(building);
                 if(sl != null){
                     sl.stop();
                 }
@@ -492,7 +492,7 @@ public class EmpathyDamage{
             Groups.bullet.remove(bullet);
 
             try{
-                ReflectUtils.findField(bullet.getClass(), "added").setBoolean(bullet, false);
+                ReflectUtils.findField(bullet.getClass(), "added", true).setBoolean(bullet, false);
             }catch(Exception e){
                 Log.err(e);
             }

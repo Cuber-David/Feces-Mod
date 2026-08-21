@@ -1,6 +1,5 @@
 package K.graphics;
 
-import K.FlamePal;
 import K.KSFX;
 import arc.*;
 import arc.files.*;

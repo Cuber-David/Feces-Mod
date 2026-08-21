@@ -2,119 +2,504 @@ package K.content.extend.util;
 
 import arc.func.*;
 import arc.math.*;
-import arc.math.Interp.*;
 import arc.math.geom.*;
+import arc.math.geom.QuadTree.*;
 import arc.struct.*;
-import arc.util.*;
-import arc.util.pooling.Pool.*;
+import arc.util.pooling.*;
+import mindustry.*;
 import mindustry.core.*;
 import mindustry.entities.*;
-import mindustry.entities.bullet.*;
 import mindustry.game.*;
+import mindustry.game.Teams.*;
 import mindustry.gen.*;
 import mindustry.world.*;
 
-import static mindustry.Vars.*;
+import java.util.*;
 
-public final class Utils{
-    public static final PowIn pow6In = new PowIn(6f), pow25In = new PowIn(25f);
-    public static final PowOut pow25Out = new PowOut(25f);
+public class Utils{
+    public static Rect r = new Rect(), r2 = new Rect();
+    static Vec2 v2 = new Vec2(), v3 = new Vec2(), v4 = new Vec2();
+    static BasicPool<Hit> hpool = new BasicPool<>(Hit::new);
+    static Seq<Hit> hseq = new Seq<>();
+    static IntSet collided = new IntSet(), collided2 = new IntSet();
+    static float ll = 0f;
 
-    public static final float sqrtHalf = Mathf.sqrt(0.5f);
+    public static Vec2 v = new Vec2(), vv = new Vec2();
+    public static Rand rand = new Rand(), rand2 = new Rand();
 
-    public static final Quat q1 = new Quat(), q2 = new Quat();
+    public static Seq<Building> buildings = new Seq<>();
 
-    public static final Rand seedr = new Rand(), seedr2 = new Rand(), seedr3 = new Rand();
-
-    private static final Vec2 tV = new Vec2(), tV2 = new Vec2();
-    private static final Seq<Healthc> tmpUnitSeq = new Seq<>();
-    private static final IntSet collidedBlocks = new IntSet(), collidedEntities = new IntSet(204);
-    private static final Rect rect = new Rect(), rectAlt = new Rect(), hitRect = new Rect();
-    private static Posc result;
-    private static float cdist;
-    private static int idx;
-    private static Tile furthest;
-    private static Building tmpBuilding;
-    private static Unit tmpUnit;
-    private static boolean hit, hitB;
-
-    private static int randSeed = 1;
-
-
-    private static final IntSeq lineCast = new IntSeq(), lineCastNext = new IntSeq();
-    private static final Seq<Hit> hitEffects = new Seq<>();
-
-    private static final Point2[][] d8d5 = {
-        {Geometry.d4[0], Geometry.d8edge[0], Geometry.d8edge[3], Geometry.d4[1], Geometry.d4[3]},
-        {Geometry.d8edge[3], Geometry.d4[0], Geometry.d4[3], Geometry.d8edge[0], Geometry.d8edge[2]},
-        {Geometry.d4[3], Geometry.d8edge[3], Geometry.d8edge[2], Geometry.d4[0], Geometry.d4[2]},
-        {Geometry.d8edge[2], Geometry.d4[3], Geometry.d4[2], Geometry.d8edge[3], Geometry.d8edge[1]},
-        {Geometry.d4[2], Geometry.d8edge[2], Geometry.d8edge[1], Geometry.d4[3], Geometry.d4[1]},
-        {Geometry.d8edge[1], Geometry.d4[2], Geometry.d4[1], Geometry.d8edge[2], Geometry.d8edge[0]},
-        {Geometry.d4[1], Geometry.d8edge[1], Geometry.d8edge[0], Geometry.d4[2], Geometry.d4[0]},
-        {Geometry.d8edge[0], Geometry.d4[1], Geometry.d4[0], Geometry.d8edge[1], Geometry.d8edge[3]}
-    };
-
-    public static <T> T with(T inst, Cons<T> cons){
-        cons.get(inst);
-        return inst;
+    public static float biasSlope(float fin, float bias){
+        return (fin < bias ? (fin / bias) : 1f - (fin - bias) / (1f - bias));
     }
 
-    public static boolean hasBuilding(float wx, float wy, float range, Boolf<Building> pred){
-        collidedBlocks.clear();
+    public static float inRayCastCircle(float x, float y, float[] in, Sized target){
+        float amount = 0f;
+        float hsize = target.hitSize() / 2f;
+        int collision = 0;
+        int isize = in.length;
 
-        int tx = World.toTile(wx);
-        int ty = World.toTile(wy);
+        float dst = Mathf.dst(x, y, target.getX(), target.getY());
+        float ang = Angles.angle(x, y, target.getX(), target.getY());
+        float angSize = Mathf.angle(dst, hsize);
 
-        int tileRange = (int)(range / tilesize + 1);
-        boolean any = false;
+        int idx1 = (int)(((ang - angSize) / 360f) * isize + 0.5f);
+        int idx2 = (int)(((ang + angSize) / 360f) * isize + 0.5f);
 
-        loop:
-        for(int x = -tileRange + tx; x <= tileRange + tx; x++){
-            for(int y = -tileRange + ty; y <= tileRange + ty; y++){
-                if(!Mathf.within(x * tilesize, y * tilesize, wx, wy, range)) continue;
+        for(int i = idx1; i <= idx2; i++){
+            int mi = Mathf.mod(i, isize);
+            float range = in[mi];
 
-                Building other = world.build(x, y);
+            if((dst - hsize) < range){
+                amount += Mathf.clamp((range - (dst - hsize)) / hsize);
+                //collision++;
+            }
+            collision++;
+        }
 
-                if(other == null) continue;
+        return collision > 0 ? (amount / collision) : 0f;
+    }
 
-                if(pred.get(other) && collidedBlocks.add(other.pos())){
-                    any = true;
-                    break loop;
+    public static void rayCastCircle(float x, float y, float radius, Boolf<Tile> stop, Cons<Tile> ambient, Cons<Tile> edge, Cons<Building> hit, float[] out){
+        Arrays.fill(out, radius);
+
+        int res = out.length;
+        collided.clear();
+        collided2.clear();
+        buildings.clear();
+        for(int i = 0; i < res; i++){
+            final int fi = i;
+            float ang = (i / (float)res) * 360f;
+            v2.trns(ang, radius).add(x, y);
+            float vx = v2.x, vy = v2.y;
+            int tx1 = (int)(x / Vars.tilesize), ty1 = (int)(y / Vars.tilesize);
+            int tx2 = (int)(vx / Vars.tilesize), ty2 = (int)(vy / Vars.tilesize);
+
+            World.raycastEach(tx1, ty1, tx2, ty2, (rx, ry) -> {
+                Tile tile = Vars.world.tile(rx, ry);
+                boolean collide = false;
+
+                if(tile != null && !tile.block().isAir() && stop.get(tile)){
+                    //r2.setCentered(rx * Vars.tilesize, ry * Vars.tilesize, Vars.tilesize * 2f).grow(0.01f);
+                    tile.getBounds(r2);
+                    r2.grow(0.1f);
+                    Vec2 inter = intersectRect(x, y, vx, vy, r2);
+                    if(inter != null){
+                        if(tile.build != null && collided.add(tile.build.id)){
+                            buildings.add(tile.build);
+                        }
+
+                        float dst = Mathf.dst(x, y, inter.x, inter.y);
+                        out[fi] = dst;
+                        collide = true;
+                    }else{
+                        for(Point2 d : Geometry.d8){
+                            Tile nt = Vars.world.tile(tile.x + d.x, tile.y + d.y);
+
+                            if(nt != null && !nt.block().isAir() && stop.get(nt)){
+                                nt.getBounds(r2);
+                                r2.grow(0.1f);
+                                Vec2 inter2 = intersectRect(x, y, vx, vy, r2);
+                                if(inter2 != null){
+                                    if(tile.build != null && collided.add(tile.build.id)){
+                                        buildings.add(tile.build);
+                                    }
+
+                                    float dst = Mathf.dst(x, y, inter2.x, inter2.y);
+                                    out[fi] = dst;
+                                    collide = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if(tile != null && collided2.add(tile.pos())){
+                    ambient.get(tile);
+                    if(collide){
+                        edge.get(tile);
+                    }
+                }
+
+                return collide;
+            });
+        }
+        for(Building b : buildings){
+            hit.get(b);
+        }
+        buildings.clear();
+        /*
+        float tx = x / Vars.tilesize, ty = y / Vars.tilesize, tr = radius / Vars.tilesize;
+
+        int worldHeight = Vars.world.height(), worldWidth = Vars.world.width();
+        int res = out.length;
+
+        int minX = Math.max((int)((x - radius) / Vars.tilesize), 0), minY = Math.max((int)((y - radius) / Vars.tilesize), 0);
+        int maxX = Math.min((int)((x + radius) / Vars.tilesize) + 1, worldWidth), maxY = Math.min((int)((y + radius) / Vars.tilesize) + 1, worldHeight);
+
+        tiles.clear();
+        for(int ix = minX; ix < maxX; ix++){
+            for(int iy = minY; iy < maxY; iy++){
+                Tile t = Vars.world.tile(ix, iy);
+                if(t != null && Mathf.within(tx, ty, t.x, t.y, tr) && !t.block().isAir() && stop.get(t)){
+                    tiles.add(t);
+                }
+            }
+        }
+        tiles.sort(t -> t.dst2(tx, ty));
+        for(Tile t : tiles){
+            //int idx = (int)((Angles.angle(tx, ty, t.x, t.y) / 360f) * res);
+            int idx = (int)((Angles.angle(tx, ty, t.x, t.y) / 360f) * res - 0.5f);
+
+            float range1 = out[idx % res];
+            float dst = Mathf.dst(tx, ty, t.x, t.y) * Vars.tilesize;
+
+            if(dst < range1 + Vars.tilesize / 1.5f && collided.add(t.pos())){
+                edge.get(t);
+                Building bl = t.build;
+                if(bl != null && collided2.add(t.pos())){
+                    hit.get(bl);
+                }
+            }
+            if(dst > (range1 + Vars.tilesize * 8f)){
+                continue;
+            }
+
+            t.getBounds(r);
+            r.grow(0.1f);
+            //r.grow(Vars.tilesize);
+            //r.set(t.x * Vars.tilesize, t.y * Vars.tilesize, );
+
+            for(int s : sides){
+                int nidx = Mathf.mod(idx + s, res);
+                float nangle = (nidx / (float)res) * 360f;
+
+                //v.trns(nangle, radius).add(x, y);
+                float nsx = Mathf.cosDeg(nangle) * radius + x, nsy = Mathf.sinDeg(nangle) * radius + y;
+                //float nsx = v.x, nsy = v.y;
+                Vec2 inter2 = intersectRect(x, y, nsx, nsy, r);
+                if(inter2 != null){
+                    float len = Mathf.dst(x, y, inter2.x, inter2.y);
+                    out[nidx] = Math.min(out[nidx], len);
+                }else{
+                    for(Point2 d : Geometry.d8){
+                        //r2.setCentered(t.x + d.x, t.y + d.y, Vars.tilesize);
+                        Tile nt = Vars.world.tile(t.x + d.x, t.y + d.y);
+                        if(nt != null && !nt.block().isAir() && stop.get(nt)){
+                            //float range2 = out[nidx];
+                            nt.getBounds(r2);
+                            r2.grow(0.1f);
+
+                            Vec2 inter3 = intersectRect(x, y, nsx, nsy, r2);
+                            if(inter3 != null){
+                                float len = Mathf.dst(x, y, inter3.x, inter3.y);
+                                out[nidx] = Math.min(out[nidx], len);
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        return any;
-    }
-
-    public static <T extends Entityc> T bestEntity(EntityGroup<T> group, Boolf<T> pred, Floatf<T> comp){
-        T best = null;
-        float last = -Float.MAX_VALUE;
-        float s = 0f;
-
-        for(T t : group){
-            if(pred.get(t) && (best == null || last > (s = comp.get(t)))){
-                best = t;
-                last = s;
+        for(int ix = minX; ix < maxX; ix++){
+            for(int iy = minY; iy < maxY; iy++){
+                Tile t = Vars.world.tile(ix, iy);
+                if(t != null && Mathf.within(tx, ty, t.x, t.y, tr)){
+                    int idx = (int)((Angles.angle(tx, ty, t.x, t.y) / 360f) * res) % res;
+                    float range = out[idx];
+                    //float dst = Mathf.dst(x, y, t.x, t.y);
+                    if(Mathf.within(x, y, t.x * Vars.tilesize, t.y * Vars.tilesize, range + Vars.tilesize / 2f)){
+                        ambient.get(t);
+                    }
+                }
             }
         }
 
-        return best;
+        tiles.clear();
+        */
     }
 
-    public static Bullet nearestBullet(float x, float y, float range, Boolf<Bullet> boolf){
-        result = null;
-        cdist = range;
-        Tmp.r1.setCentered(x, y, range * 2);
-        Groups.bullet.intersect(Tmp.r1.x, Tmp.r1.y, Tmp.r1.width, Tmp.r1.height, b -> {
-            float dst = b.dst(x, y);
-            if(boolf.get(b) && b.within(x, y, range + b.hitSize) && (result == null || dst < cdist)){
-                result = b;
-                cdist = dst;
+    public static void scanEnemies(Team team, float x, float y, float radius, boolean targetAir, boolean targetGround, Cons<Teamc> cons){
+        r.setCentered(x, y, radius * 2f);
+        Groups.unit.intersect(r.x, r.y, r.width, r.height, u -> {
+            if(u.team != team && Mathf.within(x, y, u.x, u.y, radius + u.hitSize / 2f) && u.checkTarget(targetAir, targetGround)){
+                cons.get(u);
             }
         });
-        return (Bullet)result;
+
+        if(targetGround){
+            buildings.clear();
+            for(TeamData data : Vars.state.teams.active){
+                if(data.team != team && data.buildingTree != null){
+                    data.buildingTree.intersect(r, b -> {
+                        if(Mathf.within(x, y, b.x, b.y, radius + b.hitSize() / 2f)){
+                            //cons.get(b);
+                            buildings.add(b);
+                        }
+                    });
+                }
+            }
+            for(Building b : buildings){
+                cons.get(b);
+            }
+
+            buildings.clear();
+        }
+    }
+
+    public static float hitLaser(Team team, float width, float x1, float y1, float x2, float y2, Boolf<Healthc> within, Boolf<Healthc> stop, LineHitHandler<Healthc> cons){
+        hseq.removeAll(h -> {
+            hpool.free(h);
+            return true;
+        });
+        ll = Mathf.dst(x1, y1, x2, y2);
+        /*
+        for(QuadTree<QuadTreeObject> tree : trees){
+            //
+            intersectLine(tree, width, x1, y1, x2, y2, (a, x, y) -> {
+                Teamc t = (Teamc)a;
+                if(within != null && !within.get(t)) return;
+                Hit<Teamc> h = hpool.newObject();
+                h.entity = t;
+                h.x = x;
+                h.y = y;
+                hseq.add(h);
+            });
+        }
+         */
+        for(TeamData data : Vars.state.teams.present){
+            if(data.team != team){
+                if(data.unitTree != null){
+                    intersectLine(data.unitTree, width, x1, y1, x2, y2, (t, x, y) -> {
+                        if(within != null && !within.get(t)) return;
+                        Hit h = hpool.obtain();
+                        h.entity = t;
+                        h.x = x;
+                        h.y = y;
+                        hseq.add(h);
+                    });
+                }
+                if(data.buildingTree != null){
+                    intersectLine(data.buildingTree, width, x1, y1, x2, y2, (t, x, y) -> {
+                        if(within != null && !within.get(t)) return;
+                        Hit h = hpool.obtain();
+                        h.entity = t;
+                        h.x = x;
+                        h.y = y;
+                        hseq.add(h);
+                    });
+                }
+            }
+        }
+        hseq.sort(a -> a.entity.dst2(x1, y1));
+        for(Hit hit : hseq){
+            Healthc t = hit.entity;
+
+            //cons.get(hit);
+            cons.get(t, hit.x, hit.y);
+            if(stop.get(t)){
+                ll = Mathf.dst(x1, y1, hit.x, hit.y) - (t instanceof Sized s ? s.hitSize() / 4f : 0f);
+                break;
+            }
+
+            //hpool.free(hit);
+        }
+        //hpool.clear();
+        return ll;
+    }
+
+    public static boolean circleContainsRect(float x, float y, float radius, Rect rect){
+        int count = 0;
+        for(int i = 0; i < 4; i++){
+            int mod = i % 2;
+            int i2 = i / 2;
+            float rx1 = (rect.x + rect.width * mod);
+            float ry1 = (rect.y + rect.height * i2);
+
+            if(Mathf.within(x, y, rx1, ry1, radius)){
+                count++;
+            }
+        }
+
+        return count == 4;
+    }
+
+    public static <T extends QuadTreeObject> void scanQuadTree(QuadTree<T> tree, QuadTreeHandler within, Cons<T> cons){
+        if(within.get(tree.bounds, true)){
+            for(T t : tree.objects){
+                t.hitbox(r2);
+                if(within.get(r2, false)){
+                    cons.get(t);
+                }
+            }
+
+            if(!tree.leaf){
+                scanQuadTree(tree.botLeft, within, cons);
+                scanQuadTree(tree.botRight, within, cons);
+                scanQuadTree(tree.topLeft, within, cons);
+                scanQuadTree(tree.topRight, within, cons);
+            }
+        }
+    }
+
+    public static <T extends QuadTreeObject> void intersectLine(QuadTree<T> tree, float width, float x1, float y1, float x2, float y2, LineHitHandler<T> cons){
+        //intersectLine(tree, width, x1, y1, x2, y2, cons, 12);
+        r.set(tree.bounds).grow(width);
+        if(Intersector.intersectSegmentRectangle(x1, y1, x2, y2, r)){
+            //
+            for(T t : tree.objects){
+                //cons.get(t);
+                t.hitbox(r2);
+                //float size = Math.max(r2.width, r2.height);
+                r2.grow(width);
+                /*
+                Vec2 v = Geometry.raycastRect(x1, y1, x2, y2, r2);
+                if(v != null){
+                    float size = Math.max(r2.width, r2.height);
+                    float mx = r2.x + r2.width / 2, my = r2.y + r2.height / 2;
+                    float scl = (size - width) / size;
+                    v.sub(mx, my).scl(scl).add(mx, my);
+
+                    cons.get(t, v.x, v.y);
+                }
+                 */
+                float cx = r2.x + r2.width / 2f, cy = r2.y + r2.height / 2f;
+                float cr = Math.max(r2.width, r2.height);
+
+                Vec2 v = intersectCircle(x1, y1, x2, y2, cx, cy, cr / 2f);
+                if(v != null){
+                    float scl = (cr - width) / cr;
+                    v.sub(cx, cy).scl(scl).add(cx, cy);
+
+                    cons.get(t, v.x, v.y);
+                }
+            }
+
+            if(!tree.leaf){
+                intersectLine(tree.botLeft, width, x1, y1, x2, y2, cons);
+                intersectLine(tree.botRight, width, x1, y1, x2, y2, cons);
+                intersectLine(tree.topLeft, width, x1, y1, x2, y2, cons);
+                intersectLine(tree.topRight, width, x1, y1, x2, y2, cons);
+            }
+        }
+    }
+
+    public static <T extends QuadTreeObject> void scanCone(QuadTree<T> tree, float x, float y, float rotation, float length, float spread, Cons<T> cons){
+        scanCone(tree, x, y, rotation, length, spread, cons, true, false);
+    }
+    public static <T extends QuadTreeObject> void scanCone(QuadTree<T> tree, float x, float y, float rotation, float length, float spread, boolean accurate, Cons<T> cons){
+        scanCone(tree, x, y, rotation, length, spread, cons, true, accurate);
+    }
+    public static <T extends QuadTreeObject> void scanCone(QuadTree<T> tree, float x, float y, float rotation, float length, float spread, Cons<T> cons, boolean source, boolean accurate){
+        //
+        if(source){
+            v2.trns(rotation - spread, length).add(x, y);
+            v3.trns(rotation + spread, length).add(x, y);
+        }
+        //r.set(tree.bounds).grow(width);
+        Rect r = tree.bounds;
+        boolean valid = false;
+        if(Intersector.intersectSegmentRectangle(x, y, v2.x, v2.y, r) || Intersector.intersectSegmentRectangle(x, y, v3.x, v3.y, r) || r.contains(x, y)){
+            valid = true;
+        }
+        float lenSqr = length * length;
+        if(!valid){
+            for(int i = 0; i < 4; i++){
+                float mx = (r.x + r.width * (i % 2)) - x;
+                float my = (r.y + (i >= 2 ? r.height : 0f)) - y;
+
+                float dst2 = Mathf.dst2(mx, my);
+                if(dst2 < lenSqr && Angles.within(rotation, Angles.angle(mx, my), spread)){
+                    valid = true;
+                    break;
+                }
+            }
+        }
+        if(valid){
+            for(T t : tree.objects){
+                Rect rr = r2;
+                t.hitbox(rr);
+
+                float mx = (rr.x + rr.width / 2) - x;
+                float my = (rr.y + rr.height / 2) - y;
+                float size = (Math.max(rr.width, rr.height) / 2f);
+                float bounds = size + length;
+                float at = accurate ? Mathf.angle(Mathf.sqrt(mx * mx + my * my), size) : 0f;
+                if(mx * mx + my * my < (bounds * bounds) && Angles.within(rotation, Angles.angle(mx, my), spread + at)){
+                    cons.get(t);
+                }
+            }
+            if(!tree.leaf){
+                scanCone(tree.botLeft, x, y, rotation, length, spread, cons, false, accurate);
+                scanCone(tree.botRight, x, y, rotation, length, spread, cons, false, accurate);
+                scanCone(tree.topLeft, x, y, rotation, length, spread, cons, false, accurate);
+                scanCone(tree.topRight, x, y, rotation, length, spread, cons, false, accurate);
+            }
+        }
+    }
+
+    /** code taken from BadWrong_ on the gamemaker subreddit */
+    public static Vec2 intersectCircle(float x1, float y1, float x2, float y2, float cx, float cy, float cr){
+        if(!Intersector.nearestSegmentPoint(x1, y1, x2, y2, cx, cy, v4).within(cx, cy, cr)) return null;
+        
+        cx = x1 - cx;
+        cy = y1 - cy;
+
+        float vx = x2 - x1,
+                vy = y2 - y1,
+                a = vx * vx + vy * vy,
+                b = 2 * (vx * cx + vy * cy),
+                c = cx * cx + cy * cy - cr * cr,
+                det = b * b - 4 * a * c;
+
+        if(a <= Mathf.FLOAT_ROUNDING_ERROR || det < 0){
+            return null;
+        }else if(det == 0f){
+            float t = -b / (2 * a);
+            float ix = x1 + t * vx;
+            float iy = y1 + t * vy;
+
+            return v4.set(ix, iy);
+        }else{
+            det = Mathf.sqrt(det);
+            float t1 = (-b - det) / (2 * a);
+
+            return v4.set(x1 + t1 * vx, y1 + t1 * vy);
+        }
+    }
+
+    public static Vec2 intersectRect(float x1, float y1, float x2, float y2, Rect rect){
+        boolean intersected = false;
+
+        float nearX = 0f, nearY = 0f;
+        float lastDst = 0f;
+
+        for(int i = 0; i < 4; i++){
+            int mod = i % 2;
+            float rx1 = i < 2 ? (rect.x + rect.width * mod) : rect.x;
+            float rx2 = i < 2 ? (rect.x + rect.width * mod) : rect.x + rect.width;
+            float ry1 = i < 2 ? rect.y : (rect.y + rect.height * mod);
+            float ry2 = i < 2 ? rect.y + rect.height : (rect.y + rect.height * mod);
+
+            if(Intersector.intersectSegments(x1, y1, x2, y2, rx1, ry1, rx2, ry2, vv)){
+                float dst = Mathf.dst2(x1, y1, vv.x, vv.y);
+                if(!intersected || dst < lastDst){
+                    nearX = vv.x;
+                    nearY = vv.y;
+                    lastDst = dst;
+                }
+
+                intersected = true;
+            }
+        }
+
+        if(rect.contains(x1, y1)){
+            nearX = x1;
+            nearY = y1;
+            intersected = true;
+        }
+
+        return intersected ? v2.set(nearX, nearY) : null;
     }
 
     public static float angleDistSigned(float a, float b){
@@ -127,600 +512,30 @@ public final class Utils{
         return (d > 180f ? 360f - d : d) * sign;
     }
 
-    public static float angleDistSigned(float a, float b, float start){
-        float dst = angleDistSigned(a, b);
-        if(Math.abs(dst) > start){
-            return dst > 0 ? dst - start : dst + start;
+    public static class BasicPool<T> extends Pool<T>{
+        Prov<T> prov;
+
+        public BasicPool(Prov<T> f){
+            prov = f;
         }
-        return 0f;
-    }
-
-    public static float angleDist(float a, float b){
-        float d = Math.abs(a - b) % 360f;
-        return (d > 180f ? 360f - d : d);
-    }
-
-    public static float clampedAngle(float angle, float relative, float limit){
-        if(limit >= 180) return angle;
-        if(limit <= 0) return relative;
-        float dst = angleDistSigned(angle, relative);
-        if(Math.abs(dst) > limit){
-            float val = dst > 0 ? dst - limit : dst + limit;
-            return (angle - val) % 360f;
-        }
-        return angle;
-    }
-
-    public static float randomTriangularSeed(long seed){
-        seedr.setSeed(seed * 9999L);
-        return seedr.nextFloat() - seedr.nextFloat();
-    }
-
-    public static void shotgunRange(int points, float range, float angle, Floatc cons){
-        if(points <= 1){
-            cons.get(angle);
-            return;
-        }
-        for(int i = 0; i < points; i++){
-            float in = Mathf.lerp(-range, range, i / (points - 1f));
-            cons.get(in + angle);
-        }
-    }
-
-    public static float[] castCircle(float wx, float wy, float range, int rays, Boolf<Building> filter, Cons<Building> cons, Boolf<Tile> insulator){
-        collidedBlocks.clear();
-        float[] cast = new float[rays];
-
-        for(int i = 0; i < cast.length; i++){
-            cast[i] = range;
-            float ang = i * (360f / cast.length);
-            tV.trns(ang, range).add(wx, wy);
-            int s = i;
-            world.raycastEachWorld(wx, wy, tV.x, tV.y, (cx, cy) -> {
-                Tile t = world.tile(cx, cy);
-                if(t != null && t.block() != null && insulator.get(t)){
-                    float dst = t.dst(wx, wy);
-                    cast[s] = dst;
-                    return true;
-                }
-
-                return false;
-            });
-        }
-        indexer.allBuildings(wx, wy, range, build -> {
-            if(!filter.get(build)) return;
-            float ang = Angles.angle(wx, wy, build.x, build.y);
-            float dst = build.dst2(wx, wy) - ((build.hitSize() * build.hitSize()) / 2f);
-            int idx = Mathf.mod(Mathf.round((ang % 360f) / (360f / cast.length)), cast.length);
-            float d = cast[idx];
-            if(dst <= d * d){
-                cons.get(build);
-            }
-        });
-        return cast;
-    }
-
-    public static float[] castConeTile(float wx, float wy, float range, float angle, float cone, int rays, Cons2<Building, Tile> consBuilding, Boolf<Tile> insulator){
-        return castConeTile(wx, wy, range, angle, cone, consBuilding, insulator, new float[rays]);
-    }
-
-    public static float[] castConeTile(float wx, float wy, float range, float angle, float cone, Cons2<Building, Tile> consBuilding, Boolf<Tile> insulator, float[] ref){
-        collidedBlocks.clear();
-        idx = 0;
-        float expand = 3;
-        rect.setCentered(wx, wy, expand);
-        shotgunRange(3, cone, angle, con -> {
-            tV.trns(con, range).add(wx, wy);
-            rectAlt.setCentered(tV.x, tV.y, expand);
-            rect.merge(rectAlt);
-        });
-        if(insulator != null){
-            shotgunRange(ref.length, cone, angle, con -> {
-                tV.trns(con, range).add(wx, wy);
-                ref[idx] = range * range;
-                world.raycastEachWorld(wx, wy, tV.x, tV.y, (x, y) -> {
-                    Tile tile = world.tile(x, y);
-                    if(tile != null && insulator.get(tile)){
-                        ref[idx] = Mathf.dst2(wx, wy, x * tilesize, y * tilesize);
-                        return true;
-                    }
-                    return false;
-                });
-                idx++;
-            });
-        }
-        int tx = Mathf.round(rect.x / tilesize);
-        int ty = Mathf.round(rect.y / tilesize);
-        int tw = tx + Mathf.round(rect.width / tilesize);
-        int th = ty + Mathf.round(rect.height / tilesize);
-        for(int x = tx; x <= tw; x++){
-            for(int y = ty; y <= th; y++){
-                float ofX = (x * tilesize) - wx, ofY = (y * tilesize) - wy;
-                int angIdx = Mathf.clamp(Mathf.round(((angleDistSigned(Angles.angle(ofX, ofY), angle) + cone) / (cone * 2f)) * (ref.length - 1)), 0, ref.length - 1);
-                float dst = ref[angIdx];
-                float dst2 = Mathf.dst2(ofX, ofY);
-                if(dst2 < dst && dst2 < range * range && angleDist(Angles.angle(ofX, ofY), angle) < cone){
-                    Tile tile = world.tile(x, y);
-                    Building building = null;
-                    if(tile != null){
-                        Building b = world.build(x, y);
-                        if(b != null && !collidedBlocks.contains(b.id)){
-                            building = b;
-                            collidedBlocks.add(b.id);
-                        }
-                        consBuilding.get(building, tile);
-                    }
-                }
-            }
-        }
-        collidedBlocks.clear();
-        return ref;
-    }
-
-    public static void castCone(float wx, float wy, float range, float angle, float cone, Cons4<Tile, Building, Float, Float> consTile, Cons3<Unit, Float, Float> consUnit){
-        collidedBlocks.clear();
-        float expand = 3;
-        float rangeSquare = range * range;
-        if(consTile != null){
-            rect.setCentered(wx, wy, expand);
-            for(int i = 0; i < 3; i++){
-                float angleC = (-1 + i) * cone + angle;
-                tV.trns(angleC, range).add(wx, wy);
-                rectAlt.setCentered(tV.x, tV.y, expand);
-                rect.merge(rectAlt);
-            }
-            int tx = Mathf.round(rect.x / tilesize);
-            int ty = Mathf.round(rect.y / tilesize);
-            int tw = tx + Mathf.round(rect.width / tilesize);
-            int th = ty + Mathf.round(rect.height / tilesize);
-            for(int x = tx; x <= tw; x++){
-                for(int y = ty; y <= th; y++){
-                    float temp = Angles.angle(wx, wy, x * tilesize, y * tilesize);
-                    float tempDst = Mathf.dst(x * tilesize, y * tilesize, wx, wy);
-                    if(tempDst >= rangeSquare || !Angles.within(temp, angle, cone)) continue;
-                    Tile other = world.tile(x, y);
-                    if(other == null) continue;
-                    if(!collidedBlocks.contains(other.pos())){
-                        float dst = 1f - tempDst / range;
-                        float anDst = 1f - Angles.angleDist(temp, angle) / cone;
-                        consTile.get(other, other.build, dst, anDst);
-                        collidedBlocks.add(other.pos());
-                    }
-                }
-            }
-        }
-        if(consUnit != null){
-            Groups.unit.intersect(wx - range, wy - range, range * 2f, range * 2f, e -> {
-                float temp = Angles.angle(wx, wy, e.x, e.y);
-                float tempDst = Mathf.dst(e.x, e.y, wx, wy);
-                if(tempDst >= rangeSquare || !Angles.within(temp, angle, cone)) return;
-                float dst = 1f - tempDst / range;
-                float anDst = 1f - Angles.angleDist(temp, angle) / cone;
-                consUnit.get(e, dst, anDst);
-            });
-        }
-    }
-
-    public static void castCone(float wx, float wy, float range, float angle, float cone, Cons4<Tile, Building, Float, Float> consTile){
-        castCone(wx, wy, range, angle, cone, consTile, null);
-    }
-
-    public static void castCone(float wx, float wy, float range, float angle, float cone, Cons3<Unit, Float, Float> consUnit){
-        castCone(wx, wy, range, angle, cone, null, consUnit);
-    }
-
-    public static float offsetSin(float offset, float scl){
-        return Mathf.absin(Time.time + (offset * Mathf.radDeg), scl, 0.5f) + 0.5f;
-    }
-
-    public static float offsetSinB(float offset, float scl){
-        return Mathf.absin(Time.time + (offset * Mathf.radDeg), scl, 0.25f);
-    }
-
-    /** Iterates over all blocks in a radius. */
-    public static void trueEachBlock(float wx, float wy, float range, Cons<Building> cons){
-        trueEachBlock(wx, wy, range, b -> true, cons);
-    }
-
-    /** Iterates over all blocks in a radius. */
-    public static void trueEachBlock(float wx, float wy, float range, Boolf<Building> boolf, Cons<Building> cons){
-        collidedBlocks.clear();
-
-        int tx = World.toTile(wx);
-        int ty = World.toTile(wy);
-        int tileRange = Mathf.floorPositive(range / tilesize + 1);
-
-        for(int x = -tileRange + tx, lenX = tileRange + tx; x <= lenX; x++){
-            for(int y = -tileRange + ty, lenY = tileRange + ty; y <= lenY; y++){
-                if(!Mathf.within(x * tilesize, y * tilesize, wx, wy, range)) continue;
-                Building other = world.build(x, y);
-
-                if(other == null || !boolf.get(other)) continue;
-                if(!collidedBlocks.contains(other.pos())){
-                    cons.get(other);
-                    collidedBlocks.add(other.pos());
-                }
-            }
-        }
-    }
-
-    public static float getBulletDamage(BulletType type){
-        return type.damage + type.splashDamage + (Math.max(type.lightningDamage / 2f, 0f) * type.lightning * type.lightningLength);
-    }
-
-    /**
-     * Targets any units that is not in the array.
-     * @return the unit, picks a random target if all potential targets is in the array.
-     */
-    public static Posc targetUnique(Team team, float x, float y, float radius, Posc[] targetArray){
-        result = null;
-        float radiusSquare = radius * radius;
-        cdist = radiusSquare + 1;
-
-        Posc[] tmpArray = new Posc[targetArray.length];
-        int size = 0;
-        for(Posc posc : targetArray){
-            if(posc == null) continue;
-            tmpArray[size++] = posc;
-        }
-
-        Units.nearbyEnemies(team, x - radius, y - radius, radius * 2, radius * 2, unit -> {
-            float dst = unit.dst2(x, y);
-            if(!Structs.contains(targetArray, unit) && dst < cdist && dst < radiusSquare){
-                result = unit;
-                cdist = dst;
-            }
-        });
-
-        if(result == null && size > 0) result = tmpArray[Mathf.random(0, size - 1)];
-
-        return result;
-    }
-
-    public static float findLaserLength(float wx, float wy, float wx2, float wy2, Boolf<Tile> pred){
-        furthest = null;
-
-        boolean found = world.raycast(World.toTile(wx), World.toTile(wy), World.toTile(wx2), World.toTile(wy2),
-        (x, y) -> (furthest = world.tile(x, y)) != null && pred.get(furthest));
-
-        return found && furthest != null ? Math.max(6f, Mathf.dst(wx, wy, furthest.worldx(), furthest.worldy())) : Mathf.dst(wx, wy, wx2, wy2);
-    }
-
-    public static Seq<Healthc> nearbyEnemySorted(Team team, float x, float y, float radius, float variance){
-        tmpUnitSeq.clear();
-        Units.nearbyEnemies(team, x, y, radius, tmpUnitSeq::add);
-        indexer.allBuildings(x, y, radius, b -> {
-            if(b.team != team){
-                tmpUnitSeq.add(b);
-            }
-        });
-        randSeed++;
-        return tmpUnitSeq.sort(h -> {
-            float r = Mathf.randomSeedRange(randSeed + h.id(), variance);
-            return h.dst2(x, y) + (r * r);
-        });
-    }
-
-    //there has to be an efficient version
-    public static boolean inTriangleCircle(float x1, float y1, float x2, float y2, float x3, float y3, float cx, float cy, float radius){
-        if(Intersector.isInTriangle(cx, cy, x1, y1, x2, y2, x3, y3)) return true;
-        if(radius <= 0f) return false;
-        if(Intersector.distanceSegmentPoint(x1, y1, x2, y2, cx, cy) <= radius) return true;
-        if(Intersector.distanceSegmentPoint(x2, y2, x3, y3, cx, cy) <= radius) return true;
-        return Intersector.distanceSegmentPoint(x3, y3, x1, y1, cx, cy) <= radius;
-    }
-
-    public static boolean inTriangleRect(float x1, float y1, float x2, float y2, float x3, float y3, Rect rect){
-        float cx = rect.x + (rect.width / 2f), cy = rect.y + (rect.height / 2f);
-        if(Intersector.isInTriangle(cx, cy, x1, y1, x2, y2, x3, y3)) return true;
-        if(rect.width <= 0f && rect.height <= 0f) return false;
-        if(rect.contains(x1, y1) || rect.contains(x2, y2) || rect.contains(x3, y3)) return true;
-        if(Geometry.raycastRect(x1, y1, x2, y2, rect) != null) return true;
-        if(Geometry.raycastRect(x2, y2, x3, y3, rect) != null) return true;
-        return Geometry.raycastRect(x3, y3, x1, y1, rect) != null;
-    }
-
-    public static <T extends Posc> void inTriangle(EntityGroup<T> group, float x1, float y1, float x2, float y2, float x3, float y3, Boolf<T> filter, Cons<T> cons){
-        Rect r = rect.setCentered(x1, y1, 0f);
-        r.merge(x2, y2);
-        r.merge(x3, y3);
-        group.intersect(r.x, r.y, r.width, r.height, g -> {
-            if(filter.get(g) && inTriangleCircle(x1, y1, x2, y2, x3, y3, g.x(), g.y(), (g instanceof Hitboxc ? ((Hitboxc)g).hitSize() / 2f : 0f))){
-                cons.get(g);
-            }
-        });
-    }
-
-
-    public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, Boolf2<Building, Boolean> buildingCons, Boolf<Unit> unitCons, Floatc2 effectHandler, boolean stopSort){
-        collideLineRaw(x, y, x2, y2, 3f, b -> b.team != team, u -> u.team != team, buildingCons, (Cons<Unit>) unitCons, healthc -> healthc.dst2(x, y), effectHandler, stopSort);
-    }
-
-    public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, Boolf2<Building, Boolean> buildingCons, Cons<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler){
-        collideLineRaw(x, y, x2, y2, 3f, b -> b.team != team, u -> u.team != team, buildingCons, unitCons, sort, effectHandler);
-    }
-
-    public static void collideLineRaw(float x, float y, float x2, float y2, float unitWidth, Boolf<Building> buildingFilter, Boolf<Unit> unitFilter, Boolf2<Building, Boolean> buildingCons, Cons<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler){
-        collideLineRaw(x, y, x2, y2, unitWidth, buildingFilter, unitFilter, buildingCons, unitCons, sort, effectHandler, false);
-    }
-
-    public static void collideLineRaw(float x, float y, float x2, float y2, float unitWidth, Boolf<Building> buildingFilter, Boolf<Unit> unitFilter, Boolf2<Building, Boolean> buildingCons, Cons<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler, boolean stopSort){
-        Boolf<Unit> ucons = unit -> {
-            unitCons.get(unit);
-            return false;
-        };
-        collideLineRaw(x, y, x2, y2, unitWidth, buildingFilter, unitFilter, buildingCons, unitCons == null ? null : (Cons<Unit>) ucons, sort, effectHandler, stopSort);
-    }
-
-    @Deprecated
-    public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, Boolf<Building> buildC, Cons<Unit> unitC, Effect effect){
-        collideLineRaw(x, y, x2, y2, b -> b.team != team, u -> u.team != team, buildC, unitC, unit -> unit.dst2(x, y), effect);
-    }
-
-    @Deprecated
-    public static void collideLineRaw(float x, float y, float x2, float y2, Boolf<Building> buildB, Boolf<Unit> unitB, Boolf<Building> buildC, Cons<Unit> unitC){
-        collideLineRaw(x, y, x2, y2, buildB, unitB, buildC, unitC, null, null);
-    }
-
-    @Deprecated
-    public static void collideLineRaw(float x, float y, float x2, float y2, Boolf<Building> buildB, Boolf<Unit> unitB, Boolf<Building> buildC, Cons<Unit> unitC, Floatf<Healthc> sort, Effect effect){
-        collideLineRaw(x, y, x2, y2, buildB, unitB, buildC, unitC, sort, e -> false, effect);
-    }
-
-    @Deprecated
-    public static void collideLineRaw(float x, float y, float x2, float y2, Boolf<Building> buildB, Boolf<Unit> unitB, Boolf<Building> buildC, Cons<Unit> unitC, Floatf<Healthc> sort, Boolf<Building> buildAlt, Effect effect){
-        collidedBlocks.clear();
-        tmpUnitSeq.clear();
-        tV.set(x2, y2);
-        if(buildC != null){
-            world.raycastEachWorld(x, y, x2, y2, (cx, cy) -> {
-                Building tile = world.build(cx, cy);
-                if(tile != null && (buildB == null || buildB.get(tile)) && !collidedBlocks.contains(tile.pos())){
-                    boolean s;
-                    if(sort == null){
-                        s = buildC.get(tile);
-                    }else{
-                        tmpUnitSeq.add(tile);
-                        s = buildAlt.get(tile);
-                    }
-                    collidedBlocks.add(tile.pos());
-                    if(effect != null) effect.at(cx * tilesize, cy * tilesize);
-                    if(s){
-                        //Mathf.dst();
-                        tV.trns(Angles.angle(x, y, x2, y2), Mathf.dst(x, y, tile.x, tile.y));
-                        tV.add(x, y);
-                        return true;
-                    }
-                }
-                return false;
-            });
-        }
-
-        if(unitB != null && unitC != null){
-            rect.setPosition(x, y).setSize(tV.x - x, tV.y - y);
-
-            if(rect.width < 0){
-                rect.x += rect.width;
-                rect.width *= -1;
-            }
-            if(rect.height < 0){
-                rect.y += rect.height;
-                rect.height *= -1;
-            }
-
-            float expand = 2f;
-
-            rect.grow(expand * 2f);
-
-            if(sort == null){
-                Groups.unit.intersect(rect.x, rect.y, rect.width, rect.height, unit -> {
-                    if(unitB.get(unit)){
-                        unit.hitbox(hitRect);
-                        hitRect.grow(expand * 2);
-
-                        Vec2 vec = Geometry.raycastRect(x, y, tV.x, tV.y, hitRect);
-
-                        if(vec != null){
-                            if(effect != null) effect.at(vec.x, vec.y);
-                            unitC.get(unit);
-                        }
-                    }
-                });
-            }else{
-                Groups.unit.intersect(rect.x, rect.y, rect.width, rect.height, unit -> {
-                    if(unitB.get(unit)){
-                        unit.hitbox(hitRect);
-                        hitRect.grow(expand * 2);
-
-                        Vec2 vec = Geometry.raycastRect(x, y, tV.x, tV.y, hitRect);
-
-                        if(vec != null){
-                            if(effect != null) effect.at(vec.x, vec.y);
-                            tmpUnitSeq.add(unit);
-                        }
-                    }
-                });
-                hit = false;
-                tmpUnitSeq.sort(sort).each(e -> {
-                    if(e instanceof Building && buildC != null && !hit) hit = buildC.get((Building)e);
-                    if(e instanceof Unit) unitC.get((Unit)e);
-                });
-                tmpUnitSeq.clear();
-            }
-        }
-    }
-
-    /** The other version of Damage.collideLine */
-    public static void collideLineDamageOnly(Team team, float damage, float x, float y, float angle, float length, Bullet hitter){
-        collidedBlocks.clear();
-        tV.trns(angle, length);
-
-        if(hitter.type.collidesGround){
-            world.raycastEachWorld(x, y, x + tV.x, y + tV.y, (cx, cy) -> {
-                Building tile = world.build(cx, cy);
-
-                if(tile != null && !collidedBlocks.contains(tile.pos()) && tile.team != team){
-                    tile.damage(damage);
-                    collidedBlocks.add(tile.pos());
-                }
-
-                return false;
-            });
-        }
-
-        rect.setPosition(x, y).setSize(tV.x, tV.y);
-        float x2 = tV.x + x, y2 = tV.y + y;
-
-        if(rect.width < 0){
-            rect.x += rect.width;
-            rect.width *= -1;
-        }
-        if(rect.height < 0){
-            rect.y += rect.height;
-            rect.height *= -1;
-        }
-
-        float expand = 3f;
-
-        rect.y -= expand;
-        rect.x -= expand;
-        rect.width += expand * 2;
-        rect.height += expand * 2;
-
-        Units.nearbyEnemies(team, rect, unit -> {
-            if(!unit.checkTarget(hitter.type.collidesAir, hitter.type.collidesGround)) return;
-            unit.hitbox(hitRect);
-
-            Vec2 vec = Geometry.raycastRect(x, y, x2, y2, hitRect.grow(expand * 2));
-
-            if(vec != null) unit.damage(damage);
-        });
-    }
-
-    public static void chanceMultiple(float chance, Runnable run){
-        int intC = Mathf.ceil(chance);
-        float tmp = chance;
-
-        for(int i = 0; i < intC; i++){
-            if(tmp >= 1){
-                run.run();
-                tmp -= 1;
-            }else if(tmp > 0){
-                if(Mathf.chance(tmp)) run.run();
-            }
-        }
-    }
-
-    public static float linear(float current, float target, float maxTorque, float coefficient){
-        current = Math.min(target, current);
-
-        return Math.min(coefficient * (target - current) * maxTorque / target, 99999f);
-    }
-
-    public static IntSeq unpackInts(IntSeq intpack){
-        IntSeq out = new IntSeq();
-        for(int i = 0, len = intpack.size * 2; i < len; i++){
-            int cint = intpack.get(i / 2);
-            int value = (cint >>> (i % 2 == 0 ? 0 : 16)) & 65535;
-            int am = (value >> 8) & 255;
-            for(int k = 0; k < am; k++) out.add(value & 255);
-        }
-        return out;
-    }
-
-    public static IntSeq unpackIntsFromString(String sintpack){
-        IntSeq out = new IntSeq();
-        for(int i = 0, len = sintpack.length(); i < len; i += 2){
-            int val = sintpack.codePointAt(i + 1);
-            int am = sintpack.codePointAt(i);
-            for(int k = 0; k < am; k++) out.add(val);
-        }
-        return out;
-    }
-
-    /**
-     * Casts forward in a line.
-     * @return the first encountered model.
-     * There's an issue with the one in 126.2, which I fixed in a pr. This can be removed after the next Mindustry release.
-     */
-    public static Healthc linecast(Bullet hitter, float x, float y, float angle, float length){
-        tV.trns(angle, length);
-
-        tmpBuilding = null;
-
-        if(hitter.type.collidesGround){
-            world.raycastEachWorld(x, y, x + tV.x, y + tV.y, (cx, cy) -> {
-                Building tile = world.build(cx, cy);
-                if(tile != null && tile.team != hitter.team){
-                    tmpBuilding = tile;
-                    return true;
-                }
-                return false;
-            });
-        }
-
-        rect.setPosition(x, y).setSize(tV.x, tV.y);
-        float x2 = tV.x + x, y2 = tV.y + y;
-
-        if(rect.width < 0){
-            rect.x += rect.width;
-            rect.width *= -1;
-        }
-
-        if(rect.height < 0){
-            rect.y += rect.height;
-            rect.height *= -1;
-        }
-
-        float expand = 3f;
-
-        rect.y -= expand;
-        rect.x -= expand;
-        rect.width += expand * 2;
-        rect.height += expand * 2;
-
-        tmpUnit = null;
-
-        Units.nearbyEnemies(hitter.team, rect, e -> {
-            if((tmpUnit != null && e.dst2(x, y) > tmpUnit.dst2(x, y)) || !e.checkTarget(hitter.type.collidesAir, hitter.type.collidesGround)) return;
-
-            e.hitbox(hitRect);
-            Rect other = hitRect;
-            other.y -= expand;
-            other.x -= expand;
-            other.width += expand * 2;
-            other.height += expand * 2;
-
-            Vec2 vec = Geometry.raycastRect(x, y, x2, y2, other);
-
-            if(vec != null){
-                tmpUnit = e;
-            }
-        });
-
-        if(tmpBuilding != null && tmpUnit != null){
-            if(Mathf.dst2(x, y, tmpBuilding.getX(), tmpBuilding.getY()) <= Mathf.dst2(x, y, tmpUnit.getX(), tmpUnit.getY())){
-                return tmpBuilding;
-            }
-        }else if(tmpBuilding != null){
-            return tmpBuilding;
-        }
-
-        return tmpUnit;
-    }
-
-    static class Hit implements Poolable{
-        Healthc ent;
-        float x, y;
 
         @Override
-        public void reset(){
-            ent = null;
-            x = y = 0f;
+        protected T newObject(){
+            return prov.get();
         }
     }
 
-    public interface HitHandler{
-        boolean get(float x, float y, Healthc ent, boolean direct);
+    public static class Hit{
+        Healthc entity;
+        float x;
+        float y;
+    }
+
+    public interface LineHitHandler<T>{
+        void get(T t, float x, float y);
+    }
+
+    public interface QuadTreeHandler{
+        boolean get(Rect rect, boolean tree);
     }
 }

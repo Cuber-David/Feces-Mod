@@ -1,7 +1,6 @@
 package K.graphics;
 
-import K.FlamePal;
-import K.content.Utils;
+import K.content.extend.util.Utils;
 import arc.*;
 import arc.func.*;
 import arc.graphics.*;

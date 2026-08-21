@@ -181,12 +181,12 @@ public class TF extends UnitBlock {
 
     @Override
     public TextureRegion[] icons(){
-        return new TextureRegion[]{region, outRegion, topRegion};
+        return new TextureRegion[]{region, Core.atlas.find("kmod-tfout"), Core.atlas.find("kmod-tftop")};
     }
 
     @Override
     public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
-        Draw.rect(region, plan.drawx(), plan.drawy());
+        Draw.rect(region, plan.drawx(), plan.drawy(), plan.rotation * 90);
     }
 
     @Override

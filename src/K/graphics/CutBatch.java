@@ -1,7 +1,6 @@
 package K.graphics;
 
-import K.FlamePal;
-import K.content.FlameFX;
+import K.content.Fx.FlameFX;
 import K.content.effects.Severation;
 import arc.*;
 import arc.audio.*;

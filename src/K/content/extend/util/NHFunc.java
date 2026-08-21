@@ -32,7 +32,7 @@ import static mindustry.Vars.*;
 import static mindustry.core.World.toTile;
 
 public class NHFunc {
-    //just for effect. never modify this.
+    //just for statuseffect. never modify this.
     public static final Rand globalEffectRand = new Rand(0);
     public static final Rand rand = new Rand(0);
     public static final Effect debugEffect = new Effect(120f, 300f, e -> {

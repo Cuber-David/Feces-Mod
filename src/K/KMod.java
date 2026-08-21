@@ -1,26 +1,39 @@
 package K;
 
 import K.content.*;
-import K.content.effects.ImpactBatch;
+import K.content.Fx.FlameFX;
+import K.content.Fx.fx;
+import K.content.NH.NHContent;
+import K.content.campaign.*;
+import K.content.effectrenderer.StatusEffectRenderer;
 import K.content.effects.Severation;
 import K.content.effects.SpecialDeathEffects;
-import K.content.effects.SpriteAnimationEffect;
+import K.content.entities.EntityRegister;
 import K.content.extend.fo.EmpathyDamage;
 import K.content.extend.fo.SpecialMain;
 import K.content.KUnitTypes;
 import K.entities.MockGroup;
 import K.graphics.*;
+import K.Fmod.AntiCheat;
 import arc.*;
 import arc.input.KeyCode;
 import arc.math.Angles;
+import arc.struct.Seq;
 import arc.util.*;
 import mindustry.Vars;
+import mindustry.ctype.ContentType;
+import mindustry.game.EventType;
 import mindustry.game.EventType.*;
 import mindustry.gen.Unit;
 import mindustry.mod.Mod;
+import mindustry.mod.Mods;
+import mindustry.type.StatusEffect;
 import mindustry.ui.dialogs.*;
+import mindustry.world.blocks.storage.CoreBlock;
 
 public class KMod extends Mod{
+    public static Mods.LoadedMod MOD;
+    public static AntiCheat antiCheat;
     public static CutBatch cutBatch;
     public static FragmentationBatch fragBatch;
     public static VaporizeBatch vaporBatch;
@@ -28,12 +41,14 @@ public class KMod extends Mod{
 
     public static final String MOD_NAME = "kmod";
     public final boolean test = false;
+    private StatusEffectRenderer renderer;
+
+
 
     public KMod(){
 
-        //listen for game load event
+
         Events.on(ClientLoadEvent.class, e -> {
-            //show dialog upon startup
             Time.runTask(10f, () -> {
                 BaseDialog dialog = new BaseDialog("frog");
                 dialog.cont.add("Welcome to K's Mod FIRST TEST").row();
@@ -53,10 +68,9 @@ public class KMod extends Mod{
                 cutBatch = new CutBatch();
                 vaporBatch = new VaporizeBatch();
                 devasBatch = new DevastationBatch();
-                //fragBatch.load();
+                antiCheat = new AntiCheat();
                 KSFX.inst.loadHeadless();
                 SpecialMain.load();
-                //SpecialDeathEffects.load();
             }
         }));
         Events.on(ClientLoadEvent.class, e -> {
@@ -68,11 +82,27 @@ public class KMod extends Mod{
                 Unit p = Vars.player.unit();
                 if(Core.input.keyTap(KeyCode.x)){
                     float ang = Angles.mouseAngle(p.x, p.y);
-                    //FlameBullets.test.create(p, p.x, p.y, ang);
                     FlameFX.desMissileHit.at(p.x, p.y, ang);
                 }
             });
         }
+    }
+
+    @Override
+    public void init() {
+        MainRenderer.init();
+        StatusEffect target = Vars.content.getByName(ContentType.status, "kmod-infinitude");
+        if (target == null) {
+            target = statuseffect.infinitude;
+        }
+        renderer = new StatusEffectRenderer(target);
+        Events.run(EventType.Trigger.update, () -> {
+            if (renderer != null) renderer.update();
+        });
+
+        Events.run(EventType.Trigger.draw, () -> {
+            if (renderer != null) renderer.draw();
+        });
     }
 
     public static String name(String name) {
@@ -89,22 +119,25 @@ public class KMod extends Mod{
 
     @Override
     public void loadContent() {
-        sounds.load();
-        bullets.load();
-        fx.load();
-        effect.load();
 
-        SpriteAnimationEffect.load();
+        EntityRegister.load();
+        sounds.load();
+        fx.load();
+        statuseffect.load();
+
         SpecialDeathEffects.load();
         weathers.load();
         items.load();
         liquids.load();
         KUnitTypes.load();
         blocks.load();
+        loadouts.load();
+        Vars.schematics.getLoadouts().get((CoreBlock)blocks.fecescore, Seq::new).add(loadouts.basiccore,loadouts.basioncore);
         KPlanetGenerator.load();
         planets.load();
         sector.load();
         techtree.load();
+        NHContent.loadLast();
     }
 
 }

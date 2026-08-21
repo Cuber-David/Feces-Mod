@@ -1,7 +1,7 @@
 package K.content.extend.fo;
 
-import K.FlamePal;
-import K.content.Utils;
+import K.graphics.FlamePal;
+import K.content.extend.util.Utils;
 import K.content.KUnitTypes;
 import K.graphics.GraphicUtils;
 import arc.graphics.*;

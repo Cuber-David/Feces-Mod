@@ -1,6 +1,6 @@
 package K.entities;
 
-import K.content.Utils;
+import K.content.extend.util.Utils;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;

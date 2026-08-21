@@ -67,7 +67,7 @@ public class RepairField extends Ability {
 
 
         //@guiY, why don't you write a scanning repair method?
-        //I tried, but the effect was not satisfactory...
+        //I tried, but the statuseffect was not satisfactory...
         //TODO maybe can do better?
         indexer.eachBlock(unit, range, b -> b.damaged() && !b.isHealSuppressed(), other -> healing = true);
         timer += Time.delta;
