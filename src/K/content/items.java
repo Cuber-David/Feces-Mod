@@ -9,7 +9,9 @@ public class items {
             //牢底
             Rody_proton,Rody_neutron,Rody_electron,Rody_atom,
             //大便
-            Feces,Constipated_feces;
+            Feces,Constipated_feces,
+            //其他材料
+            Fecium;
 
     public static void load(){
         Rody_proton = new Item("Rody_proton", Color.white){{
@@ -43,6 +45,11 @@ public class items {
         Constipated_feces = new Item("Constipated_feces", Color.brown){{
             flammability = 5.0f;
             alwaysUnlocked = false;
+        }};
+        Fecium = new Item("Fecium", Color.valueOf("663931")){{
+            flammability = 0.15f;
+            hardness = 4;
+            healthScaling = 1.4f;
         }};
     }
 }

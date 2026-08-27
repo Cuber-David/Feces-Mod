@@ -44,6 +44,7 @@ public class RodyUnitType extends UnitType {
         circleTarget = false;
         targetAir = false;
         targetGround = false;
+        hidden = true;
         weapons.add(new LaserWeapon(""){{
             x = 27.5f;
             y = -7f;

@@ -17,6 +17,7 @@ public class ThunderUnitType extends UnitType {
         range = 10000;
         useUnitCap  = false;
         drawCell = false;
+        hidden = true;
         weapons.add(new Weapon(){{
             shootOnDeath = true;
             targetUnderBlocks = false;

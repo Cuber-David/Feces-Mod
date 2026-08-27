@@ -18,23 +18,37 @@ public class techtree {
     public static void load() {
         planets.nonepro.techTree = nodeRoot("none", planets.nonepro, () -> {
             nodeProduce(items.Feces, () -> {
-                        nodeProduce(items.Constipated_feces, () -> {
-                            nodeProduce(items.Rody_neutron, () -> {
-                                nodeProduce(items.Rody_proton, () -> {
-                                    nodeProduce(items.Rody_atom, () -> {
-                                    });
-                                });
-                                nodeProduce(items.Rody_electron, () -> {
-                                });
+                nodeProduce(Items.lead, () -> {
+                    nodeProduce(Items.coal, () -> {
+                        nodeProduce(Items.silicon, () -> {
+                        });
+                    });
+                });
+                nodeProduce(Items.tungsten, () -> {
+                    nodeProduce(items.Fecium, () -> {
+                    });
+                });
+                nodeProduce(Items.scrap, () -> {
+                    nodeProduce(Items.sand, () -> {
+                    });
+                });
+                nodeProduce(items.Constipated_feces, () -> {
+                    nodeProduce(items.Rody_neutron, () -> {
+                        nodeProduce(items.Rody_proton, () -> {
+                            nodeProduce(items.Rody_atom, () -> {
                             });
-                            nodeProduce(liquids.urine, () -> {
-                                nodeProduce(liquids.ionic_liquid, () -> {
-                                    nodeProduce(liquids.fecalwater, () -> {
-                                    });
-                                });
+                        });
+                        nodeProduce(items.Rody_electron, () -> {
+                        });
+                    });
+                    nodeProduce(liquids.urine, () -> {
+                        nodeProduce(liquids.ionic_liquid, () -> {
+                            nodeProduce(liquids.fecalwater, () -> {
                             });
                         });
                     });
+                });
+            });
             node(fecesprojector, Seq.with(new Objectives.Research(items.Feces),
                                           new Objectives.Research(items.Constipated_feces),
                                           new Objectives.Research(Items.lead)), () -> {

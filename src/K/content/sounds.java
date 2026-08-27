@@ -16,7 +16,7 @@ import java.lang.reflect.Field;
         public static Sound
                 alarm,charge,watching,dabian,dogshit,boom,hugeBlast,thunder,
                 elaser,deslaser,deslasershoot,desnukehit,desnukehitfar,largebeamcharge,
-                beamlarge,expr,shootbeam,beamstart,laser;
+                beamlarge,expr,shootbeam,beamstart,laser,smallexp,redcharge,purple;
                 ;
 
         public static void load() {

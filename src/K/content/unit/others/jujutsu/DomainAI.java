@@ -1,4 +1,4 @@
-package K.content.unit.others;
+package K.content.unit.others.jujutsu;
 
 import mindustry.entities.units.UnitController;
 import mindustry.gen.Unit;

@@ -1,12 +1,9 @@
-package K.content.unit.others;
+package K.content.unit.others.jujutsu;
 
 import arc.math.Mathf;
-import mindustry.gen.Bullet;
-import mindustry.gen.Hitboxc;
-import mindustry.gen.Unit;
-import mindustry.gen.UnitEntity;
+import mindustry.gen.*;
 
-public class DomainUnit extends UnitEntity {
+public class DomainInfUnit extends UnitEntity {
     private static final float INNER_RADIUS_FACTOR = 0.6f;
 
     // 核心：设置特殊碰撞层，与所有默认层（地面=0，空中=2）都不匹配
@@ -34,4 +31,5 @@ public class DomainUnit extends UnitEntity {
     public float physicSize() {
         return 0f;
     }
+
 }

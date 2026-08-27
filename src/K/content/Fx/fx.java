@@ -3,23 +3,27 @@ package K.content.Fx;
 import K.content.extend.util.DrawFunc;
 import K.content.sounds;
 import K.graphics.FlamePal;
+import arc.Core;
 import arc.graphics.Blending;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.math.Interp;
 import arc.math.Mathf;
 import arc.math.Rand;
 import arc.math.geom.Position;
+import arc.math.geom.Vec2;
+import arc.util.Log;
+import arc.util.Time;
 import arc.util.Tmp;
-import mindustry.content.Liquids;
+import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
-
 import static arc.graphics.Color.alpha;
 import static arc.graphics.g2d.Draw.color;
 import static arc.graphics.g2d.Lines.*;
@@ -27,10 +31,12 @@ import static arc.math.Angles.*;
 import static mindustry.Vars.renderer;
 
 public class fx {
+    public static final Vec2 v = new Vec2();
     public static final Rand rand = new Rand();
     public static Effect Bigcasing,shootBig,hitBulletBigger,hitLaserBigger,PulseCharge,PulseChargeBegin,PulseShoot,
             BigExplosion,collapserExplode,ReactorExplosion,Thunder,Hugebeam,Feceswave,
-            endHitRedSmall,ellipsetrail,ellipsetrailblue,disorder,bp,fee,slash;
+            endHitRedSmall,ellipsetrail,ellipsetrailblue,disorder,bp,fee,slash,exp,orbitred,
+            orbitpurple,orbitpurpleout,Shcokcharge;
 
     public static void load(){
         Bigcasing = new Effect(30f, e -> {
@@ -171,15 +177,11 @@ public class fx {
                 DrawFunc.tri(e.x + Tmp.v1.x, e.y + Tmp.v1.y, rand.random(circleRad / 16, circleRad / 12) * e.fout(), rand.random(circleRad / 4, circleRad / 1.5f) * (1 + e.fin()) / 2, Tmp.v1.angle() - 180);
             }
 
-            if (true) {
-                Draw.blend(Blending.additive);
-                Draw.z(Layer.effect + 0.1f);
-
-                Fill.light(e.x, e.y, circleVertices(circleRad), circleRad, Color.clear, Tmp.c1.set(Draw.getColor()).a(e.fout(Interp.pow10Out)));
-                Draw.blend();
-                Draw.z(Layer.effect);
-            }
-
+            Draw.blend(Blending.additive);
+            Draw.z(Layer.effect + 0.1f);
+            Fill.light(e.x, e.y, circleVertices(circleRad), circleRad, Color.clear, Tmp.c1.set(Draw.getColor()).a(e.fout(Interp.pow10Out)));
+            Draw.blend();
+            Draw.z(Layer.effect);
 
             e.scaled(120f, i -> {
                 Draw.color(Color.purple, i.color, i.fin() + 0.4f);
@@ -189,25 +191,18 @@ public class fx {
                 Angles.randLenVectors(i.id, 40, rad / 3, rad * i.fin(Interp.pow2Out), (x, y) -> {
                     lineAngle(i.x + x, i.y + y, Mathf.angle(x, y), i.fslope() * 25 + 10);
                 });
-
-                if (true)
-                    Angles.randLenVectors(i.id, (int) (rad / 4), rad / 6, rad * (1 + i.fout(Interp.circleOut)) / 1.5f, (x, y) -> {
-                        float angle = Mathf.angle(x, y);
-                        float width = i.foutpowdown() * rand.random(rad / 6, rad / 3);
-                        float length = rand.random(rad / 2, rad * 5) * i.fout(Interp.circleOut);
-
-                        Draw.color(i.color);
-                        DrawFunc.tri(i.x + x, i.y + y, width, rad / 3 * i.fout(Interp.circleOut), angle - 180);
-                        DrawFunc.tri(i.x + x, i.y + y, width, length, angle);
-
-                        Draw.color(Color.black);
-
-                        width *= i.fout();
-
-                        DrawFunc.tri(i.x + x, i.y + y, width / 2, rad / 3 * i.fout(Interp.circleOut) * 0.9f * i.fout(), angle - 180);
-                        DrawFunc.tri(i.x + x, i.y + y, width / 2, length / 1.5f * i.fout(), angle);
-                    });
-
+                Angles.randLenVectors(i.id, (int) (rad / 4), rad / 6, rad * (1 + i.fout(Interp.circleOut)) / 1.5f, (x, y) -> {
+                    float angle = Mathf.angle(x, y);
+                    float width = i.foutpowdown() * rand.random(rad / 6, rad / 3);
+                    float length = rand.random(rad / 2, rad * 5) * i.fout(Interp.circleOut);
+                    Draw.color(i.color);
+                    DrawFunc.tri(i.x + x, i.y + y, width, rad / 3 * i.fout(Interp.circleOut), angle - 180);
+                    DrawFunc.tri(i.x + x, i.y + y, width, length, angle);
+                    Draw.color(Color.black);
+                    width *= i.fout();
+                    DrawFunc.tri(i.x + x, i.y + y, width / 2, rad / 3 * i.fout(Interp.circleOut) * 0.9f * i.fout(), angle - 180);
+                    DrawFunc.tri(i.x + x, i.y + y, width / 2, length / 1.5f * i.fout(), angle);
+                });
                 Draw.color(Color.black);
                 Fill.circle(i.x, i.y, rad * i.fout() * 0.75f);
             });
@@ -371,28 +366,136 @@ public class fx {
             e.color = Color.black;
             color(Tmp.c1.set(e.color).mul(1.1f));
             Fill.circle(e.x, e.y, 640*Math.min(1,(1-e.fout())/0.2f)*1);
-        }).layer(55);
+        }){{
+            layer = 55f;
+            clip = 2500f;
+        }};
         fee = new FragmentExplosionEffect();
-        slash = new Effect(30,e -> {
-            color(FlamePal.red);
-            for(int i : Mathf.signs){
-                Drawf.tri(e.x, e.y, 4f * e.fout(), 28f, e.rotation + 90f * i);
+        slash = new Effect(24, e -> {
+            Draw.color(FlamePal.darkRed);
+            Drawf.tri(e.x,e.y,8*e.fout(),128*e.fout(),e.rotation+90);
+            Drawf.tri(e.x,e.y,8*e.fout(),128*e.fout(),e.rotation+270);
+            Draw.color(Color.black);
+            Drawf.tri(e.x,e.y,6*e.fout(),96*e.fout(),e.rotation+90);
+            Drawf.tri(e.x,e.y,6*e.fout(),96*e.fout(),e.rotation+270);
+            Angles.randLenVectors(e.id, 3, 16 * e.finpow(), e.rotation, 360, (x, y) -> Fill.poly(e.x + x, e.y + y, 3, 10 * e.foutpow(), Mathf.randomSeed(e.id, 360) + e.time));
+        }).layer(Layer.max - 20);
+        exp = new Effect(96,e -> {{
+            int tf = 16;
+            float pro = e.fin()/1;
+            int fi = (int)(pro*tf);
+            fi = Math.min(fi,tf-1);
+            TextureRegion[] frames = new TextureRegion[tf];
+            for (int i=0;i<tf;i++)
+            {
+                String path = "kmod-"+"e-" + (i+1);
+                frames[i] = new TextureRegion(Core.atlas.find(path));
             }
-            float x1 = e.x+Mathf.cos(e.rotation+90)*24;
-            float y1 = e.x+Mathf.sin(e.rotation+90)*24;
-            float x2 = e.x+Mathf.cos(e.rotation-90)*24;
-            float y2 = e.x+Mathf.sin(e.rotation-90)*24;
-            float x3 = e.x+Mathf.cos(e.rotation)*64;
-            float y3 = e.x+Mathf.sin(e.rotation)*64;
-            float x4 = e.x+Mathf.cos(e.rotation+180)*64;
-            float y4 = e.x+Mathf.sin(e.rotation+180)*64;
-            Draw.color();
-            e.color = Color.black;
-            color(Tmp.c1.set(e.color).mul(1.1f));
-            Fill.circle(e.x, e.y, 640*Math.min(1,(1-e.fout())/0.2f)*1);
-            Fill.tri(x1,y1,x2,y2,x3,y3);
-            Fill.tri(x1,y1,x2,y2,x4,y4);
-            Draw.color();
+            TextureRegion frame = frames[fi];
+            if (frame != null){
+                float alpha = Interp.pow2Out.apply(1-e.fout());
+                float scale = 0.5f + 0.5f*alpha;
+                float s = 100;
+                Draw.z(Layer.effect);
+                Draw.color(e.color);
+                Draw.rect(frame,e.x,e.y,s,s,e.rotation);
+                Draw.color();
+            }
+        }});
+        orbitred = new Effect(60,e->{
+            float p = e.fin();
+            float x = e.x;
+            float y = e.y;
+            for (int i = 0; i < 10; i++) {
+                float angle = Mathf.random() * 360f + Time.time * 0.1f;
+                float radius;
+                float rand = Mathf.random();
+                if (rand < 0.5f) {
+                    radius = 20f + Mathf.random() * 20f;
+                } else if (rand < 0.8f) {
+                    radius = 40f + Mathf.random() * 20f;
+                } else {
+                    radius = 60f + Mathf.random() * 20f;
+                }
+                float px = x + Angles.trnsx(angle, radius);
+                float py = y + Angles.trnsy(angle, radius);
+                float length = 3f + Mathf.random() * 4f;
+                length *= (1f - p * 0.5f);
+                float thickness = 0.5f + Mathf.random() * 0.8f;
+                thickness *= (1f - p * 0.5f);
+                if (length < 0.3f) continue;
+                float alpha = (1f - p) * 0.8f;
+                float rot = angle + 90f;
+                Draw.color(Color.valueOf("87040c"), alpha);
+                Draw.rect("white", px, py, length, thickness, rot);
+            }
+            Draw.reset();
+        });
+        orbitpurple = new Effect(60,e->{
+            float p = e.fin();
+            float x = e.x;
+            float y = e.y;
+            float angle = Mathf.random() * 360f + Time.time * 0.01f;
+            float radius;
+            float rand = Mathf.random();
+            if (rand < 0.5f) {
+                radius = 23f + Mathf.random() * 10f;
+            } else if (rand < 0.8f) {
+                radius = 26f + Mathf.random() * 10f;
+            } else {
+                radius = 29f + Mathf.random() * 10f;
+            }
+            float px = x + Angles.trnsx(angle, radius);
+            float py = y + Angles.trnsy(angle, radius);
+            float alpha = (1f - p) * 0.8f;
+            Draw.color(Color.valueOf("f1ccf7"), alpha);
+            Fill.circle(px,py,1f);
+            Fx.trailFade.at(px,py,Color.valueOf("9c5ad5"));
+            Draw.reset();
+        });
+        orbitpurpleout = new Effect(60,e->{
+            float p = e.fin();
+            float x = e.x;
+            float y = e.y;
+            float angle = Mathf.random() * 360f + Time.time * 0.01f;
+            float radius;
+            float rand = Mathf.random();
+            if (rand < 0.5f) {
+                radius = 35f + Mathf.random() * 10f;
+            } else if (rand < 0.8f) {
+                radius = 36f + Mathf.random() * 10f;
+            } else {
+                radius = 37f + Mathf.random() * 10f;
+            }
+            float px = x + Angles.trnsx(angle, radius);
+            float py = y + Angles.trnsy(angle, radius);
+            float alpha = (1f - p) * 0.8f;
+            Draw.color(Color.valueOf("d076f1"), alpha);
+            Fill.circle(px,py,1f);
+            Draw.reset();
+        });
+        Shcokcharge = new Effect(60f, 100f, e -> {
+            TextureRegion ch = Core.atlas.find("kmod-charge");
+            float r = 2*e.time*360/e.lifetime;
+            float s =1000;
+            float st = e.fin()*s;
+            Draw.color(Color.red.a(0.5f*(e.fout()-0.2f)));
+            Lines.stroke(40);
+            Lines.circle(e.x,e.y,1000*e.fout());
+            Lines.circle(e.x,e.y,500*(e.fout()-0.2f));
+            if(e.time<=e.lifetime/2) {
+                for (int i = 0; i < 3; i++) {
+                    Draw.color(Color.red.a(e.time * 2 / e.lifetime));
+                    Draw.rect(ch, e.x, e.y, s, s, r+i*120);
+                    Draw.rect(ch, e.x, e.y, s/8, s, (r+60+i*120)*(-1));
+                }
+            } else {
+                for (int i = 0; i < 3; i++) {
+                    Draw.color(Color.red.a(1-((e.time-e.lifetime/2) * 2 / e.lifetime)));
+                    Draw.rect(ch, e.x, e.y, s/st, s/st, r+i*120);
+                    Draw.rect(ch, e.x, e.y, s/(st*8), s/st, (r+60+i*120)*(-1));
+                }
+            }
             Draw.reset();
         });
     }

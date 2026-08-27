@@ -1,6 +1,7 @@
 package K.content.extend.Bullets;
 
 import K.content.Fx.fx;
+import K.content.KUnitTypes;
 import K.content.statuseffect;
 import K.graphics.MainRenderer;
 import arc.Core;
@@ -19,14 +20,15 @@ import mindustry.gen.Unit;
 import static arc.graphics.g2d.Draw.reset;
 import static mindustry.Vars.renderer;
 
-public class DomainBulletType extends BulletType {
+public class DomainInf extends BulletType {
     private float[][] crackData;
     private final float t = 600;
     private final float endtime = 2*t-50;
-    public DomainBulletType() {
+    public DomainInf() {
         super(0,0);
         lifetime = t;
         despawnEffect = fx.fee;
+        drawSize = 4000;
     }
     private float life = lifetime-endtime;
     private Unit u;
@@ -34,21 +36,19 @@ public class DomainBulletType extends BulletType {
     public void init(Bullet b) {
         super.init(b);
 
-        // ★ 预生成所有裂纹数据 ★
         float[][] data = generateCrackData(48, 700f);
         b.data = data;
-//        u = KUnitTypes.Domain.spawn(b.team,b.x,b.y);
+        u = KUnitTypes.Domaininf.spawn(b.team,b.x,b.y);
     }
     private float[][] generateCrackData(int count, float radius) {
-        // 每条裂纹存储：[主角度, 长度, 分支角度偏移, 分支长度比例, 分支起点比例]
         float[][] data = new float[count][5];
 
         for (int i = 0; i < count; i++) {
-            data[i][0] = Mathf.random(360f);                    // 主角度
-            data[i][1] = Mathf.random(radius * 0.4f, radius);    // 总长度
-            data[i][2] = Mathf.random(-25f, 25f);                // 分支角度偏移
-            data[i][3] = Mathf.random(0.3f, 0.6f);               // 分支长度比例（固定！）
-            data[i][4] = Mathf.random(0.3f, 0.6f);               // 分支起点比例（固定！）
+            data[i][0] = Mathf.random(360f);
+            data[i][1] = Mathf.random(radius * 0.4f, radius);
+            data[i][2] = Mathf.random(-25f, 25f);
+            data[i][3] = Mathf.random(0.3f, 0.6f);
+            data[i][4] = Mathf.random(0.3f, 0.6f);
         }
 
         return data;
@@ -75,17 +75,15 @@ public class DomainBulletType extends BulletType {
                 float angle = data[i][0];
                 float length = data[i][1];
                 float branchOffset = data[i][2];
-                float branchLengthRatio = data[i][3];   // ★ 固定值 ★
-                float branchStartRatio = data[i][4];    // ★ 固定值 ★
+                float branchLengthRatio = data[i][3];
+                float branchStartRatio = data[i][4];
 
-                // 主裂纹（从中心向外）
                 float x1 = x + Mathf.cosDeg(angle) * 2f;
                 float y1 = y + Mathf.sinDeg(angle) * 2f;
                 float x2 = x + Mathf.cosDeg(angle + branchOffset * 0.3f) * length;
                 float y2 = y + Mathf.sinDeg(angle + branchOffset * 0.3f) * length;
                 Lines.line(x1, y1, x2, y2);
                 if(b.time>endtime+30) {
-                    // ★ 分支裂纹（使用固定比例） ★
                     float branchStart = length * branchStartRatio;
                     float branchLength = length * branchLengthRatio;
                     float branchAngle = angle + branchOffset;
@@ -97,8 +95,6 @@ public class DomainBulletType extends BulletType {
                     Lines.line(bx1, by1, bx2, by2);
                 }
             }
-
-            // 中心亮点
             Draw.color(Color.white, 0.5f);
             Fill.circle(x, y, 2.5f);
 
@@ -107,7 +103,7 @@ public class DomainBulletType extends BulletType {
         }
         else {
             if (b.time > 100) {
-                TextureRegion ba = Core.atlas.find("kmod-domain");
+                TextureRegion ba = Core.atlas.find("kmod-domaininf");
                 float size = Math.min(1000, (b.time - 100) * 80);
                 Draw.rect(bs, b.x, b.y, STsize, STsize, b.time / -80);
                 Draw.rect(ba, b.x, b.y, size, size, b.time / 80);
@@ -122,7 +118,6 @@ public class DomainBulletType extends BulletType {
                 Draw.color();
             }
         }
-
         reset();
     }
 

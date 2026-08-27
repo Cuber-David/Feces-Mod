@@ -3,6 +3,7 @@ package K;
 import K.content.*;
 import K.content.Fx.FlameFX;
 import K.content.Fx.fx;
+import K.content.Keycheck.KeybindRody;
 import K.content.NH.NHContent;
 import K.content.campaign.*;
 import K.content.effectrenderer.StatusEffectRenderer;
@@ -138,6 +139,7 @@ public class KMod extends Mod{
         sector.load();
         techtree.load();
         NHContent.loadLast();
+        KeybindRody.init();
     }
 
 }

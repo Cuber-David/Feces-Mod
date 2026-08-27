@@ -3,13 +3,11 @@ package K.content;
 import K.content.unit.Rody.RodyUnitType;
 import K.content.unit.air.*;
 import K.content.unit.ground.*;
-import K.content.unit.others.DomainUnitType;
-import K.content.unit.others.SoundUnitType;
-import K.content.unit.others.ThunderUnitType;
+import K.content.unit.others.*;
+import K.content.unit.others.jujutsu.*;
 
 public class KUnitTypes {
-    public static FecaldroneUnitType Fecaldrone;
-    public static BigdaggerUnitType Bigdagger;
+    public static FecaldroneUnitType Fecaldrone;public static BigdaggerUnitType Bigdagger;
     public static BignovaUnitType Bignova;
     public static BigcrawlerUnitType Bigcrawler;
     public static PlasmadrillUnitType Plasmadrill;
@@ -26,7 +24,11 @@ public class KUnitTypes {
     public static Fecalwarcraft Fecalwarcraft;
     public static TacticalassaultmechaUnitType Tacticalassaultmecha;
     public static TacticalsuppressiontankUnitType Tacticalsuppressiontank;
-    public static DomainUnitType Domain;
+    public static DomainInfUnitType Domaininf;
+    public static BlueUnitType Blue;
+    public static RedUnitType Red;
+    public static PurpleUnitType Purple;
+    public static BaU Ba;
     public static void load(){
         Thunder = new ThunderUnitType("Thunder");
         Sound = new SoundUnitType("Sound");
@@ -46,6 +48,10 @@ public class KUnitTypes {
         Rody = new RodyUnitType("Rody");
         Tacticalassaultmecha = new TacticalassaultmechaUnitType("Tacticalassaultmecha");
         Tacticalsuppressiontank = new TacticalsuppressiontankUnitType("Tacticalsuppressiontank");
-        Domain = new DomainUnitType("Domain");
+        Domaininf = new DomainInfUnitType("Domaininf");
+        Blue = new BlueUnitType("Blue");
+        Red = new RedUnitType("Red");
+        Purple = new PurpleUnitType("Purple");
+        Ba = new BaU("Ba");
     }
 }

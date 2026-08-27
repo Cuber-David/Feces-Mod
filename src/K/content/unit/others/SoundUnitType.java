@@ -1,11 +1,10 @@
 package K.content.unit.others;
 
-import K.content.extend.Bullets.BlackHoleBullet;
-import K.content.extend.Bullets.DomainBulletType;
-import K.content.extend.Bullets.MyLaserBulletType;
-import K.content.extend.Bullets.SlashBulletType;
-import K.content.extend.Bullets.sound.alarm;
-import K.content.extend.Bullets.sound.charge;
+import K.content.Fx.SkyLightningEffect;
+import K.content.Fx.SkyLightningPointEffect;
+import K.content.Fx.VEFX;
+import K.content.extend.Bullets.*;
+import K.content.extend.Bullets.Soundb;
 import K.content.Fx.fx;
 import K.content.sounds;
 import mindustry.content.Fx;
@@ -24,13 +23,16 @@ public class SoundUnitType extends UnitType {
         deathSound = Sounds.none;
         deathExplosionEffect = Fx.none;
         deathShake = 100;
+        hidden = true;
         //#0
         weapons.add(
                 new Weapon("1"){{
                     mirror = false;
                     reload = 60f;
                     shootSound = Sounds.none;
-                    bullet = new alarm();
+                    bullet = new Soundb(){{
+                        despawnSound = sounds.alarm;
+                    }};
                 }}
         );
         //#1
@@ -39,12 +41,12 @@ public class SoundUnitType extends UnitType {
                     mirror = false;
                     reload = 60f;
                     shootSound = Sounds.none;
-                    bullet = new charge();
+                    bullet = new Soundb();
                 }}
         );
         //#2
         weapons.add(
-                new Weapon("2"){{
+                new Weapon("3"){{
                     mirror = false;
                     reload = 60f;
                     shootSound = Sounds.none;
@@ -53,32 +55,32 @@ public class SoundUnitType extends UnitType {
         );
         //#3
         weapons.add(
-                new Weapon("2"){{
+                new Weapon("4"){{
                     mirror = false;
                     reload = 60f;
-                    bullet = new charge(){{
+                    bullet = new Soundb(){{
                         despawnSound = sounds.dogshit;
                     }};
                 }}
         );
         //#4
         weapons.add(
-                new Weapon("2"){{
+                new Weapon("5"){{
                     mirror = false;
                     reload = 60f;
                     shootSound = Sounds.none;
-                    bullet = new charge(){{
+                    bullet = new Soundb(){{
                         despawnSound = sounds.watching;
                     }};
                 }}
         );
         //#5
         weapons.add(
-                new Weapon("2"){{
+                new Weapon("6"){{
                     mirror = false;
                     reload = 60f;
                     shootSound = Sounds.none;
-                    bullet = new charge(){{
+                    bullet = new Soundb(){{
                         despawnEffect = fx.Hugebeam;
                         despawnSound = sounds.beamlarge;
                     }};
@@ -86,7 +88,7 @@ public class SoundUnitType extends UnitType {
         );
         //#6
         weapons.add(
-                new Weapon("2"){{
+                new Weapon("7"){{
                     mirror = false;
                     reload = 60f;
                     shootSound = Sounds.none;
@@ -96,21 +98,41 @@ public class SoundUnitType extends UnitType {
         );
         //#7
         weapons.add(
-                new Weapon("2"){{
+                new Weapon("8"){{
                     mirror = false;
                     reload = 60f;
                     shootSound = Sounds.none;
-                    bullet = new DomainBulletType() {{
+                    bullet = new DomainInf() {{
                     }};
                 }}
         );
         //#8
         weapons.add(
-                new Weapon("2"){{
+                new Weapon("9"){{
                     mirror = false;
                     reload = 60f;
                     shootSound = Sounds.none;
-                    bullet = new SlashBulletType() {{
+                    bullet = new DomainCook() {{
+                    }};
+                }}
+        );
+        //#9
+        weapons.add(
+                new Weapon("10"){{
+                    mirror = false;
+                    reload = 60f;
+                    shootSound = Sounds.none;
+                    bullet = new ExplosionBullType();
+                }}
+        );
+        //#10
+        weapons.add(
+                new Weapon("11"){{
+                    mirror = false;
+                    reload = 60f;
+                    shootSound = Sounds.none;
+                    bullet = new SlashBulletType(){{
+                        hitSize = 100;
                     }};
                 }}
         );
