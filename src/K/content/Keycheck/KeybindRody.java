@@ -25,6 +25,11 @@ public class KeybindRody {
     private static float chargetime = 0f;
     private static float mxt = 180f;
     private static float mnt = 120f;
+    private static float px = Vars.player.x;
+    private static float py = Vars.player.y;
+    private static float mx = Core.input.mouseWorldX();
+    private static float my = Core.input.mouseWorldX();
+    private static float urot = Vars.player.angleTo(mx,my)*Mathf.degRad;
     private static final String[] ALLOWED_UNITS = {
             "kmod-Rody"
     };
@@ -95,23 +100,14 @@ public class KeybindRody {
             Log.info("玩家不存在，无法生成");
             return;
         }
-        float px = Vars.player.x;
-        float py = Vars.player.y;
-        float mouseX = Core.input.mouseWorldX();
-        float mouseY = Core.input.mouseWorldY();
         Team team = Vars.player.team();
-        float urot = Vars.player.angleTo(mouseX,mouseY)*Mathf.degRad;
         Unit unit = unitType.spawn(team, px+Mathf.cos(urot)*160, py+Mathf.sin(urot)*160);
     }
 
     private static void spawnBullet() {
         Team team = Vars.player.team();
-        float px = Vars.player.x;
-        float py = Vars.player.y;
-        float mouseX = Core.input.mouseWorldX();
-        float mouseY = Core.input.mouseWorldY();
-        float rot = Vars.player.angleTo(mouseX,mouseY);
-        float dst = Vars.player.dst(mouseX,mouseY)/2850f;
+        float rot = urot*Mathf.radDeg;
+        float dst = Vars.player.dst(mx,my)/2850f;
         for (int i = 0; i < 20; i++) {
             SlashBulletType.createBullet(new SlashBulletType(),team,px,py,rot,1000,1,dst);
         }
@@ -144,5 +140,12 @@ public class KeybindRody {
     private static void drawce(){
         if(!checkPlayer()) return;
 
+    }
+
+    private float cx(float l){
+        return Mathf.cos(urot)*l;
+    }
+    private float sx(float l){
+        return Mathf.sin(urot)*l;
     }
 }
