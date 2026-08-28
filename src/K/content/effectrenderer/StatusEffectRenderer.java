@@ -50,7 +50,6 @@ public class StatusEffectRenderer {
     public void draw() {
         if (warmup <= 0.01f) return;
         if (!initialized) {
-            Log.info("StatusEffectRenderer 开始绘制");
             initialized = true;
         }
 
