@@ -25,8 +25,6 @@ public class KeybindRody {
     private static float chargetime = 0f;
     private static float mxt = 180f;
     private static float mnt = 120f;
-    private static float px = Vars.player.x;
-    private static float py = Vars.player.y;
     private static float mx = Core.input.mouseWorldX();
     private static float my = Core.input.mouseWorldX();
     private static float urot = Vars.player.angleTo(mx,my)*Mathf.degRad;
@@ -96,6 +94,8 @@ public class KeybindRody {
         return unit.type.name + " (HP: " + (int)unit.health + "/" + (int)unit.maxHealth() + ")";
     }
     private static void spawnUnitAtMouse(UnitType unitType, String name) {
+        float px = Vars.player.x;
+        float py = Vars.player.y;
         if (!checkPlayer()) {
             Log.info("玩家不存在，无法生成");
             return;
@@ -105,6 +105,8 @@ public class KeybindRody {
     }
 
     private static void spawnBullet() {
+        float px = Vars.player.x;
+        float py = Vars.player.y;
         Team team = Vars.player.team();
         float rot = urot*Mathf.radDeg;
         float dst = Vars.player.dst(mx,my)/2850f;
