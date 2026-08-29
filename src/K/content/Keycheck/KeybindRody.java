@@ -2,6 +2,7 @@ package K.content.Keycheck;
 
 import K.content.Fx.OtherEffects.KaiEffect;
 import K.content.KUnitTypes;
+import K.content.extend.Bullets.jujutsu.KaiBulletType;
 import K.content.extend.Bullets.jujutsu.SlashBulletType;
 import arc.Core;
 import arc.Events;
@@ -128,7 +129,15 @@ public class KeybindRody {
     }
 
     private static void atk(float c){
-        if(!checkPlayer()) return;
+        if(checkPlayer()){
+            float mx = Core.input.mouseWorldX();
+            float my = Core.input.mouseWorldY();
+            float px = Vars.player.x;
+            float py = Vars.player.y;
+            float rot = Vars.player.angleTo(mx,my);
+            Unit u = Vars.player.unit();
+            new KaiBulletType(chargetime).create(u,u.team,px+cx(chargetime),py+sx(chargetime),rot);
+        }
     }
 
     private static void rest(){

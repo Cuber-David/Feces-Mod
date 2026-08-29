@@ -17,14 +17,14 @@ public class KaiEffect extends Effect {
             Draw.z(200);
             color(Pal.lightPyraFlame, Pal.darkPyraFlame, e.fin());
 
-            randLenVectors(e.id, 1, e.finpow() * 70f+t, e.rotation+120, 10f, (x, y) -> {
-                Fill.circle(e.x + x, e.y + y, 0.65f + e.fout() * 1.6f + Math.min(t / 15,9));
+            randLenVectors(e.id, 1, e.finpow() * 10f+t, e.rotation+120, 10f, (x, y) -> {
+                Fill.circle(e.x + x, e.y + y, 1.5f * e.fout() * Math.min(t / 15,9));
             });
-            randLenVectors(e.id, 1, e.finpow() * 70f+t, e.rotation-120, 10f, (x, y) -> {
-                Fill.circle(e.x + x, e.y + y, 0.65f + e.fout() * 1.6f + Math.min(t / 15,9));
+            randLenVectors(e.id, 1, e.finpow() * 10f+t, e.rotation-120, 10f, (x, y) -> {
+                Fill.circle(e.x + x, e.y + y, 1.5f * e.fout() * Math.min(t / 15,9));
             });
-            lineVector(e.id,1,(2*t-20)*e.finpow(),e.rotation+175+ Mathf.random(10),(x, y) -> {
-                Fill.circle(e.x + x, e.y + y, 0.65f + e.fout() * 1.6f + Math.min(t / 15,9));
+            lineVector(e.id,1,(2*t-20)*e.finpow(),e.rotation+177+ Mathf.random(6),(x, y) -> {
+                Fill.circle(e.x + x, e.y + y,  1.5f * e.fout() * Math.min(t / 15,9));
             });
         });
     }
