@@ -1,8 +1,8 @@
 package K.content.effects;
 
-import K.graphics.FlamePal;
+import K.content.Fx.KPal;
 import K.KMod;
-import K.content.Fx.FlameFX;
+import K.content.Fx.OtherFx;
 import K.content.extend.util.Utils;
 import K.content.extend.fo.EmpathyDamage;
 import K.graphics.FragmentationBatch;
@@ -32,7 +32,7 @@ public class SpecialDeathEffects{
     public static SpecialDeathEffects def, blood;
     public static Seq<SpecialDeathEffects> all = new Seq<>();
 
-    public Effect debrisEffect = FlameFX.heavyDebris, sparkEffect = FlameFX.destroySparks, explosionEffect = Fx.none;
+    public Effect debrisEffect = OtherFx.FlameFX.heavyDebris, sparkEffect = OtherFx.FlameFX.destroySparks, explosionEffect = Fx.none;
     public Effect fragmentTrailEffect = null;
     public Cons<Fragmentation.FragmentEntity> fragDeath = null;
     public Color disintegrateColor = Pal.rubble, internalColor = Pal.darkerMetal;
@@ -42,8 +42,8 @@ public class SpecialDeathEffects{
     public static void load(){
         def = new SpecialDeathEffects();
         blood = new OrganicDeath(){{
-            color.set(FlamePal.blood);
-            internalColor = FlamePal.blood;
+            color.set(KPal.blood);
+            internalColor = KPal.blood;
             colorVariation = 0.2f;
 
             debrisEffect = Fx.none;
@@ -110,7 +110,7 @@ public class SpecialDeathEffects{
                 }
             }).layer(Layer.flyingUnit);
 
-            explosionEffect = new MultiEffect(FlameFX.fragmentExplosion, lightning);
+            explosionEffect = new MultiEffect(OtherFx.FlameFX.fragmentExplosion, lightning);
             deathSound = Sounds.explosion;
         }};
         nameMap.put("new-horizon-pester", nha);
@@ -135,20 +135,20 @@ public class SpecialDeathEffects{
         putGroupEffect("allure", "0b\\d\\d-", wardDeath);
 
         OrganicDeath end = new OrganicDeath(){{
-            color.set(FlamePal.red);
+            color.set(KPal.red);
             fragmentTrailEffect = null;
             liquidAmount = 0.15f;
             liquidRange = 0.3f;
             liquidSize = 0.7f;
             colorVariation = 0f;
 
-            explosionEffect = FlameFX.fragmentExplosion;
+            explosionEffect = OtherFx.FlameFX.fragmentExplosion;
             deathSound = Sounds.explosion;
         }};
         nameMap.put("flameout-despondency", end);
         SpecialDeathEffects emp = new SpecialDeathEffects(){{
             deathSound = Sounds.explosion;
-            explosionEffect = FlameFX.empathyDecoyDestroy;
+            explosionEffect = OtherFx.FlameFX.empathyDecoyDestroy;
             debrisEffect = sparkEffect = Fx.none;
             hasInternal = false;
             solid = false;
@@ -282,7 +282,7 @@ public class SpecialDeathEffects{
         }
         //batch.altFunc = (hx, hy, tex) -> FlameFX.simpleFragmentation.at(hx, hy, ang, tex);
         batch.onDeathFunc = fragDeath;
-        batch.altFunc = (hx, hy, tex) -> FlameFX.simpleFragmentation.at(hx, hy, Angles.angle(x, y, hx, hy), Draw.getColor(), tex);
+        batch.altFunc = (hx, hy, tex) -> OtherFx.FlameFX.simpleFragmentation.at(hx, hy, Angles.angle(x, y, hx, hy), Draw.getColor(), tex);
         batch.trailEffect = fragmentTrailEffect;
         batch.explosionEffect = explosionEffect != Fx.none ? explosionEffect : null;
         batch.fragColor = Color.white;
@@ -322,7 +322,7 @@ public class SpecialDeathEffects{
             //e.lifetime = 180f;
             e.vz = Mathf.random(-0.01f, 0.1f);
         };
-        batch.altFunc = (hx, hy, tex) -> FlameFX.simpleFragmentation.at(hx, hy, Angles.angle(x, y, hx, hy), tex);
+        batch.altFunc = (hx, hy, tex) -> OtherFx.FlameFX.simpleFragmentation.at(hx, hy, Angles.angle(x, y, hx, hy), tex);
         batch.explosionEffect = batch.trailEffect = null;
         batch.fragColor = Color.white;
         batch.sound = deathSound;
@@ -333,7 +333,7 @@ public class SpecialDeathEffects{
     public static class ApathyDeath extends SpecialDeathEffects{
         ApathyDeath(){
             debrisEffect = Fx.none;
-            internalColor = FlamePal.blood;
+            internalColor = KPal.blood;
             hasInternal = true;
             deathSound = Sounds.explosion;
         }
@@ -342,8 +342,8 @@ public class SpecialDeathEffects{
         public void deathUnit(Unit u, float x, float y, float rotation, Cons<Fragmentation.FragmentEntity> alt){
             //BloodSplatter.explosion(95, x, y, hitSize / 2, 400f, 45f);
             //BloodSplatter.explosion(40, x, y, hitSize / 2, 550f, 35f, 60f);
-            BloodSplatter.directionalExplosion(85, u.x, u.y, rotation, 60f, u.hitSize / 2f, 400f, 45f, FlamePal.blood, 0.2f);
-            BloodSplatter.directionalExplosion(40, u.x, u.y, rotation, 50f, u.hitSize / 2f, 500f, 60f, FlamePal.blood, 0.2f);
+            BloodSplatter.directionalExplosion(85, u.x, u.y, rotation, 60f, u.hitSize / 2f, 400f, 45f, KPal.blood, 0.2f);
+            BloodSplatter.directionalExplosion(40, u.x, u.y, rotation, 50f, u.hitSize / 2f, 500f, 60f, KPal.blood, 0.2f);
             super.deathUnit(u, x, y, rotation, alt);
         }
     }

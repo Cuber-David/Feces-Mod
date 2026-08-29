@@ -1,6 +1,7 @@
 package K.graphics;
 
 import K.KSFX;
+import K.content.Fx.KPal;
 import arc.*;
 import arc.files.*;
 import arc.graphics.*;
@@ -126,7 +127,7 @@ public class FlameShaders{
 
         @Override
         public void apply(){
-            setUniformf("u_main_color", FlamePal.empathyAdd);
+            setUniformf("u_main_color", KPal.empathyAdd);
         }
     }
 

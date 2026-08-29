@@ -1,5 +1,6 @@
 package K.graphics;
 
+import K.content.Fx.KPal;
 import K.content.effects.Fragmentation;
 import arc.*;
 import arc.audio.*;
@@ -74,7 +75,7 @@ public class FragmentationBatch extends Batch{
 
     @Override
     protected void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float rotation){
-        if(FlamePal.blood.a <= 0.9f || region == updateCircle() || blending != Blending.normal || region == Core.atlas.white() || !region.found()) return;
+        if(KPal.blood.a <= 0.9f || region == updateCircle() || blending != Blending.normal || region == Core.atlas.white() || !region.found()) return;
 
         //int dim = Math.max(region.width, region.height);
         float dim = Math.max(width, height) / Draw.scl;
@@ -107,7 +108,7 @@ public class FragmentationBatch extends Batch{
                 fragFunc.get(fr);
                 fr.generateGore();
             } : fragFunc);
-            frag.drawnColor.set(FlamePal.blood);
+            frag.drawnColor.set(KPal.blood);
             if(genGore) frag.goreColor.set(goreColor);
             if(trailEffect != null) frag.trailEffect = trailEffect;
             if(explosionEffect != null) frag.explosionEffect = explosionEffect;

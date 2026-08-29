@@ -1,9 +1,9 @@
 package K.content.extend.Bullets;
 
-import K.graphics.FlamePal;
+import K.content.Fx.KPal;
 import K.KMod;
 import K.KSFX;
-import K.content.Fx.FlameFX;
+import K.content.Fx.OtherFx;
 import K.content.extend.util.Utils;
 import K.content.effects.SpecialDeathEffects;
 import K.content.extend.fo.EmpathyDamage;
@@ -25,8 +25,8 @@ import mindustry.world.blocks.defense.*;
 public class EndNukeBulletType extends BasicBulletType{
     public EndNukeBulletType(){
         super(34f, 50000f, "missile-large");
-        backColor = trailColor = hitColor = FlamePal.red;
-        frontColor = FlamePal.red.cpy().mul(2f);
+        backColor = trailColor = hitColor = KPal.red;
+        frontColor = KPal.red.cpy().mul(2f);
 
         shrinkY = 0f;
         width = 15f;
@@ -44,7 +44,7 @@ public class EndNukeBulletType extends BasicBulletType{
         hitEffect = Fx.none;
         despawnEffect = Fx.none;
 
-        shootEffect = FlameFX.desNukeShoot;
+        shootEffect = OtherFx.FlameFX.desNukeShoot;
         smokeEffect = Fx.none;
     }
 
@@ -68,7 +68,7 @@ public class EndNukeBulletType extends BasicBulletType{
             float nx = t.x * Vars.tilesize, ny = t.y * Vars.tilesize;
             float ang = Angles.angle(bx, by, nx, ny);
 
-            FlameFX.desNukeShockSmoke.at(nx, ny, ang);
+            OtherFx.FlameFX.desNukeShockSmoke.at(nx, ny, ang);
         }, bl -> {
             //float d = lethal ? 12000f + bl.maxHealth / 20f : bl.health / 1.5f;
             float d = 21000f + bl.maxHealth / 5f;
@@ -97,7 +97,7 @@ public class EndNukeBulletType extends BasicBulletType{
                     dev.lifetime = Mathf.random(1f, 2f) * 60f;
                     dev.health = (Math.min(dev.width, dev.height) / healthBase) * bl.maxHealth * 1.5f;
                     dev.team = team;
-                    dev.explosion = eff.explosionEffect != Fx.none ? eff.explosionEffect : FlameFX.fragmentExplosion;
+                    dev.explosion = eff.explosionEffect != Fx.none ? eff.explosionEffect : OtherFx.FlameFX.fragmentExplosion;
                     dev.collides = true;
                     dev.contagiousChance = 0.85f;
                     dev.slowDownAmount = 0.5f;
@@ -150,7 +150,7 @@ public class EndNukeBulletType extends BasicBulletType{
                             }
                         });
 
-                        FlameFX.desNukeVaporize.at(u.x, u.y, u.angleTo(bx, by) + 180f, u.hitSize / 2f);
+                        OtherFx.FlameFX.desNukeVaporize.at(u.x, u.y, u.angleTo(bx, by) + 180f, u.hitSize / 2f);
                     });
                 }
             }else if(t instanceof Building bl){
@@ -177,7 +177,7 @@ public class EndNukeBulletType extends BasicBulletType{
                             d.zOverride = Layer.turret + 1f;
                         });
                         //FlameFX.desNukeVaporize.at(u.x, u.y, u.angleTo(bx, by) + 180f, u.hitSize / 2f);
-                        FlameFX.desNukeVaporize.at(bl.x, bl.y, bl.angleTo(bx, by) + 180f, bl.hitSize() / 2f);
+                        OtherFx.FlameFX.desNukeVaporize.at(bl.x, bl.y, bl.angleTo(bx, by) + 180f, bl.hitSize() / 2f);
                     } : () -> {
                         SpecialDeathEffects eff = SpecialDeathEffects.get(bl.block);
 
@@ -202,7 +202,7 @@ public class EndNukeBulletType extends BasicBulletType{
                             dev.lifetime = Mathf.random(1f, 2f) * 60f;
                             dev.health = (Math.min(dev.width, dev.height) / healthBase) * bl.maxHealth * 1.5f;
                             dev.team = team;
-                            dev.explosion = eff.explosionEffect != Fx.none ? eff.explosionEffect : FlameFX.fragmentExplosion;
+                            dev.explosion = eff.explosionEffect != Fx.none ? eff.explosionEffect : OtherFx.FlameFX.fragmentExplosion;
                             dev.collides = true;
                             dev.contagiousChance = 0.85f;
                             dev.slowDownAmount = 0.5f;
@@ -228,8 +228,8 @@ public class EndNukeBulletType extends BasicBulletType{
         });
 
         Effect.shake(60f, 120f, b.x, b.y);
-        FlameFX.desNukeShockwave.at(b.x, b.y, 480f);
-        FlameFX.desNuke.at(b.x, b.y, 479f, arr);
+        OtherFx.FlameFX.desNukeShockwave.at(b.x, b.y, 480f);
+        OtherFx.FlameFX.desNuke.at(b.x, b.y, 479f, arr);
 
         KSFX.inst.impactFrames(bx, by, b.rotation(), 23f, false, () -> {
             for(int i = 0; i < arr.length; i++){

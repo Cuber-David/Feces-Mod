@@ -1,6 +1,6 @@
 package K.content.extend.Bullets;
 
-import K.content.Fx.fx;
+import K.content.Fx.KFx;
 import K.content.sounds;
 import arc.graphics.Blending;
 import arc.graphics.Color;
@@ -24,7 +24,7 @@ public class RedBulletType extends BulletType {
     public RedBulletType(){
         super(0,10000);
         damage = 10000;
-        shootEffect = fx.Shcokcharge;
+        shootEffect = KFx.Shcokcharge;
         hitSize = 1601;
         drag = 888;
         collides =  false;

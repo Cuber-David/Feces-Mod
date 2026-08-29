@@ -1,7 +1,6 @@
 package K.content;
 
-import K.content.Fx.fx;
-import mindustry.gen.Unit;
+import K.content.Fx.KFx;
 import mindustry.type.StatusEffect;
 
 public class statuseffect {
@@ -11,14 +10,14 @@ public class statuseffect {
     public static void load() {
         none = new StatusEffect("non"){{}};
         sick = new StatusEffect("sick"){{
-            effect = fx.disorder;
+            effect = KFx.disorder;
             effectChance = 0.1f;
             reactive = false;
             speedMultiplier = 0.8f;
             reloadMultiplier = 0.8f;
         }};
         infinitude = new StatusEffect("infinitude"){{
-            effect = fx.disorder;
+            effect = KFx.disorder;
             effectChance = 0.1f;
             reactive = false;
             speedMultiplier = 0f;

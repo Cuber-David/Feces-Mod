@@ -1,8 +1,7 @@
-package K.content.NH;
+package K.Othermod.NH;
 
 import K.graphics.NHRenderer;
 import K.graphics.ScreenShaderDrawer;
-import arc.Core;
 import mindustry.Vars;
 
 public class NHVars {

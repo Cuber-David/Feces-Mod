@@ -1,24 +1,15 @@
 package K.content.extend.Bullets;
 
-import K.content.Fx.fx;
+import K.content.Fx.KFx;
 import K.content.effects.SpecialDeathEffects;
 import K.content.extend.fo.EmpathyDamage;
 import K.content.extend.util.Utils;
-import K.graphics.FlamePal;
-import arc.graphics.Color;
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.Fill;
-import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import mindustry.content.Fx;
-import mindustry.entities.Effect;
 import mindustry.entities.Units;
 import mindustry.entities.bullet.BulletType;
 import mindustry.gen.Bullet;
-import mindustry.gen.Unit;
-import mindustry.graphics.Drawf;
-import mindustry.graphics.Layer;
 
 public class SlashBulletType extends BulletType {
     public SlashBulletType(){
@@ -26,7 +17,7 @@ public class SlashBulletType extends BulletType {
         lifetime = 30;
         hitSize = 24;
         despawnEffect = Fx.none;
-        hitEffect = fx.slash;
+        hitEffect = KFx.slash;
         pierce = true;
         pierceCap = 4;
     }
@@ -41,7 +32,7 @@ public class SlashBulletType extends BulletType {
         float r = Mathf.random(360);
         float x = Mathf.random(randlength)-randlength/2;
         float y = Mathf.random(randlength)-randlength/2;
-        fx.slash.at(b.x+x,b.y+y,r);
+        KFx.slash.at(b.x+x,b.y+y,r);
         super.despawned(b);
     }
 

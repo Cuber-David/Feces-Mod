@@ -1,6 +1,6 @@
 package K.content.effects;
 
-import K.graphics.FlamePal;
+import K.content.Fx.KPal;
 import K.content.extend.util.Utils;
 import K.entities.DrawEntity;
 import K.graphics.GraphicUtils;
@@ -21,8 +21,8 @@ public class BloodSplatter extends DrawEntity implements Poolable{
     float size;
     float time = 0f, lifetime = 0f, lifetime2;
     float randColor = 1f;
-    //Color color = FlamePal.blood;
-    Color color = new Color(FlamePal.blood);
+    //Color color = KPal.blood;
+    Color color = new Color(KPal.blood);
     //PowOut out = new PowOut(2);
     DynamicPowOut out = new DynamicPowOut();
 
@@ -48,7 +48,7 @@ public class BloodSplatter extends DrawEntity implements Poolable{
     }
 
     public static void explosion(int amount, float x, float y, float boundary, float length, float size){
-        explosion(amount, x, y, boundary, length, size, 35f, FlamePal.blood, 0.2f);
+        explosion(amount, x, y, boundary, length, size, 35f, KPal.blood, 0.2f);
     }
 
     public static void explosion(int amount, float x, float y, float boundary, float length, float size, float time, Color color, float colorRand){
@@ -80,7 +80,7 @@ public class BloodSplatter extends DrawEntity implements Poolable{
     }
 
     public static void create(float x, float y, float x2, float y2, float lifetime, float size){
-        create(x, y, x2, y2, lifetime, size, FlamePal.blood, 0.2f);
+        create(x, y, x2, y2, lifetime, size, KPal.blood, 0.2f);
     }
 
     public static void create(float x, float y, float x2, float y2, float lifetime, float size, Color color, float colorRand){
@@ -188,7 +188,7 @@ public class BloodSplatter extends DrawEntity implements Poolable{
         length = angle = size = 0f;
         time = lifetime = lifetime2 = 0f;
         randColor = 1f;
-        color.set(FlamePal.blood);
+        color.set(KPal.blood);
     }
 
     private static class DynamicPowOut implements Interp{

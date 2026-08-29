@@ -1,6 +1,6 @@
 package K.content.effects;
 
-import K.content.Fx.FlameFX;
+import K.content.Fx.OtherFx;
 import K.content.extend.util.Utils;
 import K.entities.DrawEntity;
 import K.entities.RenderGroupEntity;
@@ -54,7 +54,7 @@ public class Severation extends DrawEntity implements QuadTreeObject{
 
     public float color = Color.whiteFloatBits;
     public float z = Layer.flyingUnit, shadowZ, zTime;
-    public Effect explosionEffect = FlameFX.fragmentExplosion;
+    public Effect explosionEffect = OtherFx.FlameFX.fragmentExplosion;
     public Sound explosionSound = Sounds.none;
 
     float time = 0f, lifetime = 3f * 60f;
@@ -569,8 +569,8 @@ public class Severation extends DrawEntity implements QuadTreeObject{
                             
                             for(int j = 0; j < 4; j += 2){
                                 float dx2 = intersections.items[j], dy2 = intersections.items[j + 1];
-                                if((dx == dx2 && dy == dy2) || !intersectSegments(fx, fy, dx, dy, lx, ly, dx2, dy2)){
-                                //if((dx != dx2 || dy != dy2) && !intersectSegments(fx, fy, dx, dy, lx, ly, dx2, dy2)){
+                                if((dx == dx2 && dy == dy2) || !intersectSegments(KFx, fy, dx, dy, lx, ly, dx2, dy2)){
+                                //if((dx != dx2 || dy != dy2) && !intersectSegments(KFx, fy, dx, dy, lx, ly, dx2, dy2)){
                                     bias += (j == 0 ? 1 : -1);
                                 }
                             }

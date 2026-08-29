@@ -1,6 +1,6 @@
 package K.content.extend.fo;
 
-import K.graphics.FlamePal;
+import K.content.Fx.KPal;
 import K.content.KUnitTypes;
 import K.graphics.FlameShaders;
 import arc.graphics.g2d.*;
@@ -182,10 +182,10 @@ public class EmpathySpawner{
 
         TextureRegion r1 = new TextureRegion();
 
-        Draw.color(FlamePal.empathy, fin1 * fout1);
+        Draw.color(KPal.empathy, fin1 * fout1);
         Draw.rect(r1, x, y, r1.width * Draw.scl * 2f, r1.height * Draw.scl * 2f);
 
-        Draw.color(FlamePal.empathy);
+        Draw.color(KPal.empathy);
         //Lines.stroke(2f * fout1);
         if(fin2 > 0.0001f){
             float ang = time / 2f;
@@ -242,16 +242,16 @@ public class EmpathySpawner{
             for(int i = 0; i < 8; i++){
                 float fr = (360f / 8) * i - ang / 1.5f;
                 v.trns(fr, 95f).add(x, y);
-                Draw.color(FlamePal.empathy);
+                Draw.color(KPal.empathy);
                 Lines.circle(v.x, v.y, 20f * fin4c);
-                Draw.color(FlamePal.empathy, 0.333f * fout1);
+                Draw.color(KPal.empathy, 0.333f * fout1);
                 Fill.circle(v.x, v.y, 20f * fin4c);
                 //eclipse(v.x, v.y, 0f, 20f * fin4c, 1f - (i / 8f));
             }
         }
         if(fin5 > 0.0001f){
             //float ang = -time / 3f;
-            Draw.color(FlamePal.empathy);
+            Draw.color(KPal.empathy);
             Lines.stroke(0.75f * fin5c * fout1);
             Lines.circle(x, y, 290f * fout1);
             float fout1cc = pow2Out.apply(fout1);
@@ -277,10 +277,10 @@ public class EmpathySpawner{
             if(fin6c > 0.0001f){
                 Lines.stroke(2f * fout1);
                 progressiveCircle(x, y, 390f, ang, fin6c);
-                Draw.color(FlamePal.empathy, 0.5f);
+                Draw.color(KPal.empathy, 0.5f);
                 progressiveCircle(x, y, 400f, -ang * 1.5f, fin6c);
                 
-                Draw.color(FlamePal.empathy);
+                Draw.color(KPal.empathy);
                 v.trns(ang * 0.75f, 390f).add(x, y);
                 progressiveCircle(v.x, v.y, 35f * fout1cc, -ang, fin6c);
                 Lines.stroke(fout1);
@@ -293,10 +293,10 @@ public class EmpathySpawner{
                 
                 Lines.stroke(2f * fout1);
                 progressiveCircle(x, y, 590f, ang2 * 2f, fin7c);
-                Draw.color(FlamePal.empathy, 0.5f);
+                Draw.color(KPal.empathy, 0.5f);
                 progressiveCircle(x, y, 595f, -ang2, fin7c);
                 
-                Draw.color(FlamePal.empathy);
+                Draw.color(KPal.empathy);
                 v.trns(ang2 * 0.75f + 120f, 590f).add(x, y);
                 float vx1 = v.x, vy1 = v.y;
                 progressiveCircle(v.x, v.y, 60f * fout1cc, -ang2, fin7c);
@@ -317,7 +317,7 @@ public class EmpathySpawner{
                 eclipse(v.x, v.y, ang3 + 90f, 12f * fin7c * fout1cc, Mathf.mod(time / 70f, 2f) - 1f);
                 
                 Lines.stroke(fout1 * 1.5f);
-                Draw.color(FlamePal.empathy, 0.5f);
+                Draw.color(KPal.empathy, 0.5f);
                 
                 float fin8 = Mathf.clamp((time - 250f) / 120f);
                 float fin8c = pow2.apply(fin8);

@@ -1,10 +1,10 @@
 package K;
 
 import K.content.*;
-import K.content.Fx.FlameFX;
-import K.content.Fx.fx;
+import K.content.Fx.OtherFx;
+import K.content.Fx.KFx;
 import K.content.Keycheck.KeybindRody;
-import K.content.NH.NHContent;
+import K.Othermod.NH.NHContent;
 import K.content.campaign.*;
 import K.content.effectrenderer.StatusEffectRenderer;
 import K.content.effects.Severation;
@@ -15,7 +15,7 @@ import K.content.extend.fo.SpecialMain;
 import K.content.KUnitTypes;
 import K.entities.MockGroup;
 import K.graphics.*;
-import K.Fmod.AntiCheat;
+import K.Othermod.Fmod.AntiCheat;
 import arc.*;
 import arc.input.KeyCode;
 import arc.math.Angles;
@@ -83,7 +83,7 @@ public class KMod extends Mod{
                 Unit p = Vars.player.unit();
                 if(Core.input.keyTap(KeyCode.x)){
                     float ang = Angles.mouseAngle(p.x, p.y);
-                    FlameFX.desMissileHit.at(p.x, p.y, ang);
+                    OtherFx.FlameFX.desMissileHit.at(p.x, p.y, ang);
                 }
             });
         }
@@ -123,7 +123,7 @@ public class KMod extends Mod{
 
         EntityRegister.load();
         sounds.load();
-        fx.load();
+        KFx.load();
         statuseffect.load();
 
         SpecialDeathEffects.load();

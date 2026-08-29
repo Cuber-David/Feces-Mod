@@ -1,4 +1,4 @@
-package K.Fmod;
+package K.Othermod.Fmod;
 
 import K.KMod;
 import K.content.extend.fo.ReflectUtils;

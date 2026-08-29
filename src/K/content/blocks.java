@@ -1,6 +1,6 @@
 package K.content;
 
-import K.content.Fx.fx;
+import K.content.Fx.KFx;
 import K.content.extend.*;
 import K.content.extend.Bullets.AcceledBulletType;
 import K.content.extend.Bullets.DelayAcceledBulletType;
@@ -190,7 +190,7 @@ public class blocks {
             shootSound = Sounds.shootLancer;
             coolant = consumeCoolant(0.2f);
             chargeSound = Sounds.chargeLancer;
-            shootEffect = fx.PulseShoot;
+            shootEffect = KFx.PulseShoot;
 
             consumePower(100 / 6f);
             consumeLiquid(liquids.ionic_liquid,1f);
@@ -198,8 +198,8 @@ public class blocks {
             shootType = new LaserBulletType(360){{
                 colors = new Color[]{Color.valueOf("673931"), Color.valueOf("855f39"), Color.black};
                 //TODO merge
-                chargeEffect = new MultiEffect(fx.PulseCharge, fx.PulseChargeBegin);
-                shootEffect = fx.PulseShoot;
+                chargeEffect = new MultiEffect(KFx.PulseCharge, KFx.PulseChargeBegin);
+                shootEffect = KFx.PulseShoot;
 
                 buildingDamageMultiplier = 0.25f;
                 armorMultiplier = 0.5f;
@@ -889,7 +889,7 @@ public class blocks {
             explosionDamage = 9000 * 5;
             explosionRadius = 40;
             explosionMinWarmup = 0.3f;
-            explodeEffect = fx.ReactorExplosion;
+            explodeEffect = KFx.ReactorExplosion;
             explodeSound = Sounds.explosionReactor2;
             researchCostMultiplier = 0.1f;
 

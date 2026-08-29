@@ -1,7 +1,7 @@
 package K.content.extend.Bullets;
 
 import K.content.statuseffect;
-import K.graphics.FlamePal;
+import K.content.Fx.KPal;
 import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
@@ -26,7 +26,7 @@ public class DomainCook extends BulletType {
     public void draw(Bullet b) {
         Draw.z(21);
         TextureRegion sk = Core.atlas.find("kmod-domaincook");
-        Draw.color(FlamePal.darkRed.a(0.7f));
+        Draw.color(KPal.darkRed.a(0.7f));
         Fill.circle(b.x,b.y,Math.min(1200,b.time*100));
         Draw.z(55);
         Draw.color();

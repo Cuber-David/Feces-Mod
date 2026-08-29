@@ -1,9 +1,9 @@
-package K.content.NH;
+package K.Othermod.NH;
 
 import mindustry.io.SaveFileReader;
 import mindustry.io.SaveVersion;
 
-import static K.content.NH.NHVars.worldData;
+import static K.Othermod.NH.NHVars.worldData;
 
 public class NHWorldData {
     public static short CURRENT_VER = 2;

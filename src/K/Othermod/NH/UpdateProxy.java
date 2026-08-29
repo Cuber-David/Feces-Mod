@@ -1,4 +1,4 @@
-package K.content.NH;
+package K.Othermod.NH;
 
 import arc.Core;
 import arc.Events;

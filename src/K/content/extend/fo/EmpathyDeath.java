@@ -1,6 +1,6 @@
 package K.content.extend.fo;
 
-import K.graphics.FlamePal;
+import K.content.Fx.KPal;
 import K.content.extend.util.Utils;
 import K.content.KUnitTypes;
 import K.graphics.GraphicUtils;
@@ -65,7 +65,7 @@ public class EmpathyDeath{
                 float cfin = pow2In.apply(Mathf.curve(fin1, c * escl, (1f - c) + c * escl));
                 Tmp.v1.trns(ang, 150f + 300f * pow2In.apply(escl)).add(x, y);
                 Tmp.v2.set(Tmp.v1).lerp(x, y, cfin);
-                Tmp.c1.set(FlamePal.red).a(1f - Mathf.curve(chains, 0.5f, 1f));
+                Tmp.c1.set(KPal.red).a(1f - Mathf.curve(chains, 0.5f, 1f));
                 GraphicUtils.chain(Tmp.v2.x, Tmp.v2.y, Tmp.v1.x, Tmp.v1.y, Tmp.c1, Blending.additive);
             }
         }

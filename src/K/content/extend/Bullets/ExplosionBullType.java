@@ -1,6 +1,6 @@
 package K.content.extend.Bullets;
 
-import K.content.Fx.fx;
+import K.content.Fx.KFx;
 import K.content.sounds;
 import mindustry.entities.bullet.BulletType;
 
@@ -9,7 +9,7 @@ public class ExplosionBullType extends BulletType {
         super(0,1000);
         lifetime = 3;
         hitSize = 64;
-        despawnEffect = hitEffect = fx.exp;
+        despawnEffect = hitEffect = KFx.exp;
         despawnSound = hitSound = sounds.smallexp;
         pierce = true;
     }

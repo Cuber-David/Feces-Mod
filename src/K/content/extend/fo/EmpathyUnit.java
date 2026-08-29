@@ -1,8 +1,8 @@
 package K.content.extend.fo;
 
-import K.graphics.FlamePal;
+import K.content.Fx.KPal;
 import K.KSFX;
-import K.content.Fx.FlameFX;
+import K.content.Fx.OtherFx;
 import K.content.extend.util.Utils;
 import K.graphics.GraphicUtils;
 import arc.graphics.*;
@@ -706,7 +706,7 @@ public class EmpathyUnit extends UnitEntity{
         while(moveDistances > 0){
             //Effect
             float ang = Mathf.slerp(ltrot, rotation, m / dst);
-            if(activeAttack.canTrail() && activeMovement.canTrail()) FlameFX.empathyTrail.at(trailX, trailY, ang, Tmp.c1.set(m / 16f, 0f, 0f));
+            if(activeAttack.canTrail() && activeMovement.canTrail()) OtherFx.FlameFX.empathyTrail.at(trailX, trailY, ang, Tmp.c1.set(m / 16f, 0f, 0f));
 
             moveDistances -= 16f;
             trailX += v.x;
@@ -815,7 +815,7 @@ public class EmpathyUnit extends UnitEntity{
         if(chainTime > 0){
             float fin = 1 - chainTime / chainLifetime;
             Vec2 v = Tmp.v1.set(chainPos).sub(x, y).scl(1f - ((40f / 20000) * Mathf.pow(fin, 15f))).add(x, y);
-            Tmp.c1.set(Color.white).lerp(FlamePal.empathyAdd, Mathf.curve(fin, 0f, 0.5f));
+            Tmp.c1.set(Color.white).lerp(KPal.empathyAdd, Mathf.curve(fin, 0f, 0.5f));
             GraphicUtils.chain(v.x, v.y, x, y, Tmp.c1, Blending.additive);
         }
         for(EmpathyAI ai : attackAIs){
@@ -895,7 +895,7 @@ public class EmpathyUnit extends UnitEntity{
         }
         if(parryHitSuccess){
             if(effect){
-                FlameFX.empathyParry.at(x, y, rotation);
+                OtherFx.FlameFX.empathyParry.at(x, y, rotation);
             }
 
             parryS();

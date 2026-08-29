@@ -1,5 +1,6 @@
 package K.graphics;
 
+import K.content.Fx.KPal;
 import K.content.extend.util.Utils;
 import arc.*;
 import arc.func.*;
@@ -370,7 +371,7 @@ public class GraphicUtils{
 
         Rand r = Utils.rand, r2 = Utils.rand2;
         r.setSeed(seed);
-        Color outC = FlamePal.blood;
+        Color outC = KPal.blood;
 
         Draw.color(Color.white, outC, deathTime2);
 

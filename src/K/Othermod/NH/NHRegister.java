@@ -1,8 +1,6 @@
-package K.content.NH;
+package K.Othermod.NH;
 
-import K.KMod;
 import arc.Events;
-import mindustry.Vars;
 import mindustry.game.EventType;
 
 public class NHRegister {

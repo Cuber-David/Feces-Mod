@@ -4,7 +4,7 @@ import arc.graphics.*;
 import mindustry.content.Items;
 import mindustry.graphics.Pal;
 
-public class VEPal {
+public class KPal {
     public static Color primary = new Color(0x9a75ffff);
     public static Color blood = new Color(0.5f, 0.1f, 0.1f);
     public static Color paleYellow = new Color(1f, 1f, 0.5f);

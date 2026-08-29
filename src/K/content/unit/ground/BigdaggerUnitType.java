@@ -1,6 +1,6 @@
 package K.content.unit.ground;
 
-import K.content.Fx.fx;
+import K.content.Fx.KFx;
 import arc.graphics.Color;
 import mindustry.content.UnitTypes;
 import mindustry.entities.bullet.BasicBulletType;
@@ -32,7 +32,7 @@ public class BigdaggerUnitType extends UnitType{
             x = 35f;
             y = 60f;
             top = false;
-            ejectEffect = fx.Bigcasing;
+            ejectEffect = KFx.Bigcasing;
             recoil = 10f;
             shootSound = Sounds.explosionTitan;
             shootSoundVolume = 5f;
@@ -43,9 +43,9 @@ public class BigdaggerUnitType extends UnitType{
                 buildingDamageMultiplier = 0.5f;
                 splashDamageRadius = 50;
                 splashDamage = 360;
-                shootEffect = fx.shootBig;
-                hitEffect = fx.hitBulletBigger;
-                despawnEffect = fx.hitBulletBigger;
+                shootEffect = KFx.shootBig;
+                hitEffect = KFx.hitBulletBigger;
+                despawnEffect = KFx.hitBulletBigger;
             }};
         }});
 

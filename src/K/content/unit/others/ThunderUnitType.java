@@ -1,6 +1,6 @@
 package K.content.unit.others;
 
-import K.content.Fx.fx;
+import K.content.Fx.KFx;
 import K.content.sounds;
 import mindustry.content.Fx;
 import mindustry.entities.bullet.BulletType;
@@ -23,7 +23,7 @@ public class ThunderUnitType extends UnitType {
             targetUnderBlocks = false;
             reload = 24f;
             shootCone = 360f;
-            ejectEffect = fx.Thunder;
+            ejectEffect = KFx.Thunder;
             shootSound = sounds.thunder;
             shootSoundVolume = 6f;
             x = shootY = 0f;
@@ -31,7 +31,7 @@ public class ThunderUnitType extends UnitType {
             bullet = new BulletType(){{
                 collidesTiles = false;
                 collides = false;
-                despawnEffect = fx.Thunder;
+                despawnEffect = KFx.Thunder;
                 despawnSound = sounds.thunder;
 
                 rangeOverride = 25f;

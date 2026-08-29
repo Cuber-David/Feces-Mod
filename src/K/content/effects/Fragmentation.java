@@ -1,6 +1,6 @@
 package K.content.effects;
 
-import K.content.Fx.FlameFX;
+import K.content.Fx.OtherFx;
 import K.content.extend.util.Utils;
 import K.entities.DrawEntity;
 import arc.audio.*;
@@ -31,7 +31,7 @@ public class Fragmentation{
     Seq<IntSeq> islands = new Seq<>();
     TextureRegion region = new TextureRegion();
     public Cons<FragmentEntity> onDeath;
-    public Effect trailEffect = FlameFX.debrisSmoke, explosionEffect = FlameFX.fragmentExplosion;
+    public Effect trailEffect = OtherFx.FlameFX.debrisSmoke, explosionEffect = OtherFx.FlameFX.fragmentExplosion;
     public Color effectColor = Color.white, drawnColor = Color.white.cpy(), goreColor = Color.white.cpy();
     public Sound explosionSound = Sounds.none;
     public boolean fadeOut = false;
@@ -398,7 +398,7 @@ public class Fragmentation{
                     if(tile != null){
                         Tmp.c1.set(tile.floor().mapColor).mul(1.1f);
                     }
-                    FlameFX.fragmentGroundImpact.at(x, y, boundSize / 2, Tmp.c1);
+                    OtherFx.FlameFX.fragmentGroundImpact.at(x, y, boundSize / 2, Tmp.c1);
                     Effect.shake(area / 12f, area / 12f, x, y);
 
                     impact = true;

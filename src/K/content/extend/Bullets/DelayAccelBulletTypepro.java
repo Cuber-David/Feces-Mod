@@ -1,6 +1,6 @@
 package K.content.extend.Bullets;
 
-import K.content.Fx.fx;
+import K.content.Fx.KFx;
 import K.content.sounds;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
@@ -47,7 +47,7 @@ public class DelayAccelBulletTypepro extends BulletType {
         trailColor = Color.valueOf("33ffff");
         trailLength = 8;
         trailChance = 0.4f;
-        trailEffect = fx.ellipsetrail;
+        trailEffect = KFx.ellipsetrail;
 
         // 特效配置
         hitEffect = Fx.hitBulletBig;
@@ -193,9 +193,9 @@ public class DelayAccelBulletTypepro extends BulletType {
             Lines.stroke(1f);
             Lines.circle(b.x, b.y, hitSize + 1f);
             float r = b.rotation()*Mathf.degRad;
-            fx.ellipsetrail.at(b.x,b.y,r);
+            KFx.ellipsetrail.at(b.x,b.y,r);
             for (int i = 1;i<100;i++){
-                fx.ellipsetrailblue.at(b.x+i*Mathf.cos(r),b.y+i*Mathf.sin(r),r,Color.valueOf("33ffff"));
+                KFx.ellipsetrailblue.at(b.x+i*Mathf.cos(r),b.y+i*Mathf.sin(r),r,Color.valueOf("33ffff"));
             }
 
             Draw.color();

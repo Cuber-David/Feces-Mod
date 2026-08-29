@@ -1,6 +1,6 @@
 package K.content.unit.ground;
 
-import K.content.Fx.fx;
+import K.content.Fx.KFx;
 import arc.graphics.Color;
 import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
@@ -55,7 +55,7 @@ public class BignovaUnitType extends UnitType{
                 collidesTeam = true;
                 splashDamage = 600;
                 splashDamageRadius = 15f;
-                hitEffect = fx.hitLaserBigger;
+                hitEffect = KFx.hitLaserBigger;
                 backColor = Pal.heal;
                 frontColor = Color.white;
             }};

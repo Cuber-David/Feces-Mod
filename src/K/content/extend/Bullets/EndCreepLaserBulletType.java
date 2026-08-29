@@ -1,8 +1,8 @@
 package K.content.extend.Bullets;
 
-import K.graphics.FlamePal;
+import K.content.Fx.KPal;
 import K.KMod;
-import K.content.Fx.FlameFX;
+import K.content.Fx.OtherFx;
 import K.content.extend.util.Utils;
 import K.content.effects.SpecialDeathEffects;
 import K.content.extend.fo.EmpathyDamage;
@@ -31,7 +31,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
     float baseLength = 300f;
     float width = 12f;
 
-    Color[] colors = {FlamePal.red.cpy().a(0.5f), FlamePal.red, FlamePal.red.cpy().mul(2f), Color.white};
+    Color[] colors = {KPal.red.cpy().a(0.5f), KPal.red, KPal.red.cpy().mul(2f), Color.white};
 
     static Seq<Building> buildings = new Seq<>();
 
@@ -40,8 +40,8 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 
         damage = 9000f;
         length = 500 * 8f;
-        hitColor = FlamePal.red;
-        hitEffect = FlameFX.desCreepHit;
+        hitColor = KPal.red;
+        hitEffect = OtherFx.FlameFX.desCreepHit;
         shootEffect = Fx.none;
         smokeEffect = Fx.none;
 
@@ -60,7 +60,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
         CreepLaserData data = new CreepLaserData();
 
         Vec2 v = Utils.v.trns(b.rotation(), baseLength).add(b.x, b.y);
-        FlameFX.desGroundHitMain.at(v.x, v.y, b.rotation());
+        OtherFx.FlameFX.desGroundHitMain.at(v.x, v.y, b.rotation());
 
         data.lastX = v.x;
         data.lastY = v.y;
@@ -90,7 +90,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
                     color = Liquids.water.gasColor;
                 }
 
-                FlameFX.desGroundHit.at(v.x, v.y, scl, color);
+                OtherFx.FlameFX.desGroundHit.at(v.x, v.y, scl, color);
             }
         }
 
@@ -106,7 +106,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
                 Tile tile = Vars.world.tileWorld(v.x, v.y);
 
                 if(tile != null && !tile.floor().isLiquid){
-                    FlameFX.desGroundMelt.at(m.x, m.y, Mathf.random(12f, 24f) * scl);
+                    OtherFx.FlameFX.desGroundMelt.at(m.x, m.y, Mathf.random(12f, 24f) * scl);
                 }
             }
         }
@@ -225,7 +225,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
     void hitEnd(Bullet b, float x, float y){
         float scl = Mathf.random(0.75f, 1.3f) * Interp.pow2InInverse.apply(getGroundScl(b));
         float range = 230f * scl;
-        FlameFX.desCreepHeavyHit.at(x, y, b.rotation(), scl);
+        OtherFx.FlameFX.desCreepHeavyHit.at(x, y, b.rotation(), scl);
 
         Rect r = Utils.r.setCentered(x, y, range * 2f);
 
@@ -292,7 +292,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
                         dev.lifetime = Mathf.random(1f, 2f) * 60f;
                         dev.health = (Math.min(dev.width, dev.height) / healthBase) * bl.maxHealth;
                         dev.team = team;
-                        dev.explosion = eff.explosionEffect != Fx.none ? eff.explosionEffect : FlameFX.fragmentExplosion;
+                        dev.explosion = eff.explosionEffect != Fx.none ? eff.explosionEffect : OtherFx.FlameFX.fragmentExplosion;
                         dev.collides = Mathf.chance(0.5f);
                         dev.contagiousChance = 0.1f;
 
@@ -365,7 +365,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
             float off = ((len - l * 2f) * f) + l;
             Vec2 v = Tmp.v2.trns(b.rotation(), off, rand2.range(width * (1 - 1f / 4f) * fade - w) / 2f).add(b.x, b.y);
 
-            Draw.color(rand2.chance(0.5f) ? Tmp.c2.set(FlamePal.red).lerp(Color.white, Mathf.pow(rand2.nextFloat(), 2f)) : Color.black);
+            Draw.color(rand2.chance(0.5f) ? Tmp.c2.set(KPal.red).lerp(Color.white, Mathf.pow(rand2.nextFloat(), 2f)) : Color.black);
             GraphicUtils.diamond(v.x, v.y, w, l, b.rotation());
         }
 

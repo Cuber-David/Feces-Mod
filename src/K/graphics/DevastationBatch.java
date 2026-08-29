@@ -1,5 +1,6 @@
 package K.graphics;
 
+import K.content.Fx.KPal;
 import K.content.effects.Devastation;
 import arc.*;
 import arc.func.*;
@@ -37,7 +38,7 @@ public class DevastationBatch extends Batch{
 
     @Override
     protected void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float rotation){
-        if(FlamePal.blood.a <= 0.9f || region == FragmentationBatch.updateCircle() || blending != Blending.normal || region == Core.atlas.white() || !region.found()){
+        if(KPal.blood.a <= 0.9f || region == FragmentationBatch.updateCircle() || blending != Blending.normal || region == Core.atlas.white() || !region.found()){
             return;
         }
 

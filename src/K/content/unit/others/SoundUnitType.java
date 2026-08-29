@@ -1,11 +1,8 @@
 package K.content.unit.others;
 
-import K.content.Fx.SkyLightningEffect;
-import K.content.Fx.SkyLightningPointEffect;
-import K.content.Fx.VEFX;
 import K.content.extend.Bullets.*;
 import K.content.extend.Bullets.Soundb;
-import K.content.Fx.fx;
+import K.content.Fx.KFx;
 import K.content.sounds;
 import mindustry.content.Fx;
 import mindustry.gen.Sounds;
@@ -81,7 +78,7 @@ public class SoundUnitType extends UnitType {
                     reload = 60f;
                     shootSound = Sounds.none;
                     bullet = new Soundb(){{
-                        despawnEffect = fx.Hugebeam;
+                        despawnEffect = KFx.Hugebeam;
                         despawnSound = sounds.beamlarge;
                     }};
                 }}

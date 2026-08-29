@@ -2,7 +2,6 @@ package K.content.Fx;
 
 import K.content.extend.util.DrawFunc;
 import K.content.sounds;
-import K.graphics.FlamePal;
 import arc.Core;
 import arc.graphics.Blending;
 import arc.graphics.Color;
@@ -16,7 +15,6 @@ import arc.math.Mathf;
 import arc.math.Rand;
 import arc.math.geom.Position;
 import arc.math.geom.Vec2;
-import arc.util.Log;
 import arc.util.Time;
 import arc.util.Tmp;
 import mindustry.content.Fx;
@@ -30,7 +28,7 @@ import static arc.graphics.g2d.Lines.*;
 import static arc.math.Angles.*;
 import static mindustry.Vars.renderer;
 
-public class fx {
+public class KFx {
     public static final Vec2 v = new Vec2();
     public static final Rand rand = new Rand();
     public static Effect Bigcasing,shootBig,hitBulletBigger,hitLaserBigger,PulseCharge,PulseChargeBegin,PulseShoot,
@@ -372,7 +370,7 @@ public class fx {
         }};
         fee = new FragmentExplosionEffect();
         slash = new Effect(24, e -> {
-            Draw.color(FlamePal.darkRed);
+            Draw.color(KPal.darkRed);
             Drawf.tri(e.x,e.y,8*e.fout(),128*e.fout(),e.rotation+90);
             Drawf.tri(e.x,e.y,8*e.fout(),128*e.fout(),e.rotation+270);
             Draw.color(Color.black);

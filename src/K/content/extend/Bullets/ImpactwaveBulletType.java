@@ -1,6 +1,6 @@
 package K.content.extend.Bullets;
 
-import K.content.Fx.fx;
+import K.content.Fx.KFx;
 import arc.graphics.Color;
 import mindustry.entities.bullet.BulletType;
 import mindustry.content.Fx;
@@ -72,7 +72,7 @@ public class ImpactwaveBulletType extends BulletType {
 
     private void triggerPulse(Bullet b) {
         // 1. 播放特效
-        fx.Feceswave.at(b.x, b.y, 0f, Pal.bulletYellow);
+        KFx.Feceswave.at(b.x, b.y, 0f, Pal.bulletYellow);
         Sounds.explosionCrawler.at(b.x,b.y,0.5f,1);
 
         // 2. 使用 Damage.damage 直接造成伤害

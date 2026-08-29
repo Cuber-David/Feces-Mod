@@ -1,7 +1,7 @@
 package K.content.unit.ground;
 
 import K.content.entities.DeathblastAbility;
-import K.content.Fx.fx;
+import K.content.Fx.KFx;
 import K.content.sounds;
 import arc.graphics.Color;
 import mindustry.ai.types.GroundAI;
@@ -35,7 +35,7 @@ public class BigcrawlerUnitType extends UnitType {
         stepSoundVolume = 4f;
         stepShake = 50f;
         deathShake = 100f;
-        deathExplosionEffect = fx.collapserExplode;
+        deathExplosionEffect = KFx.collapserExplode;
         deathSound = sounds.hugeBlast;
         deathSoundVolume = 10f;
 
@@ -47,7 +47,7 @@ public class BigcrawlerUnitType extends UnitType {
             targetUnderBlocks = false;
             reload = 120f;
             shootCone = 180f;
-            ejectEffect = fx.BigExplosion;
+            ejectEffect = KFx.BigExplosion;
             shootSound = sounds.boom;
             shootSoundVolume = 0.4f;
             x = shootY = 0f;

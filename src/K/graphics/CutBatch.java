@@ -1,6 +1,7 @@
 package K.graphics;
 
-import K.content.Fx.FlameFX;
+import K.content.Fx.KPal;
+import K.content.Fx.OtherFx;
 import K.content.effects.Severation;
 import arc.*;
 import arc.audio.*;
@@ -63,7 +64,7 @@ public class CutBatch extends Batch{
         float bx = (cos * dx - sin * dy) + (x + originX);
         float by = (sin * dx + cos * dy) + (y + originY);
 
-        if(FlamePal.blood.a <= 0.9f || region == FragmentationBatch.updateCircle() || blending != Blending.normal || region == Core.atlas.white() || !region.found()){
+        if(KPal.blood.a <= 0.9f || region == FragmentationBatch.updateCircle() || blending != Blending.normal || region == Core.atlas.white() || !region.found()){
             RejectedRegion r = new RejectedRegion();
             r.region = region;
             r.blend = blending;
@@ -71,7 +72,7 @@ public class CutBatch extends Batch{
             r.width = width;
             r.height = height;
 
-            FlameFX.rejectedRegion.at(bx, by, rotation, FlamePal.blood, r);
+            OtherFx.FlameFX.rejectedRegion.at(bx, by, rotation, KPal.blood, r);
             return;
         }
         Severation c = Severation.generate(region, bx, by, width, height, rotation);

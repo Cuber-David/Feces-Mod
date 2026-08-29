@@ -1,6 +1,6 @@
 package K.content.extend.Bullets;
 
-import K.content.Fx.EUFx;
+import K.content.Fx.OtherFx;
 import K.graphics.MainRenderer;
 import arc.Core;
 import arc.graphics.Color;
@@ -111,7 +111,7 @@ public class BlackHoleBullet extends BulletType {
         });
 
         if(!Vars.headless && (Core.settings != null && Core.settings.getBool("eu-show-hole-acc-disk")) && b.time <= b.lifetime - 72) for(int i = 0; i < amount; i++){
-            EUFx.ateData data = EUFx.ateData.create();
+            OtherFx.EUFx.ateData data = OtherFx.EUFx.ateData.create();
             float outRDI = i % 2 == 0 ? outRad * 1.2f : outRad;
             data.width = Mathf.random(minWidth, maxWidth) * in;
             data.inRad = inRad * 0.9f * in;
@@ -120,7 +120,7 @@ public class BlackHoleBullet extends BulletType {
             data.length = data.speed < midSpeed ? Mathf.random(midLength, maxLength) : Mathf.random(minLength, midLength);
             data.owner = b;
             if(i % 2 == 0) data.out = true;
-            EUFx.AccretionDiskEffect.at(
+            OtherFx.EUFx.AccretionDiskEffect.at(
                     b.x,
                     b.y,
                     0, accColor, data);

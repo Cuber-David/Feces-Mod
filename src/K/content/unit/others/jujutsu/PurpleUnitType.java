@@ -1,9 +1,7 @@
 package K.content.unit.others.jujutsu;
 
-import K.content.Fx.fx;
+import K.content.Fx.KFx;
 import K.content.extend.Bullets.PurpleBulletType;
-import K.content.extend.Bullets.RedBulletType;
-import K.content.sounds;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
@@ -80,8 +78,8 @@ public class PurpleUnitType extends UnitType {
         Draw.color(Color.valueOf("f1ccf7").a(0.9f));
         Fill.circle(u.x,u.y,hitSize*0.6f);
         Draw.reset();
-        fx.orbitpurple.at(u.x,u.y);
-        fx.orbitpurpleout.at(u.x,u.y);
+        KFx.orbitpurple.at(u.x,u.y);
+        KFx.orbitpurpleout.at(u.x,u.y);
         Lightning.create(u.team,Color.valueOf("f1ccf7").a(0.9f),1f,u.x,u.y, Mathf.random(360), (int) Mathf.random(32));
     }
 

@@ -1,6 +1,6 @@
 package K.content.unit.others.jujutsu;
 
-import K.content.Fx.fx;
+import K.content.Fx.KFx;
 import K.content.extend.weapons.RedWeapon;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
@@ -54,7 +54,7 @@ public class RedUnitType extends UnitType {
         Draw.color(incolor);
         Fill.circle(u.x,u.y,u.hitSize*0.8f*breath(time));
         Draw.color();
-        fx.orbitred.at(u.x,u.y,incolor);
+        KFx.orbitred.at(u.x,u.y,incolor);
     }
 
     @Override

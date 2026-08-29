@@ -1,7 +1,7 @@
 package K.content.effects;
 
 import K.KMod;
-import K.content.Fx.FlameFX;
+import K.content.Fx.OtherFx;
 import K.content.extend.util.Utils;
 import K.entities.DrawEntity;
 import arc.*;
@@ -77,7 +77,7 @@ public class Devastation extends DrawEntity implements Poolable{
                         dev.lifetime = lifetime * Mathf.random(0.8f, 1f);
                         dev.health = (dim / healthBase2) * healthc.maxHealth() * 0.6f;
                         dev.team = team;
-                        dev.explosion = eff.explosionEffect != Fx.none ? eff.explosionEffect : FlameFX.fragmentExplosion;
+                        dev.explosion = eff.explosionEffect != Fx.none ? eff.explosionEffect : OtherFx.FlameFX.fragmentExplosion;
                         dev.collides = Mathf.chance(0.75f);
                         dev.contagiousChance = contagiousChance;
                         dev.slowDownAmount = slowDownAmount;
@@ -92,7 +92,7 @@ public class Devastation extends DrawEntity implements Poolable{
                     contagiousTime = 25f;
                 }
             }
-            FlameFX.fragmentExplosionSpark.at(x, y, Math.min(width, height) / 5f);
+            OtherFx.FlameFX.fragmentExplosionSpark.at(x, y, Math.min(width, height) / 5f);
 
             /*
             if(split){
@@ -114,7 +114,7 @@ public class Devastation extends DrawEntity implements Poolable{
                 explosion.at(x, y, Math.min(width, height) / 2f);
             }else{
                 //FlameFX.fragmentExplosionSmoke.at(x, y, Math.min(width, height) / 2f);
-                FlameFX.fragmentExplosionSpark.at(x, y, Math.min(width, height) / 2f);
+                OtherFx.FlameFX.fragmentExplosionSpark.at(x, y, Math.min(width, height) / 2f);
             }
 
             remove();

@@ -1,6 +1,6 @@
 package K.content.extend.Bullets;
 
-import K.content.Fx.fx;
+import K.content.Fx.KFx;
 import K.content.KUnitTypes;
 import K.content.statuseffect;
 import K.graphics.MainRenderer;
@@ -27,7 +27,7 @@ public class DomainInf extends BulletType {
     public DomainInf() {
         super(0,0);
         lifetime = t;
-        despawnEffect = fx.fee;
+        despawnEffect = KFx.fee;
         drawSize = 4000;
     }
     private float life = lifetime-endtime;
@@ -56,7 +56,7 @@ public class DomainInf extends BulletType {
 
     public void draw(Bullet b){
         if(b.time<b.lifetime-120) {
-            fx.bp.at(b.x, b.y);
+            KFx.bp.at(b.x, b.y);
         }
         renderer.lights.add(b.x,b.y,Math.min(1000,(b.time)*20),Color.white,1);
         TextureRegion bs = Core.atlas.find("kmod-stars");
