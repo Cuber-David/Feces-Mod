@@ -5,7 +5,7 @@ import K.KMod;
 import K.content.Fx.OtherFx;
 import K.content.extend.util.Utils;
 import K.content.effects.SpecialDeathEffects;
-import K.content.extend.fo.EmpathyDamage;
+import K.Other_mod.FM.flame_extend.EmpathyDamage;
 import K.content.extend.weapons.LaserWeapon;
 import K.graphics.CutBatch;
 import K.graphics.GraphicUtils;

@@ -1,4 +1,4 @@
-package K.Othermod.NH;
+package K.Other_mod.NH;
 
 import K.KMod;
 import arc.Core;

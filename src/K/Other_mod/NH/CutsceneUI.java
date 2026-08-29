@@ -1,4 +1,4 @@
-package K.Othermod.NH;
+package K.Other_mod.NH;
 
 import K.content.extend.util.HeadlessDisabled;
 import K.graphics.NHRenderer;
@@ -22,7 +22,7 @@ import mindustry.game.EventType;
 import mindustry.gen.Tex;
 import mindustry.ui.Styles;
 
-import static K.Othermod.NH.NHVars.cutsceneUI;
+import static K.Other_mod.NH.NHVars.cutsceneUI;
 import static mindustry.Vars.headless;
 
 @HeadlessDisabled

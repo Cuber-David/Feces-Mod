@@ -1,4 +1,4 @@
-package K.Othermod.NH;
+package K.Other_mod.NH;
 
 import arc.struct.ObjectMap;
 import arc.struct.Seq;

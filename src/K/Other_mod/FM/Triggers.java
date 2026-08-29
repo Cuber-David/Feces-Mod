@@ -1,4 +1,4 @@
-package K.Othermod.Fmod;
+package K.Other_mod.FM;
 
 import arc.*;
 import arc.func.*;

@@ -1,4 +1,4 @@
-package K.content.extend.fo;
+package K.Other_mod.FM.flame_extend;
 
 public abstract class SpecialState{
     public void update(){}

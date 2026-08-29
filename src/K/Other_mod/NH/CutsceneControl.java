@@ -1,4 +1,4 @@
-package K.Othermod.NH;
+package K.Other_mod.NH;
 
 import arc.Events;
 import arc.func.Func;
@@ -13,7 +13,7 @@ import mindustry.game.EventType;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static K.Othermod.NH.NHGroups.clear;
+import static K.Other_mod.NH.NHGroups.clear;
 /**
  * Controls the execution of cutscene action buses.
  * Manages main bus queue, sub buses, and waiting periods between cutscenes.

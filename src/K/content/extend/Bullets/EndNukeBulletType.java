@@ -6,7 +6,7 @@ import K.KSFX;
 import K.content.Fx.OtherFx;
 import K.content.extend.util.Utils;
 import K.content.effects.SpecialDeathEffects;
-import K.content.extend.fo.EmpathyDamage;
+import K.Other_mod.FM.flame_extend.EmpathyDamage;
 import K.content.sounds;
 import arc.*;
 import arc.graphics.g2d.*;

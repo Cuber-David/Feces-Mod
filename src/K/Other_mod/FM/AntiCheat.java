@@ -1,7 +1,7 @@
-package K.Othermod.Fmod;
+package K.Other_mod.FM;
 
 import K.KMod;
-import K.content.extend.fo.ReflectUtils;
+import K.Other_mod.FM.flame_extend.ReflectUtils;
 import arc.*;
 import arc.math.*;
 import arc.struct.*;

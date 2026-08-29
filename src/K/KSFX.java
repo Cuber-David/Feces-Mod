@@ -2,8 +2,8 @@ package K;
 
 import K.content.extend.util.Utils;
 import K.content.effects.Severation;
-import K.content.extend.fo.EmpathyDamage;
-import K.content.extend.fo.SpecialMain;
+import K.Other_mod.FM.flame_extend.EmpathyDamage;
+import K.Other_mod.FM.flame_extend.SpecialMain;
 import K.graphics.FlameShaders;
 import K.graphics.ImpactBatch;
 import arc.*;

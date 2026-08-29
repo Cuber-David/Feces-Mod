@@ -2,7 +2,7 @@ package K.content.extend.Bullets;
 
 import K.content.Fx.KFx;
 import K.content.effects.SpecialDeathEffects;
-import K.content.extend.fo.EmpathyDamage;
+import K.Other_mod.FM.flame_extend.EmpathyDamage;
 import K.content.extend.util.Utils;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;

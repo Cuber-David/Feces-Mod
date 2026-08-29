@@ -1,7 +1,7 @@
 package K.graphics;
 
 import K.KMod;
-import K.Othermod.NH.NHContent;
+import K.Other_mod.NH.NHContent;
 import arc.Core;
 import arc.files.Fi;
 import arc.graphics.Texture;
@@ -11,7 +11,7 @@ import arc.util.Time;
 import mindustry.graphics.Shaders;
 import mindustry.mod.Mods;
 
-import static K.Othermod.NH.NHContent.noise;
+import static K.Other_mod.NH.NHContent.noise;
 import static mindustry.Vars.renderer;
 
 public class NHShaders {

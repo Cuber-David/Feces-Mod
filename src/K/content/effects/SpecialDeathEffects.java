@@ -4,7 +4,7 @@ import K.content.Fx.KPal;
 import K.KMod;
 import K.content.Fx.OtherFx;
 import K.content.extend.util.Utils;
-import K.content.extend.fo.EmpathyDamage;
+import K.Other_mod.FM.flame_extend.EmpathyDamage;
 import K.graphics.FragmentationBatch;
 import K.graphics.GraphicUtils;
 import K.graphics.VaporizeBatch;

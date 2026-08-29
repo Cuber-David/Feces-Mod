@@ -1,6 +1,6 @@
 package K.graphics;
 
-import K.Othermod.NH.NHContent;
+import K.Other_mod.NH.NHContent;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.gl.FrameBuffer;

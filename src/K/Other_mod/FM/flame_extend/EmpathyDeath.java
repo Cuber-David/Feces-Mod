@@ -1,4 +1,4 @@
-package K.content.extend.fo;
+package K.Other_mod.FM.flame_extend;
 
 import K.content.Fx.KPal;
 import K.content.extend.util.Utils;
