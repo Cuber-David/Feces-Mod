@@ -1,6 +1,6 @@
 package K.content.unit.others.jujutsu;
 
-import K.content.extend.Bullets.DomainInf;
+import K.content.extend.Bullets.jujutsu.DomainInf;
 import mindustry.content.Fx;
 import mindustry.gen.Bullet;
 import mindustry.gen.Groups;

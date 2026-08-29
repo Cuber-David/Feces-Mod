@@ -1,5 +1,6 @@
 package K.content.Fx;
 
+import K.content.Fx.OtherEffects.FragmentExplosionEffect;
 import K.content.extend.util.DrawFunc;
 import K.content.sounds;
 import arc.Core;

@@ -1,4 +1,4 @@
-package K.content.Fx;
+package K.content.Fx.OtherEffects;
 
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;

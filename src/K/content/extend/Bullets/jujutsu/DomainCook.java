@@ -1,4 +1,4 @@
-package K.content.extend.Bullets;
+package K.content.extend.Bullets.jujutsu;
 
 import K.content.statuseffect;
 import K.content.Fx.KPal;

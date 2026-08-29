@@ -1,6 +1,6 @@
 package K.content.unit.others.jujutsu;
 
-import K.content.extend.Bullets.SlashBulletType;
+import K.content.extend.Bullets.jujutsu.SlashBulletType;
 import arc.math.Mathf;
 import mindustry.gen.Unit;
 import mindustry.type.UnitType;

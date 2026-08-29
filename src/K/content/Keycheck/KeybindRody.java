@@ -1,7 +1,8 @@
 package K.content.Keycheck;
 
+import K.content.Fx.OtherEffects.KaiEffect;
 import K.content.KUnitTypes;
-import K.content.extend.Bullets.SlashBulletType;
+import K.content.extend.Bullets.jujutsu.SlashBulletType;
 import arc.Core;
 import arc.Events;
 import arc.input.KeyCode;
@@ -14,6 +15,9 @@ import mindustry.game.Team;
 import mindustry.game.EventType;
 import mindustry.content.UnitTypes;
 import mindustry.type.UnitType;
+
+import static arc.graphics.g2d.Lines.lineAngle;
+import static arc.math.Angles.randLenVectors;
 
 public class KeybindRody {
     private static boolean initialized = false;
@@ -133,8 +137,14 @@ public class KeybindRody {
     }
 
     private static void drawce(){
-        if(!checkPlayer()) return;
-
+        float mx = Core.input.mouseWorldX();
+        float my = Core.input.mouseWorldY();
+        float px = Vars.player.x;
+        float py = Vars.player.y;
+        float rot = Vars.player.angleTo(mx,my);
+        if(checkPlayer()){
+            new KaiEffect(chargetime).at(px+cx(180),py+sx(180),rot);
+        }
     }
 
     private static float cx(float l){

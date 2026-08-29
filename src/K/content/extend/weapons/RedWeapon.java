@@ -1,6 +1,6 @@
 package K.content.extend.weapons;
 
-import K.content.extend.Bullets.RedBulletType;
+import K.content.extend.Bullets.jujutsu.RedBulletType;
 import K.content.sounds;
 import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Unit;

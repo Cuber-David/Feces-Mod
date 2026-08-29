@@ -1,4 +1,4 @@
-package K.content.extend.Bullets;
+package K.content.extend.Bullets.jujutsu;
 
 import K.content.Fx.KFx;
 import K.content.effects.SpecialDeathEffects;

@@ -1,7 +1,7 @@
 package K.content.unit.others.jujutsu;
 
 import K.content.Fx.KFx;
-import K.content.extend.Bullets.PurpleBulletType;
+import K.content.extend.Bullets.jujutsu.PurpleBulletType;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
