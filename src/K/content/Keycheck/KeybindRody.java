@@ -23,11 +23,8 @@ public class KeybindRody {
     private static boolean lastF5 = false;
     private static boolean isCharging = false;
     private static float chargetime = 0f;
-    private static float mxt = 180f;
-    private static float mnt = 120f;
-    private static float mx = Core.input.mouseWorldX();
-    private static float my = Core.input.mouseWorldX();
-    private static float urot = Vars.player.angleTo(mx,my)*Mathf.degRad;
+    private static final float mxt = 180f;
+    private static final float mnt = 120f;
     private static final String[] ALLOWED_UNITS = {
             "kmod-Rody"
     };
@@ -87,12 +84,6 @@ public class KeybindRody {
         }
         return false;
     }
-    private static String getPlayerUnitInfo() {
-        if (Vars.player == null) return "玩家不存在";
-        Unit unit = Vars.player.unit();
-        if (unit == null) return "没有控制单位";
-        return unit.type.name + " (HP: " + (int)unit.health + "/" + (int)unit.maxHealth() + ")";
-    }
     private static void spawnUnitAtMouse(UnitType unitType, String name) {
         float px = Vars.player.x;
         float py = Vars.player.y;
@@ -101,14 +92,16 @@ public class KeybindRody {
             return;
         }
         Team team = Vars.player.team();
-        Unit unit = unitType.spawn(team, px+Mathf.cos(urot)*160, py+Mathf.sin(urot)*160);
+        Unit unit = unitType.spawn(team, px+cx(160), py+sx(160));
     }
 
     private static void spawnBullet() {
+        float mx = Core.input.mouseWorldX();
+        float my = Core.input.mouseWorldY();
         float px = Vars.player.x;
         float py = Vars.player.y;
         Team team = Vars.player.team();
-        float rot = urot*Mathf.radDeg;
+        float rot = Vars.player.angleTo(mx,my);
         float dst = Vars.player.dst(mx,my)/2850f;
         for (int i = 0; i < 20; i++) {
             SlashBulletType.createBullet(new SlashBulletType(),team,px,py,rot,1000,1,dst);
@@ -144,10 +137,10 @@ public class KeybindRody {
 
     }
 
-    private float cx(float l){
-        return Mathf.cos(urot)*l;
+    private static float cx(float l){
+        return Mathf.cos(Vars.player.angleTo(Core.input.mouseWorldX(),Core.input.mouseWorldY())*Mathf.degRad)*l;
     }
-    private float sx(float l){
-        return Mathf.sin(urot)*l;
+    private static float sx(float l){
+        return Mathf.sin(Vars.player.angleTo(Core.input.mouseWorldX(),Core.input.mouseWorldY())*Mathf.degRad)*l;
     }
 }
