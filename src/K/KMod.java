@@ -141,5 +141,4 @@ public class KMod extends Mod{
         NHContent.loadLast();
         KeybindRody.init();
     }
-
 }
