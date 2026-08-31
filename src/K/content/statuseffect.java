@@ -5,7 +5,7 @@ import mindustry.type.StatusEffect;
 
 public class statuseffect {
     public static StatusEffect
-    none,sick,infinitude,domainopen;
+    none,sick,infinitude,domainopen,jujutsufuse;
 
     public static void load() {
         none = new StatusEffect("non"){{}};
@@ -27,6 +27,9 @@ public class statuseffect {
             init(() -> opposite(statuseffect.infinitude));
             damageMultiplier = 1.2f;
             healthMultiplier = 1.2f;
+        }};
+        jujutsufuse = new StatusEffect("jujutsufuse"){{
+            damageMultiplier = 0.9f;
         }};
     }
 }

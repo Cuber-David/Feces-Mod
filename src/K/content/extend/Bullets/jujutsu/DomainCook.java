@@ -18,7 +18,7 @@ import mindustry.world.Tile;
 public class DomainCook extends BulletType {
     public DomainCook(){
         super(0,0);
-        lifetime = 600;
+        lifetime = 3600;
         collides = false;
         drawSize = 4000;
     }
