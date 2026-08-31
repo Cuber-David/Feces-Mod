@@ -25,8 +25,11 @@ import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
+import mindustry.world.Tile;
+import mindustry.world.Tiles;
 import mindustry.world.blocks.defense.Wall;
 
 import static K.content.extend.Math.kangles.lineVector;
@@ -42,23 +45,25 @@ public class KaiBulletType extends BulletType {
         drawSize = 1000;
         despawnShake = hitShake = 100;
         despawnHit = true;
-        splashDamage = 10000;
-        splashDamageRadius = 1000;
-        hitEffect = despawnEffect = new Effect(60, e -> {
+        splashDamage = 100000;
+        splashDamageRadius = 50000;
+        hitEffect = despawnEffect = new Effect(30, e -> {
             Draw.z(200);
-            color(Pal.lightPyraFlame, Pal.darkPyraFlame, e.fin());
-            randLenVectors(e.id,(int)hitSize*6,hitSize*3*e.fin(),(x, y) -> {
-                Fill.circle(e.x + x, e.y + y, 0.15f*hitSize*e.fin() + e.fout() * 1.6f);
-                color(Color.white, Pal.lighterOrange, e.fin());
-                Fill.circle(e.x + x, e.y + y, 0.01f*hitSize*e.fin() + e.fout() * 1.6f);
+            color(Pal.lightPyraFlame.a(e.fout()*e.fout()), Pal.redLight.a(e.fout()*e.fout()), e.fin());
+            randLenVectors(e.id,(int)hitSize*24,hitSize*16*e.fin(),(x, y) -> {
+                Fill.circle(e.x + x, e.y + y, 0.35f*hitSize*e.fin() + e.fout() * 1.6f);
+                Tile t = Vars.world.tileWorld(e.x + x,e.y + y);
+                if (t!=null) Fires.create(t);
+                color(Color.white.a(e.fout()*e.fout()), Pal.redSpark.a(e.fout()*e.fout()), e.fin());
+                Fill.circle(e.x + x + Mathf.random(-50,50), e.y + y + Mathf.random(-50,50), 0.21f*hitSize*e.fin() + e.fout() * 1.6f);
             });
-        });
+        }){{clip = 2000;}};
     }
 
     @Override
     public void draw(Bullet b) {
         new Effect(120 ,e -> {
-            color(Pal.lightPyraFlame, Pal.darkPyraFlame, Color.white, e.fin());
+            color(Pal.lightPyraFlame, Pal.redSpark, Color.white, e.fin());
             randLenVectors(e.id,1,hitSize/2, b.rotation(), (x, y) -> {
                 Fill.circle(e.x + x, e.y + y, 0.15f*hitSize + e.fout() * 1.6f);
             });
@@ -67,6 +72,12 @@ public class KaiBulletType extends BulletType {
             });
         }).at(b.x,b.y,b.rotation());
         new KaiEffect(hitSize).at(b.x,b.y,b.rotation());
+        Drawf.light(b.x,b.y,5*hitSize,Color.red,100);
+    }
+
+    @Override
+    public void hit(Bullet b) {
+        hit(b,b.x,b.y);
     }
 
     @Override
@@ -75,7 +86,7 @@ public class KaiBulletType extends BulletType {
         float bx = b.x, by = b.y;
         Team team = b.team;
 
-        int sid1 = sounds.desnukehit.at(bx, by, 1f, 2f);
+        int sid1 = sounds.desnukehit.at(bx, by, 1f, 4f);
         Core.audio.protect(sid1, true);
         float fall = Mathf.pow(Mathf.clamp(1f - sounds.desnukehit.calcFalloff(bx, by) * 1.1f), 1.5f);
         int sid2 = sounds.desnukehitfar.play(fall * 2f, 1f, sounds.desnukehit.calcPan(bx, by));
@@ -139,7 +150,7 @@ public class KaiBulletType extends BulletType {
             });
         }, arr);
 
-        Utils.scanEnemies(b.team, b.x, b.y, 480f, true, true, t -> {
+        Utils.scanEnemies(b.team, b.x, b.y, 4800f, true, true, t -> {
             if(t instanceof Unit u){
                 //float damageScl = 1f;
                 //if(u.isGrounded()) damageScl = FUtils.inRayCastCircle(bx, by, arr, u);
@@ -208,7 +219,7 @@ public class KaiBulletType extends BulletType {
                             eff.explosionEffect.at(bl.x, bl.y, bl.hitSize() / 2f);
                         }
 
-                        float shake = bl.hitSize() / 3f;
+                        float shake = bl.hitSize() * 3f;
                         Effect.shake(shake, shake, bl);
 
                         if(bl.block.createRubble && !bl.floor().solid && !bl.floor().isLiquid){
@@ -248,7 +259,7 @@ public class KaiBulletType extends BulletType {
 
         Effect.shake(60f, 120f, b.x, b.y);
         OtherFx.FlameFX.desNukeShockwave.at(b.x, b.y, 480f);
-        OtherFx.FlameFX.desNuke.at(b.x, b.y, 479f, arr);
+        OtherFx.FlameFX.desNuke.at(b.x, b.y, 960f, arr);
 
         KSFX.inst.impactFrames(bx, by, b.rotation(), 23f, false, () -> {
             for(int i = 0; i < arr.length; i++){

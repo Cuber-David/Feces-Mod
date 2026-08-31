@@ -9,6 +9,7 @@ import K.content.extend.util.PlayerUtils;
 import K.content.statuseffect;
 import arc.Core;
 import arc.Events;
+import arc.graphics.Color;
 import arc.input.KeyCode;
 import arc.math.Mathf;
 import arc.util.Log;
@@ -18,6 +19,7 @@ import mindustry.gen.Bullet;
 import mindustry.gen.Unit;
 import mindustry.game.Team;
 import mindustry.game.EventType;
+import mindustry.graphics.Drawf;
 import mindustry.type.UnitType;
 
 public class KeybindRody {
@@ -77,7 +79,7 @@ public class KeybindRody {
                 if (!ce) {
                     c = new DomainCook().create(u, team, px - cx(160), py - sx(160), rot);
                     ce = c != null;
-                    u.apply(statuseffect.domainopen,3600);
+                    u.apply(statuseffect.domainopen,1E30f);
                 } else {
                     c.remove();
                     ce = false;
@@ -180,6 +182,7 @@ public class KeybindRody {
         float rot = getPlayer().unit.angleTo(mx,my);
         if(checkPlayer()){
             new KaiEffect(chargetime).at(px+cx(180),py+sx(180),rot);
+            Drawf.light(px+cx(160),py+sx(160),5*chargetime, Color.red,100);
         }
     }
 

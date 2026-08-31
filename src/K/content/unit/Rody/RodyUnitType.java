@@ -72,27 +72,27 @@ public class RodyUnitType extends UnitType {
                 layer = 180;
             }};
         }});
-        weapons.add( new Weapon(""){{
-            x = 0f;
-            y = -80.75f;
-            shootY = 0f;
-            mirror = false;
-            targetAir = false;
-            targetGround = false;
-            range = 8;
-
-            rotate = true;
-            alternate = true;
-            reload = 360;
-
-            rotateSpeed = 12f;
-
-            shootCone = 360f;
-            shootSound = sounds.watching;
-            layerOffset = 100;
-
-            bullet = new EndNukeBulletType();
-        }});
+//        weapons.add( new Weapon(""){{
+//            x = 0f;
+//            y = -80.75f;
+//            shootY = 0f;
+//            mirror = false;
+//            targetAir = false;
+//            targetGround = false;
+//            range = 8;
+//
+//            rotate = true;
+//            alternate = true;
+//            reload = 360;
+//
+//            rotateSpeed = 12f;
+//
+//            shootCone = 360f;
+//            shootSound = sounds.watching;
+//            layerOffset = 100;
+//
+//            bullet = new EndNukeBulletType();
+//        }});
     }
     @Override
     public void applyColor(Unit unit){

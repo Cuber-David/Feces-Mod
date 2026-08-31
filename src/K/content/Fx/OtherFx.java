@@ -2687,14 +2687,14 @@ public class OtherFx {
         }),
 
         desNukeShockwave = new Effect(190f, 1900f * 2f, e -> {
-            float size = e.rotation;
+            float size = e.rotation*5;
 
             Draw.color(Color.white, 0.333f * e.fout());
             Lines.stroke((size / 15f) + (size / 5f) * e.fin());
             Lines.circle(e.x, e.y, size / 3f + size * pow2Out.apply(e.fin()) * 2f);
         }).layer(Layer.groundUnit + 1f),
 
-        desNuke = new Effect(80f, 500f * 2, e -> {
+        desNuke = new Effect(80f, 800f * 2, e -> {
             if(!(e.data instanceof float[] arr)) return;
             float size = e.rotation;
 
@@ -2725,9 +2725,9 @@ public class OtherFx {
             for(int i = 0; i < 4; i++){
                 for(int j = 0; j < 20; j++){
                     float f = Mathf.curve(e.fin(), 0f, 1f - r.random(0.2f));
-                    float ang = r.random(360f);
-                    float len = r.random(size * scl * 0.5f) * pow5Out.apply(f) + r.random(size / 5f);
-                    float line = r.random(22f, 45f) * Mathf.pow(scl, 1.1f) * pow2Out.apply(Mathf.slope(pow5Out.apply(f)));
+                    float ang = r.random(560f);
+                    float len = r.random(size * scl * 0.9f) * pow5Out.apply(f) + r.random(size / 5f);
+                    float line = r.random(22f, 85f) * Mathf.pow(scl, 1.1f) * pow2Out.apply(Mathf.slope(pow5Out.apply(f)));
 
                     if(f < 1f){
                         Tmp.v1.trns(ang, len).add(e.x, e.y);
