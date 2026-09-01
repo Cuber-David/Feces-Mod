@@ -1,6 +1,7 @@
 package K.content;
 
-import K.content.unit.Rody.RodyUnitType;
+import K.content.unit.God.GodKUnitType;
+import K.content.unit.God.RodyUnitType;
 import K.content.unit.air.*;
 import K.content.unit.ground.*;
 import K.content.unit.others.*;
@@ -21,6 +22,7 @@ public class KUnitTypes {
     public static FirebeedroneUnitType Firebeedrone;
     public static CombatengineerUnitType Combatengineer;
     public static RodyUnitType Rody;
+    public static GodKUnitType GodK;
     public static Fecalwarcraft Fecalwarcraft;
     public static TacticalassaultmechaUnitType Tacticalassaultmecha;
     public static TacticalsuppressiontankUnitType Tacticalsuppressiontank;
@@ -46,6 +48,7 @@ public class KUnitTypes {
         Firebeedrone = new FirebeedroneUnitType("Firebeedrone");
         Combatengineer = new CombatengineerUnitType("Combatengineer");
         Rody = new RodyUnitType("Rody");
+        GodK = new GodKUnitType("GodK");
         Tacticalassaultmecha = new TacticalassaultmechaUnitType("Tacticalassaultmecha");
         Tacticalsuppressiontank = new TacticalsuppressiontankUnitType("Tacticalsuppressiontank");
         Domaininf = new DomainInfUnitType("Domaininf");

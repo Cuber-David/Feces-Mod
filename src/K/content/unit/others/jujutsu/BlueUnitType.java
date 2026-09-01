@@ -24,12 +24,12 @@ public class BlueUnitType extends UnitType {
     private final float lifetime = 60.0F;
     private final float baserad = hitSize*40;
     private boolean b;
-    private Color outerBlue = Color.valueOf("005eff").a(0.5F);
-    private Color innerBlue = Color.valueOf("00ffff").a(0.7F);
+    private final Color outerBlue = Color.valueOf("005eff").a(0.5F);
+    private final Color innerBlue = Color.valueOf("00ffff").a(0.7F);
     private int particleCount = 40;
     private final float baseradius = 28.0F;
     private float radius;
-    private float baseLife = 60.0F;
+    private final float baseLife = 60.0F;
     private HashMap<Integer, Particle[]> unitParticleData = new HashMap();
 
     public BlueUnitType(String name) {

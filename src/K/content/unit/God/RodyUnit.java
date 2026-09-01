@@ -1,4 +1,4 @@
-package K.content.unit.Rody;
+package K.content.unit.God;
 
 import mindustry.gen.UnitEntity;
 

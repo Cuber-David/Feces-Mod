@@ -987,6 +987,7 @@ public class blocks {
             requirements(Category.effect, with());
             health = 2111114514;
             armor = 2111451419;
+            clipSize = 2000;
             this.buildVisibility = BuildVisibility.hidden;
 
             var heatProgress = DrawPart.PartProgress.warmup.delay(9.9f);

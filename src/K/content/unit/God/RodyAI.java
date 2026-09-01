@@ -1,12 +1,9 @@
-package K.content.unit.Rody;
+package K.content.unit.God;
 
 import arc.util.Nullable;
-import mindustry.ai.types.GroundAI;
 import mindustry.entities.units.AIController;
-import mindustry.entities.units.UnitController;
+import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
-
-import static mindustry.Vars.state;
 
 public class RodyAI extends AIController {
     protected @Nullable AIController fallback;
@@ -38,5 +35,10 @@ public class RodyAI extends AIController {
                 unit.lookAt(target);
             }
         }
+    }
+
+    @Override
+    public boolean shouldShoot() {
+        return false;
     }
 }

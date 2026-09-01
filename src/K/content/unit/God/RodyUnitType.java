@@ -1,7 +1,6 @@
-package K.content.unit.Rody;
+package K.content.unit.God;
 
 import K.content.extend.Bullets.EndCreepLaserBulletType;
-import K.content.extend.Bullets.EndNukeBulletType;
 import K.content.extend.weapons.LaserWeapon;
 import K.content.sounds;
 import arc.graphics.Color;
@@ -11,7 +10,6 @@ import arc.util.Tmp;
 import mindustry.ai.UnitCommand;
 import mindustry.gen.Unit;
 import mindustry.type.UnitType;
-import mindustry.type.Weapon;
 
 import static mindustry.Vars.renderer;
 
