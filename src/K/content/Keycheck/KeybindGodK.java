@@ -1,15 +1,11 @@
 package K.content.Keycheck;
 
-import K.content.Fx.OtherEffects.KaiEffect;
 import K.content.KUnitTypes;
-import K.content.extend.Bullets.jujutsu.DomainCook;
-import K.content.extend.Bullets.jujutsu.KaiBulletType;
-import K.content.extend.Bullets.jujutsu.SlashBulletType;
+import K.content.extend.Bullets.jujutsu.DomainInf;
 import K.content.extend.util.PlayerUtils;
 import K.content.statuseffect;
 import arc.Core;
 import arc.Events;
-import arc.graphics.Color;
 import arc.input.KeyCode;
 import arc.math.Mathf;
 import arc.util.Log;
@@ -18,8 +14,8 @@ import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.game.Team;
 import mindustry.gen.Bullet;
+import mindustry.gen.Groups;
 import mindustry.gen.Unit;
-import mindustry.graphics.Drawf;
 import mindustry.type.UnitType;
 
 public class KeybindGodK {
@@ -33,7 +29,11 @@ public class KeybindGodK {
     private static final float mxt = 180f;
     private static final float mnt = 120f;
     private static boolean ce = false;
+    private static boolean dc = false;
+    private static Unit b = null;
+    private static Unit r = null;
     private static Bullet c=null;
+    private static final float l = 10;
     private static final String[] ALLOWED_UNITS = {
             "kmod-GodK"
     };
@@ -44,14 +44,67 @@ public class KeybindGodK {
             if (!isPlayerUnitAllowed()) {
                 return;
             }
+            boolean shiftDown = Core.input.keyDown(KeyCode.shiftLeft) || Core.input.keyDown(KeyCode.shiftRight);
             boolean f2Down = Core.input.keyDown(KeyCode.f2);
-            if (f2Down && !lastF2) {
-                spawnUnitAtMouse(KUnitTypes.Blue);
+            if (f2Down) {
+                if(!hasUnit(KUnitTypes.Blue,getPlayer().unit.team)){
+                    b = spawnUnitAtMouse(KUnitTypes.Blue);
+                } else {
+                    if (b==null){
+                        b = findAnyUnit(KUnitTypes.Blue,getPlayer().unit.team);
+                    }
+                }
+                b = findAnyUnit(KUnitTypes.Blue,getPlayer().unit.team);
+                if (b != null) {
+                    float mx = getPlayer().mouseX;
+                    float my = getPlayer().mouseY;
+                    float dp = getPlayer().unit.dst(mx,my);
+                    if (dp<181){
+                        b.remove();
+                    } else {
+                        float d = b.dst(mx, my);
+                        float r = b.angleTo(mx, my) * Mathf.degRad;
+                        if (shiftDown) {
+                            b.isShooting = true;
+                        } else {
+                            if (d > 10) {
+                                b.x += Mathf.cos(r) * l;
+                                b.y += Mathf.sin(r) * l;
+                            }
+                        }
+                    }
+                }
             }
             lastF2 = f2Down;
             boolean f3Down = Core.input.keyDown(KeyCode.f3);
-            if (f3Down && !lastF3) {
-                spawnUnitAtMouse(KUnitTypes.Red);
+            if (f3Down) {
+                if(!hasUnit(KUnitTypes.Red,getPlayer().unit.team)){
+                    r = spawnUnitAtMouse(KUnitTypes.Red);
+                } else {
+                    if (r==null){
+                        r = findAnyUnit(KUnitTypes.Red,getPlayer().unit.team);
+                    }
+                }
+                r = findAnyUnit(KUnitTypes.Red,getPlayer().unit.team);
+                if (r != null) {
+                    float mx = getPlayer().mouseX;
+                    float my = getPlayer().mouseY;
+                    float dp = getPlayer().unit.dst(mx,my);
+                    if (dp<181){
+                        r.remove();
+                    } else {
+                        float d = r.dst(mx, my);
+                        float ro = r.angleTo(mx, my) * Mathf.degRad;
+                        if (shiftDown) {
+                            if (r.armor<100)r.armor = 100;
+                        } else {
+                            if (d > 10) {
+                                r.x += Mathf.cos(ro) * l;
+                                r.y += Mathf.sin(ro) * l;
+                            }
+                        }
+                    }
+                }
             }
             lastF3 = f3Down;
             boolean f4Down = Core.input.keyDown(KeyCode.f4);
@@ -77,17 +130,29 @@ public class KeybindGodK {
                 Team team = getPlayer().unit.team();
                 float rot = getPlayer().unit.angleTo(mx,my);
                 if (!ce) {
-                    c = new DomainCook().create(u, team, px - cx(160), py - sx(160), rot);
+                    c = new DomainInf().create(u, team, px - cx(160), py - sx(160), rot);
                     ce = c != null;
                     u.apply(statuseffect.domainopen,1E30f);
                 } else {
                     c.remove();
-                    ce = false;
-                    u.clearStatuses();
-                    u.apply(statuseffect.jujutsufuse,600);
+                    dc = true;
                 }
             }
             lastF5 = f5Down;
+            Events.on(EventType.UnitDamageEvent.class, e -> {
+                Unit u = e.unit;
+                if (u == null || u.type == null) return;
+                if (KUnitTypes.Domaininf.equals(u.type)) {
+                    dc = true;
+                }
+            });
+            if((dc)){
+                Unit u = getPlayer().unit;
+                ce = false;
+                u.clearStatuses();
+                u.apply(statuseffect.jujutsufuse,600);
+                dc = false;
+            }
         });
         initialized = true;
     }
@@ -103,7 +168,7 @@ public class KeybindGodK {
     }
 
     private static PlayerUtils.PlayerUnitResult getPlayer(){
-        return PlayerUtils.findPlayerUnit(KUnitTypes.Rody);
+        return PlayerUtils.findPlayerUnit(KUnitTypes.GodK);
     }
 
     private static boolean isPlayerUnitAllowed() {
@@ -118,28 +183,16 @@ public class KeybindGodK {
         }
         return false;
     }
-    private static void spawnUnitAtMouse(UnitType unitType) {
+    private static Unit spawnUnitAtMouse(UnitType unitType) {
         float px = getPlayer().unit.x;
         float py = getPlayer().unit.y;
         if (!checkPlayer()) {
             Log.info("玩家不存在，无法生成");
-            return;
+            return null;
         }
         Team team = getPlayer().unit.team();
         Unit unit = unitType.spawn(team, px+cx(160), py+sx(160));
-    }
-
-    private static void spawnBullet() {
-        float mx = getPlayer().mouseX;
-        float my = getPlayer().mouseY;
-        float px = getPlayer().unit.x;
-        float py = getPlayer().unit.y;
-        Team team = getPlayer().unit.team();
-        float rot = getPlayer().unit.angleTo(mx,my);
-        float dst = getPlayer().unit.dst(mx,my)/2850f;
-        for (int i = 0; i < 20; i++) {
-            SlashBulletType.createBullet(new SlashBulletType(),team,px,py,rot,1000,1,dst);
-        }
+        return unit;
     }
 
     private static void startCharge(){
@@ -183,5 +236,25 @@ public class KeybindGodK {
     }
     private static float sx(float l){
         return Mathf.sin(getPlayer().unit.angleTo(getPlayer().mouseX,getPlayer().mouseY)*Mathf.degRad)*l;
+    }
+    public static boolean hasUnit(UnitType unitType, Team team) {
+        if (unitType == null || team == null) return false;
+        for (Unit unit : Groups.unit) {
+            if (unit != null && !unit.dead() && unit.type == unitType && unit.team == team) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static Unit findAnyUnit(UnitType targetType, Team team) {
+        if (targetType == null) return null;
+
+        for (Unit unit : Groups.unit) {
+            if (unit == null || unit.dead()) continue;
+            if (unit.type != targetType) continue;
+            if (team != null && unit.team != team) continue;
+            return unit;
+        }
+        return null;
     }
 }

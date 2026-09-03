@@ -22,7 +22,7 @@ import static mindustry.Vars.renderer;
 
 public class DomainInf extends BulletType {
     private float[][] crackData;
-    private final float t = 600;
+    private final float t = 3600;
     private final float endtime = 2*t-50;
     public DomainInf() {
         super(0,0);
@@ -55,8 +55,8 @@ public class DomainInf extends BulletType {
     }
 
     public void draw(Bullet b){
-        if(b.time<b.lifetime-120) {
-            KFx.bp.at(b.x, b.y);
+        if(b.time<b.lifetime-240) {
+            if(b.time<endtime) KFx.bp.at(b.x, b.y);
         }
         renderer.lights.add(b.x,b.y,Math.min(1000,(b.time)*20),Color.white,1);
         TextureRegion bs = Core.atlas.find("kmod-stars");

@@ -80,7 +80,7 @@ public class PurpleUnitType extends UnitType {
         Draw.reset();
         KFx.orbitpurple.at(u.x,u.y);
         KFx.orbitpurpleout.at(u.x,u.y);
-        Lightning.create(u.team,Color.valueOf("f1ccf7").a(0.9f),1f,u.x,u.y, Mathf.random(360), (int) Mathf.random(32));
+        Lightning.create(u.team,Color.valueOf("f1ccf7").a(0.9f),1f,u.x,u.y, Mathf.random(360), Mathf.random(32));
     }
 
     private float fin(float t) {

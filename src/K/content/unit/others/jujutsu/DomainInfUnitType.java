@@ -2,6 +2,10 @@ package K.content.unit.others.jujutsu;
 
 import K.content.extend.Bullets.jujutsu.DomainInf;
 import mindustry.content.Fx;
+import mindustry.entities.Damage;
+import mindustry.entities.bullet.BasicBulletType;
+import mindustry.entities.bullet.BulletType;
+import mindustry.game.Team;
 import mindustry.gen.Bullet;
 import mindustry.gen.Groups;
 import mindustry.gen.Unit;
@@ -35,7 +39,7 @@ public class DomainInfUnitType extends UnitType {
             }
         }
         if (!e) {
-            u.remove();
+            u.health=0;
         }
         super.update(u);
     }

@@ -1,12 +1,16 @@
 package K.content.extend.weapons;
 
+import K.content.Fx.KFx;
 import K.content.extend.Bullets.jujutsu.RedBulletType;
 import K.content.sounds;
 import mindustry.entities.units.WeaponMount;
+import mindustry.gen.Bullet;
+import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
 import mindustry.type.Weapon;
 
 public class RedWeapon extends Weapon {
+    private boolean s = false;
     public RedWeapon(){
         x=0;
         y=0;
@@ -17,20 +21,24 @@ public class RedWeapon extends Weapon {
         shake = 100;
         shootSound = sounds.redcharge;
         shootCone = 360;
-    }
-
-    @Override
-    protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation) {
-        super.shoot(unit, mount, shootX, shootY, rotation);
+        alwaysContinuous = true;
     }
 
     @Override
     public void update(Unit unit, WeaponMount mount) {
         super.update(unit, mount);
-        if(unit.isShooting()){
+        if (unit.armor==100) {
+            unit.isShooting = true;
+            Teamc teamc = unit.team.core();
+            KFx.Shcokcharge.at(unit.x,unit.y,0);
+            new RedBulletType().create(teamc,unit.x,unit.y,0);
+            unit.armor = 1000;
+        }
+        if(unit.isShooting()) s = true;
+        if(s){
             if(unit.hitSize>1.21) {
                 unit.hitSize(unit.hitSize - 0.12f);
-            }
+            } else s = false;
         } else {
             if (unit.hitSize<19.8f){
                 unit.hitSize(unit.hitSize + 0.12f);

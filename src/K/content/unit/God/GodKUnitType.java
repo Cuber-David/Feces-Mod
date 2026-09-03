@@ -25,7 +25,7 @@ public class GodKUnitType extends UnitType {
         drawCell = false;
         range = 8;
         speed = 10;
-        rotateSpeed = 3;
+        rotateSpeed = 9;
         autoFindTarget = false;
         circleTargetRadius = 0;
         targetBuildingsMobile = false;

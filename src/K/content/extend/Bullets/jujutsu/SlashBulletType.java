@@ -1,15 +1,20 @@
 package K.content.extend.Bullets.jujutsu;
 
+import K.KMod;
 import K.content.Fx.KFx;
 import K.content.effects.SpecialDeathEffects;
 import K.Other_mod.FM.flame_extend.EmpathyDamage;
 import K.content.extend.util.Utils;
+import K.content.extend.weapons.KWeapon;
+import K.graphics.CutBatch;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import mindustry.content.Fx;
 import mindustry.entities.Units;
 import mindustry.entities.bullet.BulletType;
 import mindustry.gen.Bullet;
+import mindustry.gen.Unit;
+import mindustry.graphics.Layer;
 
 public class SlashBulletType extends BulletType {
     public SlashBulletType(){
@@ -37,28 +42,12 @@ public class SlashBulletType extends BulletType {
     }
 
     @Override
-    public void hit(Bullet b) {
-        Units.nearbyEnemies(b.team,b.x,b.y,32,unit -> {
-            unit.damage(b.damage);
-            EmpathyDamage.damageUnit(unit, 1000f, true, () -> {
-                SpecialDeathEffects eff = SpecialDeathEffects.get(unit.type);
-                float rot = unit.angleTo(b.x, b.y) + 180f;
-                eff.deathUnit(unit, b.x, b.y, rot, e -> {
-                    float dx = e.x - b.x, dy = e.y - b.y;
-                    float dst = Mathf.dst(dx, dy);
-                    float force = Math.max((1f - Mathf.clamp(dst / (range + unit.hitSize / 2f + 100f))), (1f / (1f + dst / 50f)));
-
-                    Vec2 vec = Utils.vv.set(dx, dy).nor().setLength(force * 5f);
-                    if(!vec.isNaN()){
-                        e.vx = vec.x;
-                        e.vy = vec.y;
-                        e.vr = Mathf.range(24f) * force;
-                        e.vz = Mathf.random(-0.01f, 0.1f);
-                    }
-                });
-            });
+    public void update(Bullet b){
+        super.update(b);
+        KWeapon.hit(b.team,b.rotation(),b.x,b.y,100,1000,1000);
+        Units.nearbyEnemies(b.team,b.x,b.y,b.rotation(),unit -> {
+            if (unit!=null) hit(b);
         });
-        super.hit(b);
     }
 
     @Override
