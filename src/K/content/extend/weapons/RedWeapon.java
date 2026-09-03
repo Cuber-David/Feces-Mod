@@ -37,7 +37,7 @@ public class RedWeapon extends Weapon {
         if(unit.isShooting()) s = true;
         if(s){
             if(unit.hitSize>1.21) {
-                unit.hitSize(unit.hitSize - 0.12f);
+                unit.hitSize(unit.hitSize - 0.36f);
             } else s = false;
         } else {
             if (unit.hitSize<19.8f){

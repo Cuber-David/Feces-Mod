@@ -1,5 +1,6 @@
 package K.content.Keycheck;
 
+import K.content.Fx.KFx;
 import K.content.KUnitTypes;
 import K.content.extend.Bullets.jujutsu.DomainInf;
 import K.content.extend.util.PlayerUtils;
@@ -21,7 +22,7 @@ import mindustry.type.UnitType;
 public class KeybindGodK {
     private static boolean initialized = false;
     private static boolean lastF2 = false;
-    private static boolean lastF3 = false;
+    private static boolean lastF6 = false;
     private static boolean lastF4 = false;
     private static boolean lastF5 = false;
     private static boolean isCharging = false;
@@ -106,7 +107,6 @@ public class KeybindGodK {
                     }
                 }
             }
-            lastF3 = f3Down;
             boolean f4Down = Core.input.keyDown(KeyCode.f4);
             if (f4Down && !lastF4) {
                 startCharge();
@@ -139,6 +139,18 @@ public class KeybindGodK {
                 }
             }
             lastF5 = f5Down;
+            boolean f6Down = Core.input.keyDown(KeyCode.f6);
+            if (f6Down && !lastF6) {
+                Unit u = getPlayer().unit;
+                float mx = getPlayer().mouseX;
+                float my = getPlayer().mouseY;
+                float px = getPlayer().unit.x;
+                float py = getPlayer().unit.y;
+                Team team = getPlayer().unit.team();
+                float rot = getPlayer().unit.angleTo(mx,my);
+                KFx.vortexWarpEffect.at(mx,my);
+            }
+            lastF6 = f5Down;
             Events.on(EventType.UnitDamageEvent.class, e -> {
                 Unit u = e.unit;
                 if (u == null || u.type == null) return;

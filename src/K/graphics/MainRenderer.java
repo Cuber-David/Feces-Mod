@@ -77,7 +77,7 @@ public class MainRenderer{
                 blackholes[i * 4 + 3] = hole.outRadius;
 
                 Draw.color(Tmp.c2.set(Color.black).a(hole.alpha));
-                Fill.circle(hole.x, hole.y, hole.inRadius * 1.5f);
+                //Fill.circle(hole.x, hole.y, hole.inRadius * 1.5f);
                 Draw.color();
                 //之前忘了
                 holePool.free(hole);
