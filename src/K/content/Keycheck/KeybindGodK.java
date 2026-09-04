@@ -3,15 +3,22 @@ package K.content.Keycheck;
 import K.content.Fx.KFx;
 import K.content.KUnitTypes;
 import K.content.extend.Bullets.jujutsu.DomainInf;
+import K.content.extend.util.DrawPurple;
 import K.content.extend.util.PlayerUtils;
+import K.content.sounds;
 import K.content.statuseffect;
 import arc.Core;
 import arc.Events;
+import arc.files.Fi;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
 import arc.input.KeyCode;
 import arc.math.Mathf;
 import arc.util.Log;
 import arc.util.Time;
 import mindustry.Vars;
+import mindustry.entities.Lightning;
 import mindustry.game.EventType;
 import mindustry.game.Team;
 import mindustry.gen.Bullet;
@@ -31,6 +38,7 @@ public class KeybindGodK {
     private static final float mnt = 120f;
     private static boolean ce = false;
     private static boolean dc = false;
+    private static boolean w = false;
     private static Unit b = null;
     private static Unit r = null;
     private static Bullet c=null;
@@ -141,16 +149,25 @@ public class KeybindGodK {
             lastF5 = f5Down;
             boolean f6Down = Core.input.keyDown(KeyCode.f6);
             if (f6Down && !lastF6) {
-                Unit u = getPlayer().unit;
-                float mx = getPlayer().mouseX;
-                float my = getPlayer().mouseY;
                 float px = getPlayer().unit.x;
                 float py = getPlayer().unit.y;
-                Team team = getPlayer().unit.team();
-                float rot = getPlayer().unit.angleTo(mx,my);
-                KFx.vortexWarpEffect.at(mx,my);
-            }
-            lastF6 = f5Down;
+                if(hasUnit(KUnitTypes.Purple,getPlayer().unit.team)){
+                    if (b==null){
+                        b = findAnyUnit(KUnitTypes.Purple,getPlayer().unit.team);
+                    }
+                }else {
+                    if (w) {
+                        sounds.weak.at(px, py, 1, 1);
+                        w = false;
+                    }
+                }
+                b = findAnyUnit(KUnitTypes.Purple,getPlayer().unit.team);
+                if (b != null) {
+                    b.mounts[0].weapon.alwaysShooting = true;
+                    if(b.isShooting())b.remove();
+                }
+            } else w = true;
+            lastF6 = f6Down;
             Events.on(EventType.UnitDamageEvent.class, e -> {
                 Unit u = e.unit;
                 if (u == null || u.type == null) return;
@@ -203,8 +220,7 @@ public class KeybindGodK {
             return null;
         }
         Team team = getPlayer().unit.team();
-        Unit unit = unitType.spawn(team, px+cx(160), py+sx(160));
-        return unit;
+        return unitType.spawn(team, px+cx(160), py+sx(160));
     }
 
     private static void startCharge(){
@@ -230,7 +246,10 @@ public class KeybindGodK {
             float py = getPlayer().unit.y;
             float rot = getPlayer().unit.angleTo(mx,my);
             Unit u = getPlayer().unit;
-            KUnitTypes.Purple.spawn(u.team,px+cx(160),py+sx(160));
+            Unit u1 = KUnitTypes.Purple.spawn(u.team,px+cx(160),py+sx(160));
+            u1.hitSize = chargetime/4;
+            u1.vel().add(cx(160),sx(160));
+            u1.mounts[0].weapon.alwaysShooting = false;
         }
     }
 
@@ -240,6 +259,11 @@ public class KeybindGodK {
     }
 
     private static void drawce(){
+        float px = getPlayer().unit.x;
+        float py = getPlayer().unit.y;
+        DrawPurple.drawp(px+cx(160), py+sx(160),chargetime);
+        KFx.vortexWarpEffect.at(px+cx(160), py+sx(160),chargetime);
+        Lightning.create(getPlayer().unit.team,Color.valueOf("f1ccf7").a(0.9f),1f,px+cx(160), py+sx(160), Mathf.random(360), (int) Mathf.random(chargetime/4));
 
     }
 

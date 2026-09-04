@@ -4,13 +4,13 @@ import K.KMod;
 import K.Other_mod.FM.flame_extend.EmpathyDamage;
 import K.content.effects.SpecialDeathEffects;
 import K.content.extend.Bullets.NoBullet;
+import K.content.sounds;
 import K.graphics.CutBatch;
 import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
-import arc.util.Log;
 import mindustry.content.Fx;
 import mindustry.entities.Damage;
 import mindustry.entities.Effect;
@@ -27,6 +27,7 @@ public class KWeapon extends Weapon {
         shootCone = 9000;
         rotate = false;
         bullet = new NoBullet();
+        shootSound = sounds.krun;
     }
 
     @Override

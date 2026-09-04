@@ -2,6 +2,7 @@ package K.content.Fx;
 
 import K.content.Fx.OtherEffects.FragmentExplosionEffect;
 import K.content.extend.util.DrawFunc;
+import K.content.extend.util.DrawPurple;
 import K.content.sounds;
 import K.graphics.MainRenderer;
 import arc.Core;
@@ -36,7 +37,7 @@ public class KFx {
     public static Effect Bigcasing,shootBig,hitBulletBigger,hitLaserBigger,PulseCharge,PulseChargeBegin,PulseShoot,
             BigExplosion,collapserExplode,ReactorExplosion,Thunder,Hugebeam,Feceswave,
             endHitRedSmall,ellipsetrail,ellipsetrailblue,disorder,bp,fee,slash,exp,orbitred,
-            orbitpurple,orbitpurpleout,Shcokcharge,vortexWarpEffect;
+            purpleexp,purpleb,Shcokcharge,vortexWarpEffect;
 
     public static void load(){
         Bigcasing = new Effect(30f, e -> {
@@ -431,47 +432,149 @@ public class KFx {
             }
             Draw.reset();
         });
-        orbitpurple = new Effect(60,e->{
-            float p = e.fin();
-            float x = e.x;
-            float y = e.y;
-            float angle = Mathf.random() * 360f + Time.time * 0.01f;
-            float radius;
-            float rand = Mathf.random();
-            if (rand < 0.5f) {
-                radius = 23f + Mathf.random() * 10f;
-            } else if (rand < 0.8f) {
-                radius = 26f + Mathf.random() * 10f;
-            } else {
-                radius = 29f + Mathf.random() * 10f;
+        purpleexp = new Effect(120,e -> {
+            Rand rand = new Rand();
+            float rad = 600f;
+            rand.setSeed(e.id);
+            for (int i = 0; i < 240; i++) {
+                Tmp.v1.set(1, 0).setToRandomDirection(rand).scl(rad);
+                DrawFunc.tri(e.x + Tmp.v1.x, e.y + Tmp.v1.y, rand.random(rad / 16, rad / 12) * e.fout(), rand.random(rad*3.5f, rad*5.5f) * (1 + e.fin()) / 2, Tmp.v1.angle());
             }
-            float px = x + Angles.trnsx(angle, radius);
-            float py = y + Angles.trnsy(angle, radius);
-            float alpha = (1f - p) * 0.8f;
-            Draw.color(Color.valueOf("f1ccf7"), alpha);
-            Fill.circle(px,py,1f);
-            Fx.trailFade.at(px,py,Color.valueOf("9c5ad5"));
-            Draw.reset();
-        });
-        orbitpurpleout = new Effect(60,e->{
-            float p = e.fin();
-            float x = e.x;
-            float y = e.y;
-            float angle = Mathf.random() * 360f + Time.time * 0.01f;
-            float radius;
-            float rand = Mathf.random();
-            if (rand < 0.5f) {
-                radius = 35f + Mathf.random() * 10f;
-            } else if (rand < 0.8f) {
-                radius = 36f + Mathf.random() * 10f;
+            Draw.blend(Blending.additive);
+            Draw.z(Layer.effect + 0.1f);
+            Fill.light(e.x, e.y, circleVertices(rad), rad, Color.clear, Tmp.c1.set(Draw.getColor()).a(e.fout(Interp.pow10Out)));
+            Draw.color(Color.white, Color.valueOf("f1ccf7"), e.fin() + 0.6f);
+            float circleRad = e.fin(Interp.circleOut) * rad * 4f;
+            Lines.stroke(12 * e.fout());
+            Lines.circle(e.x, e.y, circleRad);
+            Draw.blend(Blending.additive);
+            Draw.z(Layer.effect + 0.1f);
+            Fill.light(e.x, e.y, circleVertices(circleRad), circleRad, Color.clear, Tmp.c1.set(Draw.getColor()).a(e.fout(Interp.pow10Out)));
+            Draw.blend();
+            Draw.z(Layer.effect);
+        }){{clip = 2000;}};
+        purpleb = new Effect(120, e -> {
+            float progress = e.fin();
+            Color color = Color.purple;
+
+            // 半径逐渐扩大
+            float radius = 1600 * Interp.pow2Out.apply(progress);
+
+            // 颜色保持鲜艳，最后10%淡出
+            float alpha;
+            if (progress < 0.9f) {
+                alpha = 1f;
             } else {
-                radius = 37f + Mathf.random() * 10f;
+                alpha = 1f - (progress - 0.9f) / 0.1f;
             }
-            float px = x + Angles.trnsx(angle, radius);
-            float py = y + Angles.trnsy(angle, radius);
-            float alpha = (1f - p) * 0.8f;
-            Draw.color(Color.valueOf("d076f1"), alpha);
-            Fill.circle(px,py,1f);
+
+            float rotation = Time.time / 50f; // 横向旋转速度
+
+            Draw.blend(Blending.additive);
+
+            // ===== 1. 发光光晕 =====
+            Draw.color(color, alpha * 0.15f);
+            Fill.circle(e.x, e.y, radius * 1.8f);
+
+            // ===== 2. 球体核心（通过多个椭圆叠加形成立体球） =====
+            int layers = 16;
+            for (int i = 0; i < layers; i++) {
+                float layerAngle = (float)i / layers * 180f + rotation * 30f;
+                float layerDepth = Mathf.sinDeg(layerAngle); // -1 到 1
+                float layerAlpha = 0.3f + 0.7f * (0.5f + 0.5f * layerDepth);
+
+                // 椭圆半径：水平方向随深度变化
+                float rx = radius * (0.6f + 0.4f * Mathf.cosDeg(layerAngle));
+                float ry = radius * 0.5f * Mathf.sinDeg(layerAngle);
+                ry = Math.abs(ry) + radius * 0.05f;
+
+                Draw.color(color, alpha * 0.25f * layerAlpha);
+                Fill.rect(e.x, e.y + ry * 0.3f, rx * 1.6f, ry * 1.2f, 0f);
+            }
+
+            // ===== 3. 球体主体（实心球） =====
+            Draw.color(color, alpha * 0.7f);
+            Fill.circle(e.x, e.y, radius * 0.85f);
+
+            // ===== 4. 横向旋转条纹（球体表面的环） =====
+            Draw.color(color, alpha * 0.5f);
+            Lines.stroke(2.5f);
+
+            int rings = 6;
+            for (int i = 0; i < rings; i++) {
+                float ringPos = (float)i / rings * 180f + rotation * 20f;
+                float ringDepth = Mathf.cosDeg(ringPos); // -1 到 1
+
+                // 环的宽度随深度变化（边缘窄，中间宽）
+                float ringWidth = 0.3f + 0.7f * (0.5f + 0.5f * ringDepth);
+                float ringY = e.y + radius * 0.8f * Mathf.sinDeg(ringPos);
+                float ringRadius = radius * 0.8f * Mathf.cosDeg(ringPos);
+                ringRadius = Math.abs(ringRadius) + radius * 0.05f;
+
+                // 绘制环（用椭圆弧）
+                float arcAngle = (float)i / rings * 180f + rotation * 30f;
+                float startAngle = arcAngle;
+                float endAngle = arcAngle + 180f;
+
+                Draw.alpha(alpha * 0.4f * (0.3f + 0.7f * (0.5f + 0.5f * ringDepth)));
+
+                // 用多个线段绘制弧
+                int segments = 20;
+                for (int j = 0; j < segments; j++) {
+                    float segAngle = startAngle + (float)j / segments * (endAngle - startAngle);
+                    float segAngleNext = startAngle + (float)(j + 1) / segments * (endAngle - startAngle);
+
+                    float sx = e.x + Mathf.cosDeg(segAngle) * ringRadius;
+                    float sy = ringY + Mathf.sinDeg(segAngle) * ringRadius * 0.3f;
+                    float sxn = e.x + Mathf.cosDeg(segAngleNext) * ringRadius;
+                    float syn = ringY + Mathf.sinDeg(segAngleNext) * ringRadius * 0.3f;
+
+                    Lines.line(sx, sy, sxn, syn);
+                }
+            }
+
+            // ===== 5. 经线（纵向条纹） =====
+            Draw.color(color, alpha * 0.3f);
+            Lines.stroke(1.5f);
+
+            int meridianCount = 8;
+            for (int i = 0; i < meridianCount; i++) {
+                float angle = (float)i / meridianCount * 360f + rotation * 15f;
+
+                float x1 = e.x + Mathf.cosDeg(angle) * radius * 0.8f;
+                float y1 = e.y + Mathf.sinDeg(angle) * radius * 0.3f;
+                float x2 = e.x + Mathf.cosDeg(angle + 180) * radius * 0.8f;
+                float y2 = e.y + Mathf.sinDeg(angle + 180) * radius * 0.3f;
+
+                float depthAlpha = 0.3f + 0.7f * (0.5f + 0.5f * Mathf.sinDeg(angle + 90));
+                Draw.alpha(alpha * 0.25f * depthAlpha);
+                Lines.line(x1, y1, x2, y2);
+            }
+
+            // ===== 6. 高光（3D光照效果） =====
+            float lightAngle = rotation * 30f;
+            float lx = e.x + Mathf.cosDeg(lightAngle) * radius * 0.5f;
+            float ly = e.y + Mathf.sinDeg(lightAngle) * radius * 0.3f - radius * 0.15f;
+
+            // 主高光
+            Draw.color(Color.white, alpha * 0.5f);
+            Fill.rect(lx, ly, radius * 0.6f, radius * 0.35f, lightAngle);
+
+            // 次级高光
+            Draw.color(Color.white, alpha * 0.2f);
+            Fill.rect(lx - radius * 0.1f, ly + radius * 0.15f, radius * 0.8f, radius * 0.4f, lightAngle + 20);
+
+            // ===== 7. 边缘光 =====
+            Draw.color(color, alpha * 0.3f);
+            Lines.stroke(1.5f);
+            Lines.circle(e.x, e.y, radius * 0.85f);
+
+            // ===== 8. 外发光 =====
+            Draw.color(color, alpha * 0.1f);
+            Lines.stroke(3f);
+            Lines.circle(e.x, e.y, radius * 1.1f);
+
+            Draw.blend();
             Draw.reset();
         });
         Shcokcharge = new Effect(60f, 100f, e -> {
@@ -498,14 +601,10 @@ public class KFx {
             }
             Draw.reset();
         });
-        vortexWarpEffect = new Effect(10f, e -> {
+        vortexWarpEffect = new Effect(1f, e -> {
             float x = e.x;
             float y = e.y;
-            MainRenderer.addBlackHole(x,y,10,100);
-            Draw.z(230);
-            Draw.color(Color.purple);
-            Fill.circle(x,y,80);
-            Draw.reset();
+            DrawPurple.drawp(x,y,e.rotation);
         });
     }
 }
