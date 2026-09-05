@@ -26,22 +26,22 @@ public class planets {
             this.generator = new KPlanetGenerator();
 
 
-            this.meshLoader = new Prov<GenericMesh>() {
-                @Override
-                public GenericMesh get() {
-                    return new HexMesh(nonepro, 3);
-                }
-            };
+//            this.meshLoader = new Prov<GenericMesh>() {
+//                @Override
+//                public GenericMesh get() {
+//                    return new HexMesh(nonepro, 3);
+//                }
+//            };
             alwaysUnlocked = true;
             defaultCore = blocks.fecescore;
             this.allowLaunchSchematics = true;
             this.iconColor = Color.valueOf("ff9899");
             this.atmosphereColor = Color.valueOf("46251c");
-            this.cloudMeshLoader = () -> new MultiMesh(
-                    new HexSkyMesh(this,3,4.3f,0.13f,10, Color.valueOf("724034"),2,0.3f,0.7f,0.6f),
-                    new HexSkyMesh(this,1,0.55f,0.23f,8, Color.valueOf("46251c"),1,0.21f,0.45f,0.3f)
-
-            );
+//            this.cloudMeshLoader = () -> new MultiMesh(
+//                    new HexSkyMesh(this,3,4.3f,0.13f,10, Color.valueOf("724034"),2,0.3f,0.7f,0.6f),
+//                    new HexSkyMesh(this,1,0.55f,0.23f,8, Color.valueOf("46251c"),1,0.21f,0.45f,0.3f)
+//
+//            );
             this.allowLaunchLoadout = true;
             this.landCloudColor = Color.valueOf("ff9899");
             this.ruleSetter = r -> {
@@ -56,7 +56,7 @@ public class planets {
 
         littlepro = new Planet("little", planets.nonepro, 0.5f,1){{
             this.generator = new KPlanetGenerator();
-            alwaysUnlocked = true;
+            alwaysUnlocked = false;
             this.iconColor = Color.valueOf("855f39");
             this.ruleSetter = r -> {
                 r.waveTeam = Team.crux;
@@ -64,13 +64,13 @@ public class planets {
                 r.showSpawns = true;
                 r.lighting = false;
             };
-            this.meshLoader = new Prov<GenericMesh>() {
-                @Override
-                public GenericMesh get() {
-                    return new HexMesh(littlepro, 2);
-                }
-
-            };
+//            this.meshLoader = new Prov<GenericMesh>() {
+//                @Override
+//                public GenericMesh get() {
+//                    return new HexMesh(littlepro, 2);
+//                }
+//
+//            };
         }};
     }
 }
