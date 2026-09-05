@@ -29,7 +29,7 @@ public class planets {
             this.meshLoader = new Prov<GenericMesh>() {
                 @Override
                 public GenericMesh get() {
-                    return new HexMesh(nonepro, 4);
+                    return new HexMesh(nonepro, 3);
                 }
             };
             alwaysUnlocked = true;
