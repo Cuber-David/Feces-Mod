@@ -17,7 +17,7 @@ public class sector {
             allowLaunchSchematics = true;
             allowLaunchLoadout = true;
         }};
-        zonetwo = new SectorPreset("zonetwo", planets.nonepro,95){{
+        zonetwo = new SectorPreset("zonetwo", planets.nonepro,35){{
             alwaysUnlocked = false;
             addStartingItems = false;
             captureWave = 30;
@@ -27,7 +27,7 @@ public class sector {
             allowLaunchSchematics = true;
             allowLaunchLoadout = true;
         }};
-        zonethree = new SectorPreset("zonethree", planets.nonepro,166){{
+        zonethree = new SectorPreset("zonethree", planets.nonepro,15){{
             alwaysUnlocked = false;
             addStartingItems = false;
             captureWave = 30;
@@ -37,7 +37,7 @@ public class sector {
             allowLaunchSchematics = true;
             allowLaunchLoadout = true;
         }};
-        zonefour = new SectorPreset("zonefour", planets.nonepro,165){{
+        zonefour = new SectorPreset("zonefour", planets.nonepro,41){{
             alwaysUnlocked = false;
             addStartingItems = false;
             captureWave = 30;
@@ -47,7 +47,7 @@ public class sector {
             allowLaunchSchematics = true;
             allowLaunchLoadout = true;
         }};
-        zonefive = new SectorPreset("zonefive", planets.nonepro,37){{
+        zonefive = new SectorPreset("zonefive", planets.nonepro,40){{
             alwaysUnlocked = false;
             addStartingItems = false;
             captureWave = 30;
