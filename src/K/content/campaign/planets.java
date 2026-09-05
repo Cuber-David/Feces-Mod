@@ -26,12 +26,12 @@ public class planets {
             this.generator = new KPlanetGenerator();
 
 
-//            this.meshLoader = new Prov<GenericMesh>() {
-//                @Override
-//                public GenericMesh get() {
-//                    return new HexMesh(nonepro, 3);
-//                }
-//            };
+            this.meshLoader = new Prov<GenericMesh>() {
+                @Override
+                public GenericMesh get() {
+                    return new HexMesh(nonepro, 1);
+                }
+            };
             alwaysUnlocked = true;
             defaultCore = blocks.fecescore;
             this.allowLaunchSchematics = true;
@@ -64,13 +64,13 @@ public class planets {
                 r.showSpawns = true;
                 r.lighting = false;
             };
-//            this.meshLoader = new Prov<GenericMesh>() {
-//                @Override
-//                public GenericMesh get() {
-//                    return new HexMesh(littlepro, 2);
-//                }
-//
-//            };
+            this.meshLoader = new Prov<GenericMesh>() {
+                @Override
+                public GenericMesh get() {
+                    return new HexMesh(littlepro, 1);
+                }
+
+            };
         }};
     }
 }
