@@ -133,12 +133,12 @@ public class KMod extends Mod{
         liquids.load();
         KUnitTypes.load();
         blocks.load();
-        loadouts.load();
-        Vars.schematics.getLoadouts().get((CoreBlock)blocks.fecescore, Seq::new).add(loadouts.basiccore,loadouts.basioncore);
-        KPlanetGenerator.load();
-        planets.load();
-        sector.load();
-        techtree.load();
+//        loadouts.load();
+//        Vars.schematics.getLoadouts().get((CoreBlock)blocks.fecescore, Seq::new).add(loadouts.basiccore,loadouts.basioncore);
+//        KPlanetGenerator.load();
+//        planets.load();
+//        sector.load();
+//        techtree.load();
         NHContent.loadLast();
         KeybindRody.init();
         KeybindGodK.init();
