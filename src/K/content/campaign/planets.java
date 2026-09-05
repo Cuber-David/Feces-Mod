@@ -47,7 +47,6 @@ public class planets {
             this.ruleSetter = r -> {
                 r.waveTeam = Team.crux;
                 r.placeRangeCheck = false;
-                r.showSpawns = true;
                 r.lighting = false;
                 r.ambientLight = new Color(0.0f, 0.0f, 0.0f, 0.0f);
                 r.disableWorldProcessors = false;
