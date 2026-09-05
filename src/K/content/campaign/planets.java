@@ -22,7 +22,7 @@ public class planets {
     }
 
     public static void load(){
-        nonepro = new Planet("none", Planets.sun, 1.0f, 3){{
+        nonepro = new Planet("none", Planets.sun, 1.0f, 2){{
             this.generator = new KPlanetGenerator();
 
 
