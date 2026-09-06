@@ -37,11 +37,11 @@ public class planets {
             this.allowLaunchSchematics = true;
             this.iconColor = Color.valueOf("ff9899");
             this.atmosphereColor = Color.valueOf("46251c");
-//            this.cloudMeshLoader = () -> new MultiMesh(
-//                    new HexSkyMesh(this,3,4.3f,0.13f,10, Color.valueOf("724034"),2,0.3f,0.7f,0.6f),
-//                    new HexSkyMesh(this,1,0.55f,0.23f,8, Color.valueOf("46251c"),1,0.21f,0.45f,0.3f)
-//
-//            );
+            this.cloudMeshLoader = () -> new MultiMesh(
+                    new HexSkyMesh(this,3,4.3f,0.13f,2, Color.valueOf("724034"),2,0.3f,0.7f,0.6f),
+                    new HexSkyMesh(this,1,0.55f,0.23f,2, Color.valueOf("46251c"),1,0.21f,0.45f,0.3f)
+
+            );
             this.allowLaunchLoadout = true;
             this.landCloudColor = Color.valueOf("ff9899");
             this.ruleSetter = r -> {
