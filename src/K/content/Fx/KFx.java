@@ -371,6 +371,7 @@ public class KFx {
         }};
         fee = new FragmentExplosionEffect();
         slash = new Effect(24, e -> {
+            Draw.z(220);
             Draw.color(KPal.darkRed);
             Drawf.tri(e.x,e.y,8*e.fout(),128*e.fout(),e.rotation+90);
             Drawf.tri(e.x,e.y,8*e.fout(),128*e.fout(),e.rotation+270);
@@ -378,7 +379,7 @@ public class KFx {
             Drawf.tri(e.x,e.y,6*e.fout(),96*e.fout(),e.rotation+90);
             Drawf.tri(e.x,e.y,6*e.fout(),96*e.fout(),e.rotation+270);
             Angles.randLenVectors(e.id, 3, 16 * e.finpow(), e.rotation, 360, (x, y) -> Fill.poly(e.x + x, e.y + y, 3, 10 * e.foutpow(), Mathf.randomSeed(e.id, 360) + e.time));
-        }).layer(Layer.max - 20);
+        }).layer(Layer.max);
         exp = new Effect(96,e -> {{
             int tf = 16;
             float pro = e.fin()/1;

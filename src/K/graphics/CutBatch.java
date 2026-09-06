@@ -17,7 +17,7 @@ public class CutBatch extends Batch{
     public Effect explosionEffect;
     public Cons<Severation> cutHandler;
     public Sound sound;
-    static Seq<Severation> returnEntities = new Seq<>();
+    public static Seq<Severation> returnEntities = new Seq<>();
 
     public Seq<Severation> switchBatch(Runnable run){
         Batch last = Core.batch;

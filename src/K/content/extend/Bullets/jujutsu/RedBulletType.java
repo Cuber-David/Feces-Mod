@@ -29,6 +29,7 @@ public class RedBulletType extends BulletType {
         drag = 888;
         collides =  false;
         lifetime = 50;
+        collidesAir = true;
         pierce = true;
         despawnSound = sounds.desnukehit;
         despawnEffect = new Effect(60 ,e -> {

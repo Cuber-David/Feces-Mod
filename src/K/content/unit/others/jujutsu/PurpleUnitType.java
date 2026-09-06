@@ -20,6 +20,8 @@ import static mindustry.Vars.renderer;
 public class PurpleUnitType extends UnitType {
     public PurpleUnitType(String name) {
         super(name);
+        range = 100;
+        aiController = DomainAI::new;
         constructor = BlueUnit::new;
         hitSize = 40;
         speed = 15;

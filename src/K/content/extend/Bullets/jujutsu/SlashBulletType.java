@@ -23,6 +23,7 @@ public class SlashBulletType extends BulletType {
         hitSize = 24;
         despawnEffect = Fx.none;
         hitEffect = KFx.slash;
+        collidesAir = true;
         pierce = true;
         pierceCap = 4;
     }

@@ -42,6 +42,7 @@ public class KaiBulletType extends BulletType {
         super(100,10000);
         lifetime = hs/4f;
         hitSize = hs;
+        collidesAir = true;
         drawSize = 1000;
         despawnShake = hitShake = 100;
         despawnHit = true;

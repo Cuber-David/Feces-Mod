@@ -29,9 +29,8 @@ public class RedWeapon extends Weapon {
         super.update(unit, mount);
         if (unit.armor==100) {
             unit.isShooting = true;
-            Teamc teamc = unit.team.core();
             KFx.Shcokcharge.at(unit.x,unit.y,0);
-            new RedBulletType().create(teamc,unit.x,unit.y,0);
+            new RedBulletType().create(unit,unit.x,unit.y,0);
             unit.armor = 1000;
         }
         if(unit.isShooting()) s = true;

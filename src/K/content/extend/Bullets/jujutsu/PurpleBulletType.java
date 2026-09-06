@@ -25,6 +25,7 @@ public class PurpleBulletType extends BulletType {
         hitSize = h;
         lifetime = 3;
         pierce = true;
+        collidesAir = true;
         speed=0;
         damage=888888;
         collides = false;

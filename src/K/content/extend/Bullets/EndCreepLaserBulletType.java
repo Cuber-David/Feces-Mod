@@ -199,13 +199,13 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
                 } : null);
 
                 if(dam > 0){
-                    EmpathyDamage.damageUnit(u, (damage + u.maxHealth / 90f), true, death);
+                    EmpathyDamage.damageUnit(u, (damage + u.maxHealth / 900f), true, death);
                     hitt = true;
                     if(u.isGrounded()) groundHit = true;
                 }
             }else if(h instanceof Building bl){
                 if(ground > 0){
-                    EmpathyDamage.damageBuildingRaw(bl, (damage + bl.maxHealth / 90f), true, null);
+                    EmpathyDamage.damageBuildingRaw(bl, (damage + bl.maxHealth / 900f), true, null);
                     hitt = true;
                     if((bl.health / bl.maxHealth) > 0.68f) groundHit = true;
                 }
@@ -232,7 +232,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
         buildings.clear();
         Groups.unit.intersect(r.x, r.y, r.width, r.height, u -> {
             if(u.team != b.team && Mathf.within(x, y, u.x, u.y, range + u.hitSize / 2f) && u.checkTarget(false, true)){
-                EmpathyDamage.damageUnit(u, 12000f + u.maxHealth / 50f, true, () -> {
+                EmpathyDamage.damageUnit(u, 12000f + u.maxHealth / 500f, true, () -> {
                     SpecialDeathEffects eff = SpecialDeathEffects.get(u.type);
                     float rot = u.angleTo(x, y) + 180f;
                     eff.deathUnit(u, x, y, rot, e -> {
