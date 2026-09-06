@@ -13,7 +13,6 @@ public class DrawPurple {
     public static void drawp(float x,float y,float size){
         final float c = 100;
         Draw.z(200);
-        //MainRenderer.addBlackHole(x,y,10,100);
         for(int i=0;i<c;i++){
             Draw.color(Color.valueOf("5e51a0").a(0.2f),(float)i/(80*c));
             Fill.circle(x,y,size*0.25f*((16*c)/i));

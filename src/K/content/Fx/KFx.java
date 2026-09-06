@@ -4,7 +4,6 @@ import K.content.Fx.OtherEffects.FragmentExplosionEffect;
 import K.content.extend.util.DrawFunc;
 import K.content.extend.util.DrawPurple;
 import K.content.sounds;
-import K.graphics.MainRenderer;
 import arc.Core;
 import arc.graphics.Blending;
 import arc.graphics.Color;
@@ -20,7 +19,6 @@ import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
-import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -37,7 +35,7 @@ public class KFx {
     public static Effect Bigcasing,shootBig,hitBulletBigger,hitLaserBigger,PulseCharge,PulseChargeBegin,PulseShoot,
             BigExplosion,collapserExplode,ReactorExplosion,Thunder,Hugebeam,Feceswave,
             endHitRedSmall,ellipsetrail,ellipsetrailblue,disorder,bp,fee,slash,exp,orbitred,
-            purpleexp,purpleb,Shcokcharge,vortexWarpEffect;
+            purpleexp,purpleb,Shcokcharge, purpleEffect;
 
     public static void load(){
         Bigcasing = new Effect(30f, e -> {
@@ -601,7 +599,7 @@ public class KFx {
             }
             Draw.reset();
         });
-        vortexWarpEffect = new Effect(1f, e -> {
+        purpleEffect = new Effect(3f, e -> {
             float x = e.x;
             float y = e.y;
             DrawPurple.drawp(x,y,e.rotation);

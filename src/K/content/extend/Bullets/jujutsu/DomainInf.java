@@ -11,6 +11,7 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
+import arc.util.Tmp;
 import mindustry.entities.Units;
 import mindustry.entities.bullet.BulletType;
 import mindustry.game.Team;
@@ -111,6 +112,9 @@ public class DomainInf extends BulletType {
             if (b.time > 60) {
                 float bhsize = Math.min(24, (b.time - 60) * 0.6f);
                 MainRenderer.addBlackHole(b.x, b.y, bhsize, bhsize * 6);
+                Draw.color(Tmp.c2.set(Color.black).a(1));
+                Fill.circle(b.x, b.y, bhsize * 1.5f);
+                Draw.color();
                 Lines.stroke(10);
                 Lines.circle(b.x, b.y, 30);
                 Lines.stroke(20, Color.white.a(0.3f));

@@ -9,10 +9,7 @@ import K.content.sounds;
 import K.content.statuseffect;
 import arc.Core;
 import arc.Events;
-import arc.files.Fi;
 import arc.graphics.Color;
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.Fill;
 import arc.input.KeyCode;
 import arc.math.Mathf;
 import arc.util.Log;
@@ -262,7 +259,7 @@ public class KeybindGodK {
         float px = getPlayer().unit.x;
         float py = getPlayer().unit.y;
         DrawPurple.drawp(px+cx(160), py+sx(160),chargetime);
-        KFx.vortexWarpEffect.at(px+cx(160), py+sx(160),chargetime);
+        KFx.purpleEffect.at(px+cx(160), py+sx(160),chargetime);
         Lightning.create(getPlayer().unit.team,Color.valueOf("f1ccf7").a(0.9f),1f,px+cx(160), py+sx(160), Mathf.random(360), (int) Mathf.random(chargetime/4));
 
     }
