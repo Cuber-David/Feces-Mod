@@ -125,8 +125,8 @@ public class KeybindGodK {
                 release();
             }
             lastF4 = f4Down;
-            boolean f5Down = Core.input.keyDown(KeyCode.f5);
-            if (f5Down && !lastF5) {
+            boolean f6Down = Core.input.keyDown(KeyCode.f6);
+            if (f6Down && !lastF6) {
                 Unit u = getPlayer().unit;
                 float mx = getPlayer().mouseX;
                 float my = getPlayer().mouseY;
@@ -143,9 +143,9 @@ public class KeybindGodK {
                     dc = true;
                 }
             }
-            lastF5 = f5Down;
-            boolean f6Down = Core.input.keyDown(KeyCode.f6);
-            if (f6Down && !lastF6) {
+            lastF6 = f6Down;
+            boolean f5Down = Core.input.keyDown(KeyCode.f5);
+            if (f5Down && !lastF5) {
                 float px = getPlayer().unit.x;
                 float py = getPlayer().unit.y;
                 if(hasUnit(KUnitTypes.Purple,getPlayer().unit.team)){
@@ -164,7 +164,7 @@ public class KeybindGodK {
                     if(b.isShooting())b.remove();
                 }
             } else w = true;
-            lastF6 = f6Down;
+            lastF5 = f5Down;
             Events.on(EventType.UnitDamageEvent.class, e -> {
                 Unit u = e.unit;
                 if (u == null || u.type == null) return;

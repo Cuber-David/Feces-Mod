@@ -12,6 +12,7 @@ import arc.Events;
 import arc.graphics.Color;
 import arc.input.KeyCode;
 import arc.math.Mathf;
+import arc.scene.ui.layout.Table;
 import arc.util.Log;
 import arc.util.Time;
 import mindustry.Vars;
@@ -21,13 +22,16 @@ import mindustry.game.Team;
 import mindustry.game.EventType;
 import mindustry.graphics.Drawf;
 import mindustry.type.UnitType;
+import mindustry.ui.Styles;
 
 public class KeybindRody {
     private static boolean initialized = false;
     private static boolean lastF2 = false;
     private static boolean lastF3 = false;
     private static boolean lastF4 = false;
+    private static boolean lastF4d = false;
     private static boolean lastF5 = false;
+    private static boolean lastF5d = false;
     private static boolean isCharging = false;
     private static float chargetime = 0f;
     private static final float mxt = 180f;
@@ -37,38 +41,49 @@ public class KeybindRody {
     private static final String[] ALLOWED_UNITS = {
             "kmod-Rody"
     };
+    public static boolean F2 = false;
+    public static boolean F3 = false;
+    public static boolean F4 = false;
+    public static boolean F5 = false;
     public static void init() {
         if (initialized) return;
         Events.run(EventType.Trigger.update, () -> {
-            if (!checkPlayer()) return;
-            if (!isPlayerUnitAllowed()) {
+            if (!checkPlayer()) {
+                ModActions.setButtonsVisible(false);
                 return;
             }
+            if (!isPlayerUnitAllowed()) {
+                ModActions.setButtonsVisible(false);
+                return;
+            }
+            DrawButton.init();
+            ModActions.setButtonsVisible(true);
             boolean f2Down = Core.input.keyDown(KeyCode.f2);
-            if (f2Down && !lastF2) {
+            if (f2Down && !lastF2 || F2) {
                 spawnBullet();
             }
             lastF2 = f2Down;
             boolean f3Down = Core.input.keyDown(KeyCode.f3);
-            if (f3Down && !lastF3) {
+            if (f3Down && !lastF3 || F3) {
                 spawnUnitAtMouse(KUnitTypes.Ba);
             }
             lastF3 = f3Down;
             boolean f4Down = Core.input.keyDown(KeyCode.f4);
-            if (f4Down && !lastF4) {
+            if (f4Down && !lastF4 || F4 && !lastF4d) {
                 startCharge();
-            } else if (f4Down && isCharging){
+            } else if (f4Down && isCharging || F4 && isCharging){
                 chargetime += Time.delta;
                 if (chargetime >= mxt){
                     chargetime = mxt;
                 }
                 drawce();
-            } else if (!f4Down && isCharging) {
+            } else if (!f4Down && isCharging || !F4 && isCharging) {
                 release();
             }
             lastF4 = f4Down;
+            lastF4d = F4;
             boolean f5Down = Core.input.keyDown(KeyCode.f5);
-            if (f5Down && !lastF5) {
+            if (f5Down && !lastF5 || F5 && !lastF5d) {
                 Unit u = getPlayer().unit;
                 float mx = getPlayer().mouseX;
                 float my = getPlayer().mouseY;
@@ -88,8 +103,33 @@ public class KeybindRody {
                 }
             }
             lastF5 = f5Down;
+            lastF5d = F5;
         });
         initialized = true;
+    }
+    public static void f2(){
+        F2 = true;
+    }
+    public static void f2d(){
+        F2 = false;
+    }
+    public static void f3(){
+        F3 = true;
+    }
+    public static void f3d(){
+        F3 = false;
+    }
+    public static void f4(){
+        F4 = true;
+    }
+    public static void f4d(){
+        F4 = false;
+    }
+    public static void f5(){
+        F5 = true;
+    }
+    public static void f5d(){
+        F5 = false;
     }
     private static boolean checkPlayer() {
         if (Vars.player == null) {
