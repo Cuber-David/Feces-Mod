@@ -12,7 +12,6 @@ import arc.Events;
 import arc.graphics.Color;
 import arc.input.KeyCode;
 import arc.math.Mathf;
-import arc.scene.ui.layout.Table;
 import arc.util.Log;
 import arc.util.Time;
 import mindustry.Vars;
@@ -22,9 +21,8 @@ import mindustry.game.Team;
 import mindustry.game.EventType;
 import mindustry.graphics.Drawf;
 import mindustry.type.UnitType;
-import mindustry.ui.Styles;
 
-public class KeybindRody {
+public class KeybindRoody {
     private static boolean initialized = false;
     private static boolean lastF2 = false;
     private static boolean lastF3 = false;

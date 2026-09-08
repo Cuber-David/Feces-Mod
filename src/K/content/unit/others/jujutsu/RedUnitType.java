@@ -22,6 +22,7 @@ public class RedUnitType extends UnitType {
         constructor = BlueUnit::new;
         aiController = DomainAI::new;
         hitSize = 0;
+        hittable = false;
         speed = 10;
         range = 30;
         hitSize = 20;

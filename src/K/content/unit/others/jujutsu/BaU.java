@@ -11,28 +11,31 @@ import arc.math.Mathf;
 import mindustry.content.Fx;
 import mindustry.entities.Damage;
 import mindustry.entities.Units;
+import mindustry.gen.Sounds;
 import mindustry.gen.Unit;
 import mindustry.type.UnitType;
 
 public class BaU extends UnitType {
-    private float c = 0;
     public BaU(String name) {
         super(name);
+        health = 10;
         hidden = true;
         hittable=targetable=false;
+        hitSize = 0;
+        playerControllable = false;
+        useUnitCap = false;
         constructor = BlueUnit::new;
-        health = 80000;
         speed = 0;
+        flying = true;
+        drawCell = false;
+        engineSize = 0;
+        deathSound = Sounds.none;
+        deathShake = 5;
+        deathExplosionEffect = fallEffect = Fx.none;
     }
 
     @Override
     public void draw(Unit unit) {
-    }
-
-    @Override
-    public void init() {
-        c = 0;
-        super.init();
     }
 
     @Override
@@ -44,20 +47,17 @@ public class BaU extends UnitType {
                 KFx.slash.at(x, y, unit.rotation + 90 * (int) Mathf.random(2));
             }
         }
-        c++;
+        unit.health--;
         Damage.damage(unit.team,unit.x,unit.y,100,1000);
         Units.nearbyEnemies(unit.team,unit.x, unit.y,100,u -> {
             if (u.health>2000) {
                 u.damage(2000);
             } else {
-                if (unit != null && !unit.dead()) {
-                    SimpleFragments.cutUnit(unit);
+                if (!u.dead()) {
+                    SimpleFragments.cutUnit(u);
                 }
             }
         });
-        if(c>10){
-            unit.remove();
-            c = 0;
-        }
+        if (unit.health<1) unit.remove();
     }
 }

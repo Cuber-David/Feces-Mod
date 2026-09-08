@@ -3,11 +3,9 @@ package K;
 import K.content.*;
 import K.content.Fx.OtherFx;
 import K.content.Fx.KFx;
-import K.content.Keycheck.DrawButton;
 import K.content.Keycheck.KeybindGodK;
-import K.content.Keycheck.KeybindRody;
+import K.content.Keycheck.KeybindRoody;
 import K.Other_mod.NH.NHContent;
-import K.content.Keycheck.ModActions;
 import K.content.campaign.*;
 import K.content.effectrenderer.StatusEffectRenderer;
 import K.content.effects.Severation;
@@ -151,7 +149,7 @@ public class KMod extends Mod{
         sector.load();
         techtree.load();
         NHContent.loadLast();
-        KeybindRody.init();
+        KeybindRoody.init();
         KeybindGodK.init();
     }
 }

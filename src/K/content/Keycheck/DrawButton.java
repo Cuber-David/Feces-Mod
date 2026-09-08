@@ -27,16 +27,16 @@ public class DrawButton {
 
             // 检测每个按钮是否被按住，并输出日志
             if (ModActions.isButton1Pressed()) {
-                KeybindRody.f2();
+                KeybindRoody.f2();
             }
             if (ModActions.isButton2Pressed()) {
-                KeybindRody.f3();
+                KeybindRoody.f3();
             }
             if (ModActions.isButton3Pressed()) {
-                KeybindRody.f4();
+                KeybindRoody.f4();
             }
             if (ModActions.isButton4Pressed()) {
-                KeybindRody.f5();
+                KeybindRoody.f5();
             }
         });
     }

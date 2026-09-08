@@ -1,7 +1,6 @@
 package K.content.Keycheck;
 
 import arc.scene.ui.Button;
-import arc.util.Log;
 
 public class ModActions {
     private static Button btn1 = null;
@@ -33,28 +32,28 @@ public class ModActions {
         if (btn1 != null) {
             pressed1 = btn1.isPressed();
             if (pressed1 != prev1) {
-                KeybindRody.f2d();
+                KeybindRoody.f2d();
                 prev1 = pressed1;
             }
         }
         if (btn2 != null) {
             pressed2 = btn2.isPressed();
             if (pressed2 != prev2) {
-                KeybindRody.f3d();
+                KeybindRoody.f3d();
                 prev2 = pressed2;
             }
         }
         if (btn3 != null) {
             pressed3 = btn3.isPressed();
             if (pressed3 != prev3) {
-                KeybindRody.f4d();
+                KeybindRoody.f4d();
                 prev3 = pressed3;
             }
         }
         if (btn4 != null) {
             pressed4 = btn4.isPressed();
             if (pressed4 != prev4) {
-                KeybindRody.f5d();
+                KeybindRoody.f5d();
                 prev4 = pressed4;
             }
         }
