@@ -22,7 +22,7 @@ import mindustry.game.EventType;
 import mindustry.graphics.Drawf;
 import mindustry.type.UnitType;
 
-public class KeybindRoody {
+public class KeybindRody {
     private static boolean initialized = false;
     private static boolean lastF2 = false;
     private static boolean lastF3 = false;
@@ -54,7 +54,7 @@ public class KeybindRoody {
                 ModActions.setButtonsVisible(false);
                 return;
             }
-            DrawButton.init();
+            CreateButton.init();
             ModActions.setButtonsVisible(true);
             boolean f2Down = Core.input.keyDown(KeyCode.f2);
             if (f2Down && !lastF2 || F2) {

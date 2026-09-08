@@ -12,7 +12,7 @@ public class PlayerUtils {
         public final Unit unit;
         public final float mouseX, mouseY;
 
-        public PlayerUnitResult(Unit u, float mx, float my) {
+        public PlayerUnitResult(Unit u, Player player, float mx, float my) {
             this.unit = u;
             this.mouseX = mx;
             this.mouseY = my;
@@ -27,7 +27,7 @@ public class PlayerUtils {
         for (Player player : Groups.player) {
             Unit unit = player.unit();
             if (unit != null && unit.type == targetType) {
-                return new PlayerUnitResult(unit, player.mouseX, player.mouseY);
+                return new PlayerUnitResult(unit, player, player.mouseX, player.mouseY);
             }
         }
         return null;
@@ -41,7 +41,7 @@ public class PlayerUtils {
             if (player.team() != team) continue;
             Unit unit = player.unit();
             if (unit != null && unit.type == targetType) {
-                return new PlayerUnitResult(unit, player.mouseX, player.mouseY);
+                return new PlayerUnitResult(unit, player, player.mouseX, player.mouseY);
             }
         }
         return null;

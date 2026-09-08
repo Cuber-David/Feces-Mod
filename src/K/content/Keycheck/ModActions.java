@@ -32,28 +32,28 @@ public class ModActions {
         if (btn1 != null) {
             pressed1 = btn1.isPressed();
             if (pressed1 != prev1) {
-                KeybindRoody.f2d();
+                KeybindRody.f2d();
                 prev1 = pressed1;
             }
         }
         if (btn2 != null) {
             pressed2 = btn2.isPressed();
             if (pressed2 != prev2) {
-                KeybindRoody.f3d();
+                KeybindRody.f3d();
                 prev2 = pressed2;
             }
         }
         if (btn3 != null) {
             pressed3 = btn3.isPressed();
             if (pressed3 != prev3) {
-                KeybindRoody.f4d();
+                KeybindRody.f4d();
                 prev3 = pressed3;
             }
         }
         if (btn4 != null) {
             pressed4 = btn4.isPressed();
             if (pressed4 != prev4) {
-                KeybindRoody.f5d();
+                KeybindRody.f5d();
                 prev4 = pressed4;
             }
         }
