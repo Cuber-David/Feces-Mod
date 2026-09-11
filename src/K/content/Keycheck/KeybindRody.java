@@ -2,6 +2,7 @@ package K.content.Keycheck;
 
 import K.content.Fx.OtherEffects.KaiEffect;
 import K.content.KUnitTypes;
+import K.content.effectrenderer.StatusEffectRenderer;
 import K.content.extend.Bullets.jujutsu.DomainCook;
 import K.content.extend.Bullets.jujutsu.KaiBulletType;
 import K.content.extend.Bullets.jujutsu.SlashBulletType;
@@ -15,11 +16,14 @@ import arc.math.Mathf;
 import arc.util.Log;
 import arc.util.Time;
 import mindustry.Vars;
+import mindustry.ctype.ContentType;
+import mindustry.entities.Effect;
 import mindustry.gen.Bullet;
 import mindustry.gen.Unit;
 import mindustry.game.Team;
 import mindustry.game.EventType;
 import mindustry.graphics.Drawf;
+import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
 
 public class KeybindRody {
@@ -43,31 +47,42 @@ public class KeybindRody {
     public static boolean F3 = false;
     public static boolean F4 = false;
     public static boolean F5 = false;
+    public static final float F2cd = 30f;
+    public static final float F3cd = 30f;
+    public static final float F4cd = 600;
+    public static final float F5cd = 900;
+    public static float F2t;
+    public static float F3t;
+    public static float F4t;
+    public static float F5t;
+    public static float time;
     public static void init() {
         if (initialized) return;
         Events.run(EventType.Trigger.update, () -> {
             if (!checkPlayer()) {
-                ModActions.setButtonsVisible(false);
+                CreateButton.setVisible(false);
                 return;
             }
             if (!isPlayerUnitAllowed()) {
-                ModActions.setButtonsVisible(false);
+                CreateButton.setVisible(false);
                 return;
             }
             CreateButton.init();
-            ModActions.setButtonsVisible(true);
+            CreateButton.setVisible(true);
             boolean f2Down = Core.input.keyDown(KeyCode.f2);
-            if (f2Down && !lastF2 || F2) {
+            if (f2Down && !lastF2 && F2t < 1 || F2 && F2t < 1) {
                 spawnBullet();
+                F2t = F2cd;
             }
             lastF2 = f2Down;
             boolean f3Down = Core.input.keyDown(KeyCode.f3);
-            if (f3Down && !lastF3 || F3) {
+            if (f3Down && !lastF3 && F3t < 1 || F3 && F3t < 1) {
                 spawnUnitAtMouse(KUnitTypes.Ba);
+                F3t = F3cd;
             }
             lastF3 = f3Down;
             boolean f4Down = Core.input.keyDown(KeyCode.f4);
-            if (f4Down && !lastF4 || F4 && !lastF4d) {
+            if (f4Down && !lastF4 && F4t < 1 || F4 && !lastF4d && F4t < 1) {
                 startCharge();
             } else if (f4Down && isCharging || F4 && isCharging){
                 chargetime += Time.delta;
@@ -77,11 +92,12 @@ public class KeybindRody {
                 drawce();
             } else if (!f4Down && isCharging || !F4 && isCharging) {
                 release();
+                F4t = F4cd;
             }
             lastF4 = f4Down;
             lastF4d = F4;
             boolean f5Down = Core.input.keyDown(KeyCode.f5);
-            if (f5Down && !lastF5 || F5 && !lastF5d) {
+            if (f5Down && !lastF5 && F5t < 1 || F5 && !lastF5d && F5t < 1) {
                 Unit u = getPlayer().unit;
                 float mx = getPlayer().mouseX;
                 float my = getPlayer().mouseY;
@@ -98,6 +114,7 @@ public class KeybindRody {
                     ce = false;
                     u.clearStatuses();
                     u.apply(statuseffect.jujutsufuse,600);
+                    F5t = F5cd;
                 }
             }
             lastF5 = f5Down;
@@ -155,6 +172,14 @@ public class KeybindRody {
             }
         }
         return false;
+    }
+    public static void update(){
+        if (Time.delta!=0f) {
+            if (F2t>=1)F2t--;
+            if (F3t>=1)F3t--;
+            if (F4t>=1)F4t--;
+            if (F5t>=1)F5t--;
+        }
     }
     private static void spawnUnitAtMouse(UnitType unitType) {
         float px = getPlayer().unit.x;

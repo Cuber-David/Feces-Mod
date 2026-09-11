@@ -456,10 +456,8 @@ public class KFx {
             float progress = e.fin();
             Color color = Color.purple;
 
-            // 半径逐渐扩大
             float radius = 1600 * Interp.pow2Out.apply(progress);
 
-            // 颜色保持鲜艳，最后10%淡出
             float alpha;
             if (progress < 0.9f) {
                 alpha = 1f;
@@ -467,22 +465,19 @@ public class KFx {
                 alpha = 1f - (progress - 0.9f) / 0.1f;
             }
 
-            float rotation = Time.time / 50f; // 横向旋转速度
+            float rotation = Time.time / 50f;
 
             Draw.blend(Blending.additive);
 
-            // ===== 1. 发光光晕 =====
             Draw.color(color, alpha * 0.15f);
             Fill.circle(e.x, e.y, radius * 1.8f);
 
-            // ===== 2. 球体核心（通过多个椭圆叠加形成立体球） =====
             int layers = 16;
             for (int i = 0; i < layers; i++) {
                 float layerAngle = (float)i / layers * 180f + rotation * 30f;
                 float layerDepth = Mathf.sinDeg(layerAngle); // -1 到 1
                 float layerAlpha = 0.3f + 0.7f * (0.5f + 0.5f * layerDepth);
 
-                // 椭圆半径：水平方向随深度变化
                 float rx = radius * (0.6f + 0.4f * Mathf.cosDeg(layerAngle));
                 float ry = radius * 0.5f * Mathf.sinDeg(layerAngle);
                 ry = Math.abs(ry) + radius * 0.05f;
@@ -491,11 +486,9 @@ public class KFx {
                 Fill.rect(e.x, e.y + ry * 0.3f, rx * 1.6f, ry * 1.2f, 0f);
             }
 
-            // ===== 3. 球体主体（实心球） =====
             Draw.color(color, alpha * 0.7f);
             Fill.circle(e.x, e.y, radius * 0.85f);
 
-            // ===== 4. 横向旋转条纹（球体表面的环） =====
             Draw.color(color, alpha * 0.5f);
             Lines.stroke(2.5f);
 
@@ -504,20 +497,17 @@ public class KFx {
                 float ringPos = (float)i / rings * 180f + rotation * 20f;
                 float ringDepth = Mathf.cosDeg(ringPos); // -1 到 1
 
-                // 环的宽度随深度变化（边缘窄，中间宽）
                 float ringWidth = 0.3f + 0.7f * (0.5f + 0.5f * ringDepth);
                 float ringY = e.y + radius * 0.8f * Mathf.sinDeg(ringPos);
                 float ringRadius = radius * 0.8f * Mathf.cosDeg(ringPos);
                 ringRadius = Math.abs(ringRadius) + radius * 0.05f;
 
-                // 绘制环（用椭圆弧）
                 float arcAngle = (float)i / rings * 180f + rotation * 30f;
                 float startAngle = arcAngle;
                 float endAngle = arcAngle + 180f;
 
                 Draw.alpha(alpha * 0.4f * (0.3f + 0.7f * (0.5f + 0.5f * ringDepth)));
 
-                // 用多个线段绘制弧
                 int segments = 20;
                 for (int j = 0; j < segments; j++) {
                     float segAngle = startAngle + (float)j / segments * (endAngle - startAngle);
@@ -532,7 +522,6 @@ public class KFx {
                 }
             }
 
-            // ===== 5. 经线（纵向条纹） =====
             Draw.color(color, alpha * 0.3f);
             Lines.stroke(1.5f);
 
@@ -550,25 +539,20 @@ public class KFx {
                 Lines.line(x1, y1, x2, y2);
             }
 
-            // ===== 6. 高光（3D光照效果） =====
             float lightAngle = rotation * 30f;
             float lx = e.x + Mathf.cosDeg(lightAngle) * radius * 0.5f;
             float ly = e.y + Mathf.sinDeg(lightAngle) * radius * 0.3f - radius * 0.15f;
 
-            // 主高光
             Draw.color(Color.white, alpha * 0.5f);
             Fill.rect(lx, ly, radius * 0.6f, radius * 0.35f, lightAngle);
 
-            // 次级高光
             Draw.color(Color.white, alpha * 0.2f);
             Fill.rect(lx - radius * 0.1f, ly + radius * 0.15f, radius * 0.8f, radius * 0.4f, lightAngle + 20);
 
-            // ===== 7. 边缘光 =====
             Draw.color(color, alpha * 0.3f);
             Lines.stroke(1.5f);
             Lines.circle(e.x, e.y, radius * 0.85f);
 
-            // ===== 8. 外发光 =====
             Draw.color(color, alpha * 0.1f);
             Lines.stroke(3f);
             Lines.circle(e.x, e.y, radius * 1.1f);

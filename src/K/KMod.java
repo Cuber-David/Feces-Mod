@@ -24,6 +24,7 @@ import arc.math.Angles;
 import arc.struct.Seq;
 import arc.util.*;
 import mindustry.Vars;
+import mindustry.core.GameState;
 import mindustry.ctype.ContentType;
 import mindustry.game.EventType;
 import mindustry.game.EventType.*;
@@ -114,6 +115,8 @@ public class KMod extends Mod{
         Events.run(EventType.Trigger.draw, () -> {
             if (renderer != null) renderer.draw();
         });
+
+        Events.run(EventType.Trigger.update, KeybindRody::update);
     }
 
     public static String name(String name) {

@@ -36,10 +36,9 @@ public class RedUnitType extends UnitType {
 
     private boolean b;
     private float time;
-    private final float lifetime = 60;
-    private Color incolor = Color.valueOf("f80c19").a(0.8f);
-    private Color outcolor = Color.valueOf("ffa2bd").a(0.8f);
-    private Color lightcolor = Color.valueOf("fa1e31").a(0.2f);
+    private final Color incolor = Color.valueOf("f80c19").a(0.8f);
+    private final Color outcolor = Color.valueOf("ffa2bd").a(0.8f);
+    private final Color lightcolor = Color.valueOf("fa1e31").a(0.2f);
 
     @Override
     public void draw(Unit u) {
@@ -66,7 +65,8 @@ public class RedUnitType extends UnitType {
     @Override
     public void update(Unit u) {
         if(u.hitSize<=1.21f)u.remove();
-        if (time>lifetime) {
+        float lifetime = 60;
+        if (time> lifetime) {
             time=0;
             b = !b;
         }

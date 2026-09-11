@@ -19,11 +19,7 @@ public class PlayerUtils {
         }
     }
 
-    /**
-     * 查找第一个玩家控制的、单位类型为 targetType 的单位，并返回其鼠标坐标。
-     */
     public static PlayerUnitResult findPlayerUnit(UnitType targetType) {
-        // ★ 使用 Groups.player 遍历
         for (Player player : Groups.player) {
             Unit unit = player.unit();
             if (unit != null && unit.type == targetType) {
@@ -33,9 +29,6 @@ public class PlayerUtils {
         return null;
     }
 
-    /**
-     * 带队伍过滤的版本
-     */
     public static PlayerUnitResult findPlayerUnit(UnitType targetType, Team team) {
         for (Player player : Groups.player) {
             if (player.team() != team) continue;

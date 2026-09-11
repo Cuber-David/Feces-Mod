@@ -1,12 +1,7 @@
 package K.content.unit.others.jujutsu;
 
-import K.KMod;
-import K.Other_mod.FM.flame_extend.EmpathyDamage;
 import K.content.Fx.KFx;
-import K.content.effects.SpecialDeathEffects;
-import K.content.extend.Bullets.jujutsu.SlashBulletType;
 import K.entities.SimpleFragments;
-import K.graphics.CutBatch;
 import arc.math.Mathf;
 import mindustry.content.Fx;
 import mindustry.entities.Damage;

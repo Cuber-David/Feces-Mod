@@ -62,7 +62,6 @@ public class StatusEffectRenderer {
         float base = Time.time / life;
 
         Draw.blend(Blending.additive);
-        // 全屏底色
         Draw.color(Color.black);
         Draw.alpha(1f * warmup);
         Fill.quad(
@@ -71,7 +70,6 @@ public class StatusEffectRenderer {
                 cx + width/2, cy + height/2,
                 cx + width/2, cy - height/2
         );
-        // 线条
         for (int i = 0; i < numLines; i++) {
             float angle = (float)i / numLines * 365f + Time.time * 0.01f;
             float progress = (Mathf.random(1f) + base) % 1f;

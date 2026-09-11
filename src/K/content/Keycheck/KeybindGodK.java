@@ -12,7 +12,6 @@ import arc.Events;
 import arc.graphics.Color;
 import arc.input.KeyCode;
 import arc.math.Mathf;
-import arc.util.Log;
 import arc.util.Time;
 import mindustry.Vars;
 import mindustry.entities.Lightning;
@@ -30,7 +29,7 @@ public class KeybindGodK {
     private static boolean lastF4 = false;
     private static boolean lastF5 = false;
     private static boolean isCharging = false;
-    private static float chargetime = 0f;
+    private static float chargeTime = 0f;
     private static final float mxt = 180f;
     private static final float mnt = 120f;
     private static boolean ce = false;
@@ -116,9 +115,9 @@ public class KeybindGodK {
             if (f4Down && !lastF4) {
                 startCharge();
             } else if (f4Down && isCharging){
-                chargetime += Time.delta;
-                if (chargetime >= mxt){
-                    chargetime = mxt;
+                chargeTime += Time.delta;
+                if (chargeTime >= mxt){
+                    chargeTime = mxt;
                 }
                 drawce();
             } else if (!f4Down && isCharging) {
@@ -213,7 +212,6 @@ public class KeybindGodK {
         float px = getPlayer().unit.x;
         float py = getPlayer().unit.y;
         if (!checkPlayer()) {
-            Log.info("玩家不存在，无法生成");
             return null;
         }
         Team team = getPlayer().unit.team();
@@ -222,15 +220,15 @@ public class KeybindGodK {
 
     private static void startCharge(){
         isCharging = true;
-        chargetime = 0f;
+        chargeTime = 0f;
     }
 
     private static void release(){
-        if (chargetime<mnt){
+        if (chargeTime <mnt){
             rest();
             return;
         }
-        float CRatio = Mathf.clamp(chargetime/mxt);
+        float CRatio = Mathf.clamp(chargeTime /mxt);
         atk(CRatio);
         rest();
     }
@@ -244,7 +242,7 @@ public class KeybindGodK {
             float rot = getPlayer().unit.angleTo(mx,my);
             Unit u = getPlayer().unit;
             Unit u1 = KUnitTypes.Purple.spawn(u.team,px+cx(160),py+sx(160));
-            u1.hitSize = chargetime/4;
+            u1.hitSize = chargeTime /4;
             u1.vel().add(cx(160),sx(160));
             u1.mounts[0].weapon.alwaysShooting = false;
         }
@@ -252,15 +250,15 @@ public class KeybindGodK {
 
     private static void rest(){
         isCharging = false;
-        chargetime = 0;
+        chargeTime = 0;
     }
 
     private static void drawce(){
         float px = getPlayer().unit.x;
         float py = getPlayer().unit.y;
-        DrawPurple.drawp(px+cx(160), py+sx(160),chargetime);
-        KFx.purpleEffect.at(px+cx(160), py+sx(160),chargetime);
-        Lightning.create(getPlayer().unit.team,Color.valueOf("f1ccf7").a(0.9f),1f,px+cx(160), py+sx(160), Mathf.random(360), (int) Mathf.random(chargetime/4));
+        DrawPurple.drawp(px+cx(160), py+sx(160), chargeTime);
+        KFx.purpleEffect.at(px+cx(160), py+sx(160), chargeTime);
+        Lightning.create(getPlayer().unit.team,Color.valueOf("f1ccf7").a(0.9f),1f,px+cx(160), py+sx(160), Mathf.random(360), (int) Mathf.random(chargeTime /4));
 
     }
 
