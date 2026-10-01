@@ -2,7 +2,6 @@ package K.content.Keycheck;
 
 import K.content.Fx.OtherEffects.KaiEffect;
 import K.content.KUnitTypes;
-import K.content.effectrenderer.StatusEffectRenderer;
 import K.content.extend.Bullets.jujutsu.DomainCook;
 import K.content.extend.Bullets.jujutsu.KaiBulletType;
 import K.content.extend.Bullets.jujutsu.SlashBulletType;
@@ -16,14 +15,11 @@ import arc.math.Mathf;
 import arc.util.Log;
 import arc.util.Time;
 import mindustry.Vars;
-import mindustry.ctype.ContentType;
-import mindustry.entities.Effect;
 import mindustry.gen.Bullet;
 import mindustry.gen.Unit;
 import mindustry.game.Team;
 import mindustry.game.EventType;
 import mindustry.graphics.Drawf;
-import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
 
 public class KeybindRody {
@@ -34,6 +30,8 @@ public class KeybindRody {
     private static boolean lastF4d = false;
     private static boolean lastF5 = false;
     private static boolean lastF5d = false;
+    private static boolean lastF6 = false;
+    private static boolean lastF6d = false;
     private static boolean isCharging = false;
     private static float chargetime = 0f;
     private static final float mxt = 180f;
@@ -47,6 +45,7 @@ public class KeybindRody {
     public static boolean F3 = false;
     public static boolean F4 = false;
     public static boolean F5 = false;
+    public static boolean F6 = false;
     public static final float F2cd = 30f;
     public static final float F3cd = 30f;
     public static final float F4cd = 600;
@@ -56,6 +55,7 @@ public class KeybindRody {
     public static float F4t;
     public static float F5t;
     public static float time;
+    public static boolean weaponShoot;
     public static void init() {
         if (initialized) return;
         Events.run(EventType.Trigger.update, () -> {
@@ -119,7 +119,14 @@ public class KeybindRody {
             }
             lastF5 = f5Down;
             lastF5d = F5;
+            boolean f6Down = Core.input.keyDown(KeyCode.f6);
+            if (f6Down && !lastF6 || F6 && !lastF6d) {
+                weaponShoot = !weaponShoot;
+            }
+            lastF6 = f6Down;
+            lastF6d = F6;
         });
+        if (!weaponShoot) stopShoot();
         initialized = true;
     }
     public static void f2(){
@@ -145,6 +152,12 @@ public class KeybindRody {
     }
     public static void f5d(){
         F5 = false;
+    }
+    public static void f6(){
+        F6 = true;
+    }
+    public static void f6d(){
+        F6 = false;
     }
     private static boolean checkPlayer() {
         if (Vars.player == null) {
@@ -254,5 +267,8 @@ public class KeybindRody {
     }
     private static float sx(float l){
         return Mathf.sin(getPlayer().unit.angleTo(getPlayer().mouseX,getPlayer().mouseY)*Mathf.degRad)*l;
+    }
+    public static void stopShoot(){
+        if (getPlayer()!=null) getPlayer().unit.disarmed = true;
     }
 }

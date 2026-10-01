@@ -7,26 +7,31 @@ public class ModActions {
     private static Button btn2 = null;
     private static Button btn3 = null;
     private static Button btn4 = null;
+    private static Button btn5 = null;
 
     private static boolean pressed1 = false;
     private static boolean pressed2 = false;
     private static boolean pressed3 = false;
     private static boolean pressed4 = false;
+    private static boolean pressed5 = false;
 
     private static boolean prev1 = false;
     private static boolean prev2 = false;
     private static boolean prev3 = false;
     private static boolean prev4 = false;
+    private static boolean prev5 = false;
 
     public static void setButton1(Button b) { btn1 = b; }
     public static void setButton2(Button b) { btn2 = b; }
     public static void setButton3(Button b) { btn3 = b; }
     public static void setButton4(Button b) { btn4 = b; }
+    public static void setButton5(Button b) { btn5 = b; }
 
     public static boolean isButton1Pressed() { return pressed1; }
     public static boolean isButton2Pressed() { return pressed2; }
     public static boolean isButton3Pressed() { return pressed3; }
     public static boolean isButton4Pressed() { return pressed4; }
+    public static boolean isButton5Pressed() { return pressed5; }
 
     public static void updateAllButtonStates() {
         if (btn1 != null) {
@@ -57,6 +62,13 @@ public class ModActions {
                 prev4 = pressed4;
             }
         }
+        if (btn5 != null) {
+            pressed5 = btn5.isPressed();
+            if (pressed5 != prev5) {
+                KeybindRody.f6d();
+                prev5 = pressed5;
+            }
+        }
     }
 
     // 在 ModActions.java 中添加
@@ -65,5 +77,6 @@ public class ModActions {
         if (btn2 != null) btn2.visible=visible;
         if (btn3 != null) btn3.visible=visible;
         if (btn4 != null) btn4.visible=visible;
+        if (btn5 != null) btn5.visible=visible;
     }
 }

@@ -21,7 +21,7 @@ public class statuseffect {
             effectChance = 0.1f;
             reactive = false;
             speedMultiplier = 0f;
-            reloadMultiplier = 0f;
+            disarm = true;
         }};
         domainopen = new StatusEffect("domainopen"){{
             init(() -> opposite(statuseffect.infinitude));

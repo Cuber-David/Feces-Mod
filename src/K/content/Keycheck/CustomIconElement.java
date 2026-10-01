@@ -25,10 +25,8 @@ public class CustomIconElement extends Element {
 
     @Override
     public void draw() {
-        // ✅ 检查自身的 visible 变量
         if (!visible) return;
 
-        // ✅ 也检查父容器是否可见
         if (parent != null && !parent.visible) return;
 
         float x = this.x + width / 2f;
@@ -40,6 +38,7 @@ public class CustomIconElement extends Element {
             case 1: drawIcon1(x, y, size); break;
             case 2: drawIcon2(x, y, size); break;
             case 3: drawIcon3(x, y, size); break;
+            case 4: drawIcon4(x, y, size); break;
         }
     }
 
@@ -81,5 +80,19 @@ public class CustomIconElement extends Element {
         Draw.color(Color.black.a(0.5f));
         Fill.quad(x-size/2,y-size/2,x-size/2,(y-size/2)+size*fin,x+size/2,(y-size/2)+size*fin,x+size/2,y-size/2);
         Draw.reset();
+    }
+
+    private void drawIcon4(float x, float y, float size) {
+        if (KeybindRody.weaponShoot) {
+            Draw.color(Color.white);
+            TextureRegion jie = Core.atlas.find("kmod-woff");
+            Draw.rect(jie,x,y,size,size);
+            Draw.reset();
+        } else {
+            Draw.color(Color.white);
+            TextureRegion jie = Core.atlas.find("kmod-won");
+            Draw.rect(jie,x,y,size,size);
+            Draw.reset();
+        }
     }
 }

@@ -18,7 +18,7 @@ public class CreateButton {
 
     // 保存根容器和每个组的引用
     private static Table buttonRoot = null;
-    private static Element[] groups = new Element[4];
+    private static Element[] groups = new Element[5];
 
     public static void init() {
         if (initialized) return;
@@ -34,6 +34,7 @@ public class CreateButton {
             if (ModActions.isButton2Pressed()) KeybindRody.f3();
             if (ModActions.isButton3Pressed()) KeybindRody.f4();
             if (ModActions.isButton4Pressed()) KeybindRody.f5();
+            if (ModActions.isButton5Pressed()) KeybindRody.f6();
         });
     }
 
@@ -51,11 +52,13 @@ public class CreateButton {
                     Button b2 = createButton("F3", Color.red);
                     Button b3 = createButton("F4", Color.red);
                     Button b4 = createButton("F5", Color.red);
+                    Button b5 = createButton("F6", Color.red);
 
                     ModActions.setButton1(b1);
                     ModActions.setButton2(b2);
                     ModActions.setButton3(b3);
                     ModActions.setButton4(b4);
+                    ModActions.setButton5(b5);
 
                     // 保存每个组的引用
                     buttons.table(Styles.none, group -> {
@@ -80,6 +83,12 @@ public class CreateButton {
                         group.add(b4).size(50f, 50f).row();
                         group.add(new CustomIconElement(3)).size(40f, 40f).padTop(3f).row();
                         groups[3] = group;
+                    }).pad(2f);
+
+                    buttons.table(Styles.none, group -> {
+                        group.add(b5).size(50f, 50f).row();
+                        group.add(new CustomIconElement(4)).size(40f, 40f).padTop(3f).row();
+                        groups[4] = group;
                     }).pad(2f);
                 });
             });

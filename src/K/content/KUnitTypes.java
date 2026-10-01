@@ -31,6 +31,7 @@ public class KUnitTypes {
     public static RedUnitType Red;
     public static PurpleUnitType Purple;
     public static BaU Ba;
+    public static SwallowerUnitType Swallower;
     public static void load(){
         Thunder = new ThunderUnitType("Thunder");
         Sound = new SoundUnitType("Sound");
@@ -56,5 +57,6 @@ public class KUnitTypes {
         Red = new RedUnitType("Red");
         Purple = new PurpleUnitType("Purple");
         Ba = new BaU("Ba");
+        Swallower = new SwallowerUnitType("Swallower");
     }
 }
