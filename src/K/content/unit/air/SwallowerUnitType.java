@@ -4,7 +4,7 @@ import mindustry.ai.types.HugAI;
 import mindustry.type.UnitType;
 import mindustry.type.unit.NeoplasmUnitType;
 
-public class SwallowerUnitType extends NeoplasmUnitType {
+public class SwallowerUnitType extends UnitType {
     public SwallowerUnitType(String name) {
         super(name);
         omniMovement = false;
